@@ -1,0 +1,52 @@
+{
+ "nodes": [
+  {
+   "key": "p",
+   "machine": "pressurizer",
+   "page": "big_pressurizer",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "r",
+   "machine": "relief_tank",
+   "page": "big_relief_tank",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "h",
+   "machine": "high_pressure_injection",
+   "page": "big_hp_injection",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "d",
+   "machine": "control_rod_drive",
+   "page": "rod_drive",
+   "col": 3,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "p.relief_out",
+   "to": "r.relief_in",
+   "color": "D9684A",
+   "kind": "pipe"
+  },
+  {
+   "from": "r.primary_out",
+   "to": "h.primary_in",
+   "color": "4FA3D9",
+   "kind": "pipe"
+  },
+  {
+   "from": "h.primary_out",
+   "to": "d.primary_cold_in",
+   "color": "4FA3D9",
+   "kind": "pipe"
+  }
+ ]
+}

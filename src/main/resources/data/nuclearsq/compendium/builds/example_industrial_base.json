@@ -1,0 +1,362 @@
+{
+ "nodes": [
+  {
+   "key": "drive",
+   "machine": "control_rod_drive",
+   "page": "rod_drive",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "sg",
+   "machine": "steam_generator",
+   "page": "big_steam_generator",
+   "col": 2,
+   "row": 1
+  },
+  {
+   "key": "pump",
+   "machine": "main_coolant_pump",
+   "page": "cool_bigpumps",
+   "col": 0,
+   "row": 1
+  },
+  {
+   "key": "press",
+   "machine": "pressurizer",
+   "page": "big_pressurizer",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "emerg",
+   "machine": "emergency_cooling",
+   "page": "big_emergency",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "sep",
+   "machine": "steam_separator",
+   "page": "big_separator",
+   "col": 3,
+   "row": 1
+  },
+  {
+   "key": "dryer",
+   "machine": "steam_dryer",
+   "page": "big_dryer",
+   "col": 4,
+   "row": 1
+  },
+  {
+   "key": "cond",
+   "machine": "condenser",
+   "page": "plant_condenser",
+   "col": 5,
+   "row": 1
+  },
+  {
+   "key": "shaft",
+   "machine": "shaft_generator",
+   "page": "energy_shaft",
+   "col": 6,
+   "row": 1
+  },
+  {
+   "key": "bat",
+   "machine": "battery_large",
+   "page": "transport_battery",
+   "col": 7,
+   "row": 1
+  },
+  {
+   "key": "sub",
+   "machine": "substation",
+   "page": "transport_substation",
+   "col": 8,
+   "row": 1
+  },
+  {
+   "key": "derrick",
+   "machine": "oil_derrick",
+   "page": "oil_derrick",
+   "col": 0,
+   "row": 2
+  },
+  {
+   "key": "column",
+   "machine": "distillation_column",
+   "page": "distillation_column",
+   "col": 1,
+   "row": 2
+  },
+  {
+   "key": "cracker",
+   "machine": "cracker",
+   "page": "cracker",
+   "col": 2,
+   "row": 2
+  },
+  {
+   "key": "gasgen",
+   "machine": "gas_generator",
+   "page": "gas_generator",
+   "col": 3,
+   "row": 2
+  },
+  {
+   "key": "polymer",
+   "machine": "polymer_plant",
+   "page": "rod_polymer",
+   "col": 2,
+   "row": 3
+  },
+  {
+   "key": "mill",
+   "machine": "ore_mill",
+   "page": "rod_ore_mill",
+   "col": 0,
+   "row": 4
+  },
+  {
+   "key": "hammer",
+   "machine": "hammer_mill",
+   "page": "hammer_mill",
+   "col": 1,
+   "row": 4
+  },
+  {
+   "key": "plate",
+   "machine": "plate_mill",
+   "page": "plate_mill",
+   "col": 2,
+   "row": 4
+  },
+  {
+   "key": "foundry",
+   "machine": "foundry",
+   "page": "rod_foundry",
+   "col": 3,
+   "row": 4
+  },
+  {
+   "key": "rack1",
+   "machine": "server_rack_large",
+   "page": "storage_racks",
+   "col": 6,
+   "row": 3
+  },
+  {
+   "key": "rack2",
+   "machine": "server_rack",
+   "page": "storage_racks",
+   "col": 6,
+   "row": 4
+  },
+  {
+   "key": "term",
+   "block": "storage_terminal_sqc",
+   "page": "storage_terminal",
+   "col": 7,
+   "row": 3
+  },
+  {
+   "key": "craft",
+   "block": "crafting_terminal_sqc",
+   "page": "storage_crafting",
+   "col": 7,
+   "row": 4
+  },
+  {
+   "key": "asm",
+   "machine": "component_assembler",
+   "page": "component_assembler",
+   "col": 8,
+   "row": 3,
+   "makes": "nuclearsq:battery_large_controller_sqc",
+   "makesTo": "rack2"
+  },
+  {
+   "key": "pat",
+   "machine": "pattern_rack",
+   "page": "pattern_rack",
+   "col": 8,
+   "row": 4
+  }
+ ],
+ "links": [
+  {
+   "from": "drive.primary_hot_out",
+   "to": "sg.primary_hot_in",
+   "color": "D9684A",
+   "kind": "pipe"
+  },
+  {
+   "from": "sg.primary_cold_out",
+   "to": "pump.primary_in",
+   "color": "4FA3D9",
+   "kind": "pipe"
+  },
+  {
+   "from": "pump.primary_out",
+   "to": "drive.primary_cold_in",
+   "color": "4FA3D9",
+   "kind": "pipe"
+  },
+  {
+   "from": "drive.primary_hot_out",
+   "to": "press.primary_in",
+   "color": "D9684A",
+   "kind": "pipe"
+  },
+  {
+   "from": "emerg.primary_out",
+   "to": "drive.primary_cold_in",
+   "color": "6FD0E0",
+   "kind": "pipe"
+  },
+  {
+   "from": "sg.wet_steam_out",
+   "to": "sep.wet_steam_in",
+   "color": "C9D3DC",
+   "kind": "pipe"
+  },
+  {
+   "from": "sep.steam_out",
+   "to": "dryer.wet_steam_in",
+   "color": "E6EDF2",
+   "kind": "pipe"
+  },
+  {
+   "from": "dryer.steam_out",
+   "to": "cond.exhaust_in",
+   "color": "E6EDF2",
+   "kind": "pipe"
+  },
+  {
+   "from": "shaft.energy_out",
+   "to": "bat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "sub.energy_in_0",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "derrick.crude_out",
+   "to": "column.crude_in",
+   "color": "5A4A40",
+   "kind": "pipe"
+  },
+  {
+   "from": "column.naphtha_out",
+   "to": "cracker.naphtha_in",
+   "color": "E0B84A",
+   "kind": "pipe"
+  },
+  {
+   "from": "cracker.ethylene_out",
+   "to": "gasgen.ethylene_in",
+   "color": "7ED6E0",
+   "kind": "pipe"
+  },
+  {
+   "from": "column.tar_out",
+   "to": "polymer.tar_in",
+   "color": "8A6A48",
+   "kind": "pipe"
+  },
+  {
+   "from": "gasgen.energy_out",
+   "to": "bat.energy_in_2",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "mill.item_out",
+   "to": "hammer.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_dust_sqc"
+  },
+  {
+   "from": "hammer.item_out",
+   "to": "plate.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_dust_sqc"
+  },
+  {
+   "from": "plate.item_out",
+   "to": "foundry.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_plate_sqc"
+  },
+  {
+   "from": "foundry.item_out",
+   "to": "asm.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:steel_ingot_sqc"
+  },
+  {
+   "from": "sub.energy_out_0",
+   "to": "rack1.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_1",
+   "to": "rack2.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_2",
+   "to": "asm.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "pat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "rack1.data",
+   "to": "rack2.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack1.data",
+   "to": "term.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack2.data",
+   "to": "craft.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack2.data",
+   "to": "asm.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "pat.data",
+   "to": "asm.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  }
+ ]
+}

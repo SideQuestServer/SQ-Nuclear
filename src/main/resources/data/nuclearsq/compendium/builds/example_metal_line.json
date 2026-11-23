@@ -1,0 +1,52 @@
+{
+ "nodes": [
+  {
+   "key": "a",
+   "machine": "ore_mill",
+   "page": "rod_ore_mill",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "hammer_mill",
+   "page": "hammer_mill",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "c",
+   "machine": "plate_mill",
+   "page": "plate_mill",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "d",
+   "machine": "foundry",
+   "page": "rod_foundry",
+   "col": 3,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "a.item_out",
+   "to": "b.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  },
+  {
+   "from": "b.item_out",
+   "to": "c.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  },
+  {
+   "from": "c.item_out",
+   "to": "d.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  }
+ ]
+}

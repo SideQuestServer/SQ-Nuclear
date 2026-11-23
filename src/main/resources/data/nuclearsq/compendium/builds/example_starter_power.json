@@ -1,0 +1,39 @@
+{
+ "nodes": [
+  {
+   "key": "a",
+   "machine": "coal_generator",
+   "page": "energy_start",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "battery_small",
+   "page": "transport_battery",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "c",
+   "machine": "small_parts_assembler",
+   "page": "small_parts_assembler",
+   "col": 2,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "a.energy_out",
+   "to": "b.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "b.energy_out",
+   "to": "c.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  }
+ ]
+}

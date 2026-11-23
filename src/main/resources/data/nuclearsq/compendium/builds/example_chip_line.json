@@ -1,0 +1,52 @@
+{
+ "nodes": [
+  {
+   "key": "a",
+   "machine": "micro_assembler",
+   "page": "micro_assembler",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "clean_room",
+   "page": "clean_room",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "c",
+   "machine": "compute_assembler",
+   "page": "compute_assembler",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "d",
+   "machine": "quantum_computer",
+   "page": "quantum_computer",
+   "col": 3,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "a.item_out",
+   "to": "b.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  },
+  {
+   "from": "b.item_out",
+   "to": "c.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  },
+  {
+   "from": "c.item_out",
+   "to": "d.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  }
+ ]
+}

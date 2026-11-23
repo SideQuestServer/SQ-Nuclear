@@ -1,0 +1,52 @@
+{
+ "nodes": [
+  {
+   "key": "a",
+   "machine": "cracker",
+   "page": "cracker",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "gas_generator",
+   "page": "gas_generator",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "c",
+   "machine": "battery_large",
+   "page": "transport_battery",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "d",
+   "machine": "substation",
+   "page": "transport_substation",
+   "col": 3,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "a.ethylene_out",
+   "to": "b.ethylene_in",
+   "color": "7ED6E0",
+   "kind": "pipe"
+  },
+  {
+   "from": "b.energy_out",
+   "to": "c.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "c.energy_out",
+   "to": "d.energy_in_0",
+   "color": "E05050",
+   "kind": "power"
+  }
+ ]
+}

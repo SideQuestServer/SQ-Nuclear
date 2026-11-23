@@ -1,0 +1,45 @@
+{
+ "nodes": [
+  {
+   "key": "a",
+   "machine": "electrolyzer",
+   "page": "chem_electrolysis",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "fuel_cell",
+   "page": "chem_fuel_cell",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "c",
+   "machine": "battery_small",
+   "page": "transport_battery",
+   "col": 2,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "a.hydrogen_out",
+   "to": "b.hydrogen_in",
+   "color": "7ED6E0",
+   "kind": "pipe"
+  },
+  {
+   "from": "a.oxygen_out",
+   "to": "b.oxygen_in",
+   "color": "C9E6F0",
+   "kind": "pipe"
+  },
+  {
+   "from": "b.energy_out",
+   "to": "c.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  }
+ ]
+}

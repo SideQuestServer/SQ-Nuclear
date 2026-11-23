@@ -1,0 +1,85 @@
+{
+ "nodes": [
+  {
+   "key": "sg",
+   "machine": "steam_generator",
+   "page": "big_steam_generator",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "sep",
+   "machine": "steam_separator",
+   "page": "big_separator",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "dryer",
+   "machine": "steam_dryer",
+   "page": "big_dryer",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "cond",
+   "machine": "condenser",
+   "page": "plant_condenser",
+   "col": 3,
+   "row": 0
+  },
+  {
+   "key": "shaft",
+   "machine": "shaft_generator",
+   "page": "energy_shaft",
+   "col": 4,
+   "row": 0
+  },
+  {
+   "key": "bat",
+   "machine": "battery_large",
+   "page": "transport_battery",
+   "col": 5,
+   "row": 0
+  },
+  {
+   "key": "sub",
+   "machine": "substation",
+   "page": "transport_substation",
+   "col": 6,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "sg.wet_steam_out",
+   "to": "sep.wet_steam_in",
+   "color": "C9D3DC",
+   "kind": "pipe"
+  },
+  {
+   "from": "sep.steam_out",
+   "to": "dryer.wet_steam_in",
+   "color": "E6EDF2",
+   "kind": "pipe"
+  },
+  {
+   "from": "dryer.steam_out",
+   "to": "cond.exhaust_in",
+   "color": "E6EDF2",
+   "kind": "pipe"
+  },
+  {
+   "from": "shaft.energy_out",
+   "to": "bat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "sub.energy_in_0",
+   "color": "E05050",
+   "kind": "power"
+  }
+ ]
+}

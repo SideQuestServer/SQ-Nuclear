@@ -1,0 +1,78 @@
+{
+ "nodes": [
+  {
+   "key": "rack",
+   "machine": "server_rack",
+   "page": "storage_racks",
+   "col": 0,
+   "row": 1
+  },
+  {
+   "key": "term",
+   "block": "data_terminal_sqc",
+   "page": "data_net",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "console",
+   "block": "data_console_sqc",
+   "page": "data_console",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "desk",
+   "machine": "control_desk",
+   "page": "data_desk",
+   "col": 1,
+   "row": 2
+  },
+  {
+   "key": "derrick",
+   "machine": "oil_derrick",
+   "page": "oil_derrick",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "cracker",
+   "machine": "cracker",
+   "page": "cracker",
+   "col": 2,
+   "row": 1
+  }
+ ],
+ "links": [
+  {
+   "from": "rack.data",
+   "to": "term.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack.data",
+   "to": "console.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack.data",
+   "to": "desk.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "term.data",
+   "to": "derrick.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "console.data",
+   "to": "cracker.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  }
+ ]
+}

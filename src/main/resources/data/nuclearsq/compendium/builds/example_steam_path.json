@@ -1,0 +1,84 @@
+{
+ "nodes": [
+  {
+   "key": "sg",
+   "machine": "steam_generator",
+   "page": "big_steam_generator",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "sep",
+   "machine": "steam_separator",
+   "page": "big_separator",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "dryer",
+   "machine": "steam_dryer",
+   "page": "big_dryer",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "cond",
+   "machine": "condenser",
+   "page": "plant_condenser",
+   "col": 3,
+   "row": 0
+  },
+  {
+   "key": "treat",
+   "machine": "water_treatment",
+   "page": "plant_treatment",
+   "col": 3,
+   "row": 1
+  },
+  {
+   "key": "fwp",
+   "machine": "feedwater_pump",
+   "page": "plant_fwpump",
+   "col": 2,
+   "row": 1
+  }
+ ],
+ "links": [
+  {
+   "from": "sg.wet_steam_out",
+   "to": "sep.wet_steam_in",
+   "color": "C9D3DC",
+   "kind": "pipe"
+  },
+  {
+   "from": "sep.steam_out",
+   "to": "dryer.wet_steam_in",
+   "color": "E6EDF2",
+   "kind": "pipe"
+  },
+  {
+   "from": "dryer.steam_out",
+   "to": "cond.exhaust_in",
+   "color": "E6EDF2",
+   "kind": "pipe"
+  },
+  {
+   "from": "cond.water_out",
+   "to": "treat.water_in",
+   "color": "4F9BD9",
+   "kind": "pipe"
+  },
+  {
+   "from": "treat.feedwater_out",
+   "to": "fwp.feedwater_in",
+   "color": "5EC2C2",
+   "kind": "pipe"
+  },
+  {
+   "from": "fwp.feedwater_out",
+   "to": "sg.feedwater_in",
+   "color": "5EC2C2",
+   "kind": "pipe"
+  }
+ ]
+}

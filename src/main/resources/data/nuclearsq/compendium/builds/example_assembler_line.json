@@ -1,0 +1,52 @@
+{
+ "nodes": [
+  {
+   "key": "a",
+   "machine": "small_parts_assembler",
+   "page": "small_parts_assembler",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "reactor_assembler",
+   "page": "reactor_assembler",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "c",
+   "machine": "heavy_assembler",
+   "page": "mach_heavy",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "d",
+   "machine": "equipment_assembler",
+   "page": "equipment_assembler",
+   "col": 3,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "a.item_out",
+   "to": "b.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  },
+  {
+   "from": "b.item_out",
+   "to": "c.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  },
+  {
+   "from": "c.item_out",
+   "to": "d.item_in",
+   "color": "E0C060",
+   "kind": "item"
+  }
+ ]
+}

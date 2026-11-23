@@ -1107,6 +1107,196 @@
    ]
   },
   {
+   "id": "examples",
+   "name": {
+    "de": "Beispiele",
+    "en": "Examples"
+   },
+   "chapters": [
+    {
+     "id": "examples_overview",
+     "name": {
+      "de": "Übersicht",
+      "en": "Overview"
+     },
+     "pages": [
+      {
+       "id": "examples_all",
+       "anim": "EXAMPLES"
+      }
+     ],
+     "flat": true
+    },
+    {
+     "id": "examples_manufacturing",
+     "name": {
+      "de": "Fertigung",
+      "en": "Manufacturing"
+     },
+     "pages": [
+      {
+       "id": "example_assembler_line",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_metal_line",
+       "anim": "BUILD"
+      }
+     ]
+    },
+    {
+     "id": "examples_chemistry",
+     "name": {
+      "de": "Chemie",
+      "en": "Chemistry"
+     },
+     "pages": [
+      {
+       "id": "example_oil_plant",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_uranium_line",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_waste_line",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_hydrogen_power",
+       "anim": "BUILD"
+      }
+     ]
+    },
+    {
+     "id": "examples_robotics",
+     "name": {
+      "de": "Robotik",
+      "en": "Robotics"
+     },
+     "pages": [
+      {
+       "id": "example_decon_dock_supply",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_exo_station_power",
+       "anim": "BUILD"
+      }
+     ]
+    },
+    {
+     "id": "examples_computing",
+     "name": {
+      "de": "Rechentechnik",
+      "en": "Computing"
+     },
+     "pages": [
+      {
+       "id": "example_chip_line",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_server_room_power",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_storage_system",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_control_room",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_autocrafting",
+       "anim": "BUILD"
+      }
+     ]
+    },
+    {
+     "id": "examples_energy",
+     "name": {
+      "de": "Energie",
+      "en": "Energy"
+     },
+     "pages": [
+      {
+       "id": "example_starter_power",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_gas_power_plant",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_solar_and_wind",
+       "anim": "BUILD"
+      }
+     ]
+    },
+    {
+     "id": "examples_reactor",
+     "name": {
+      "de": "Reaktor",
+      "en": "Reactor"
+     },
+     "pages": [
+      {
+       "id": "example_primary_loop",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_steam_path",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_pressure_relief",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_fusion_fuel",
+       "anim": "BUILD"
+      }
+     ]
+    },
+    {
+     "id": "examples_complete_base",
+     "name": {
+      "de": "Industrieanlage",
+      "en": "Industrial base"
+     },
+     "pages": [
+      {
+       "id": "example_base_reactor",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_base_power",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_base_oil",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_base_ore",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_base_storage",
+       "anim": "BUILD"
+      },
+      {
+       "id": "example_industrial_base",
+       "anim": "BUILD"
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "the_mod",
    "name": {
     "de": "All Items",

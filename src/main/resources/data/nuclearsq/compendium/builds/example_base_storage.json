@@ -1,0 +1,109 @@
+{
+ "nodes": [
+  {
+   "key": "sub",
+   "machine": "substation",
+   "page": "transport_substation",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "rack1",
+   "machine": "server_rack_large",
+   "page": "storage_racks",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "rack2",
+   "machine": "server_rack",
+   "page": "storage_racks",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "term",
+   "block": "storage_terminal_sqc",
+   "page": "storage_terminal",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "craft",
+   "block": "crafting_terminal_sqc",
+   "page": "storage_crafting",
+   "col": 2,
+   "row": 1
+  },
+  {
+   "key": "asm",
+   "machine": "component_assembler",
+   "page": "component_assembler",
+   "col": 3,
+   "row": 0
+  },
+  {
+   "key": "pat",
+   "machine": "pattern_rack",
+   "page": "pattern_rack",
+   "col": 3,
+   "row": 1
+  }
+ ],
+ "links": [
+  {
+   "from": "sub.energy_out_0",
+   "to": "rack1.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_1",
+   "to": "rack2.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_2",
+   "to": "asm.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "pat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "rack1.data",
+   "to": "rack2.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack1.data",
+   "to": "term.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack2.data",
+   "to": "craft.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack2.data",
+   "to": "asm.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "pat.data",
+   "to": "asm.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  }
+ ]
+}

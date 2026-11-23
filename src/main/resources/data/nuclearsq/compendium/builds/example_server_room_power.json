@@ -1,0 +1,52 @@
+{
+ "nodes": [
+  {
+   "key": "sub",
+   "machine": "substation",
+   "page": "transport_substation",
+   "col": 0,
+   "row": 1
+  },
+  {
+   "key": "rack",
+   "machine": "server_rack_large",
+   "page": "storage_racks",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "clu",
+   "machine": "compute_cluster",
+   "page": "storage_cluster",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "desk",
+   "machine": "control_desk",
+   "page": "data_desk",
+   "col": 1,
+   "row": 2
+  }
+ ],
+ "links": [
+  {
+   "from": "sub.energy_out_0",
+   "to": "rack.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_1",
+   "to": "clu.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_2",
+   "to": "desk.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "nodes": [
+  {
+   "key": "col",
+   "machine": "distillation_column",
+   "page": "distillation_column",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "lab",
+   "machine": "chemical_lab",
+   "page": "rod_chemlab",
+   "col": 0,
+   "row": 1
+  },
+  {
+   "key": "dock",
+   "machine": "decon_dock",
+   "page": "decon_dock",
+   "col": 1,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "col.diesel_out",
+   "to": "dock.diesel_in",
+   "color": "C9A44A",
+   "kind": "pipe"
+  },
+  {
+   "from": "lab.lye_out",
+   "to": "dock.lye_in",
+   "color": "C8D45A",
+   "kind": "pipe"
+  }
+ ]
+}
