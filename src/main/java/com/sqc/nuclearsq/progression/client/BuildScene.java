@@ -842,7 +842,7 @@ final class BuildScene {
         if (inView(mx, my)) {
             drag = button;
             dragMoved = false;
-            pressedPage = hoverMachine >= 0 ? machines.get(hoverMachine).page() : hoverPipe >= 0 ? machines.get(pipes.get(hoverPipe).fromMachine()).page() : null;
+            pressedPage = hoverMachine >= 0 ? machines.get(hoverMachine).page() : null;
             return true;
         }
         if (button == 0 && mx >= ax && mx < ax + aw && my >= Math.max(ay + vh, visibleTop) && my < Math.min(ay + vh + STRIP_HEIGHT, visibleTop + visibleHeight)) {
