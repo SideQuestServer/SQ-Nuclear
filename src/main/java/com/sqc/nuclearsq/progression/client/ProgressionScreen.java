@@ -1601,19 +1601,41 @@ public class ProgressionScreen extends Screen {
         return y - y0 + drawTextTabs(g, mx, my, x, y, w);
     }
 
+    /** Short tabs keep their width; the space they do not need goes to the long ones, so long titles are cut as late as possible. */
+    private static void fitTabWidths(int[] widths, int available) {
+        int[] wanted = widths.clone();
+        int low = 0, high = 0;
+        for (int width : wanted) high = Math.max(high, width);
+        while (low < high) {
+            int cap = (low + high + 1) / 2, sum = 0;
+            for (int width : wanted) sum += Math.min(width, cap);
+            if (sum <= available) low = cap; else high = cap - 1;
+        }
+        for (int k = 0; k < widths.length; k++) widths[k] = Math.min(wanted[k], low);
+    }
+
     private int drawTextTabs(GuiGraphics g, int mx, int my, int x, int y, int w) {
         int y0 = y;
         boolean has3d = machine3dId() != null;
         if (tabs.size() > 1 || has3d) {
-            int textTabs = Math.max(1, tabs.size()), n = textTabs + (has3d ? 1 : 0), each = (w - 6) / n, tx = x;
+            int textTabs = Math.max(1, tabs.size()), n = textTabs + (has3d ? 1 : 0), tx = x;
+            String[] titles = new String[n];
+            int[] widths = new int[n];
+            for (int k = 0; k < n; k++) {
+                titles[k] = k == textTabs ? tr("compendium.tab.3d") : tabs.size() < 2 || tabs.get(k).get(0).isEmpty() ? tr("compendium.brief.overview") : rich(tabs.get(k).get(0)).getString();
+                widths[k] = font.width(titles[k]) + 12;
+            }
+            fitTabWidths(widths, w - 6 - 2 * (n - 1));
             for (int k = 0; k < n; k++) {
                 boolean threeD = k == textTabs;
-                String t = threeD ? tr("compendium.tab.3d") : tabs.size() < 2 || tabs.get(k).get(0).isEmpty() ? tr("compendium.brief.overview") : rich(tabs.get(k).get(0)).getString();
-                int tw = Math.min(font.width(t) + 12, each);
+                String t = titles[k];
+                int tw = widths[k];
                 boolean cur = threeD ? show3d : k == tab && !show3d, hv = mx >= tx && mx < tx + tw && my >= y && my < y + 15;
                 if (cur || hv) g.fill(tx, y, tx + tw, y + 15, cur ? ACTIVE_BG : HOVER_BG);
                 if (cur) g.fill(tx, y + 13, tx + tw, y + 15, ACCENT);
-                g.drawString(font, font.plainSubstrByWidth(t, tw - 8), tx + 6, y + 4, cur ? 0xFFFFFFFF : MUTED, false);
+                boolean cut = font.width(t) > tw - 8;
+                g.drawString(font, cut ? font.plainSubstrByWidth(t, tw - 8 - font.width("…")) + "…" : t, tx + 6, y + 4, cur ? 0xFFFFFFFF : MUTED, false);
+                if (cut && hv) g.renderTooltip(font, font.split(Component.literal(t), 220), mx, my);
                 hits.add(new Hit(tx, y, tx + tw, y + 15, threeD ? 22 : 15, k, 0));
                 tx += tw + 2;
             }
