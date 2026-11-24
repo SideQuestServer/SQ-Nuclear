@@ -83,12 +83,70 @@ public final class PortFaces {
         return !modelBoxes(machineId).isEmpty();
     }
 
+    public static List<Integer> platesOnWalls(String machineId, int[] size, int[] controller, int[] cell) {
+        List<Integer> walls = new ArrayList<>();
+        for (int candidate = MINUS_X; candidate <= TOP; candidate++) {
+            if (candidate == TOP && cell[1] != size[1] - 1) continue;
+            if (allowedWall(size, cell, candidate) && plateAt(machineId, controller, cell, candidate)) walls.add(candidate);
+        }
+        return walls;
+    }
+
+    public static boolean plateAt(String machineId, int[] controller, int[] cell, int wall) {
+        return plateTouches(machineId, wallPoint(controller, cell, wall), wall);
+    }
+
+    private static boolean plateTouches(String machineId, double[] point, int wall) {
+        for (Box box : modelBoxes(machineId)) {
+            double dx = Math.max(Math.max(box.minX() - point[0], 0), point[0] - box.maxX());
+            double dy = Math.max(Math.max(box.minY() - point[1], 0), point[1] - box.maxY());
+            double dz = Math.max(Math.max(box.minZ() - point[2], 0), point[2] - box.maxZ());
+            if (Math.sqrt(dx * dx + dy * dy + dz * dz) > 0.15) continue;
+            double sizeX = box.maxX() - box.minX(), sizeY = box.maxY() - box.minY(), sizeZ = box.maxZ() - box.minZ();
+            boolean alongX = wall == MINUS_X || wall == PLUS_X, alongZ = wall == MINUS_Z || wall == PLUS_Z;
+            double thickness = alongX ? sizeX : alongZ ? sizeZ : sizeY;
+            double tangentA = alongX ? sizeY : alongZ ? sizeX : sizeX, tangentB = alongX ? sizeZ : alongZ ? sizeY : sizeZ;
+            if (thickness <= 0.35 && tangentA >= 0.3 && tangentA <= 1.1 && tangentB >= 0.3 && tangentB <= 1.1) return true;
+        }
+        return false;
+    }
+
+    private static boolean onBoundary(int[] size, int[] cell, int wall) {
+        return switch (wall) {
+            case MINUS_X -> cell[0] == 0;
+            case PLUS_X -> cell[0] == size[0] - 1;
+            case MINUS_Z -> cell[2] == 0;
+            case PLUS_Z -> cell[2] == size[2] - 1;
+            default -> cell[1] == size[1] - 1;
+        };
+    }
+
+    private static boolean allowedWall(int[] size, int[] cell, int wall) {
+        boolean cellOnBoundary = false;
+        for (int candidate = MINUS_X; candidate <= TOP; candidate++) cellOnBoundary |= onBoundary(size, cell, candidate);
+        return !cellOnBoundary || onBoundary(size, cell, wall);
+    }
+
     public static int wallOfPort(String machineId, int[] size, int[] controller, int[] cell) {
         int wall = nearestWall(size, cell);
         if (!hasModel(machineId)) return wall;
+        int plateWall = -1;
+        double plateDistance = Double.MAX_VALUE;
+        for (int candidate = MINUS_X; candidate <= TOP; candidate++) {
+            if (candidate == TOP && cell[1] != size[1] - 1) continue;
+            if (!allowedWall(size, cell, candidate)) continue;
+            if (!plateTouches(machineId, wallPoint(controller, cell, candidate), candidate)) continue;
+            double distance = distanceToModel(machineId, size, controller, cell, candidate);
+            if (distance < plateDistance) {
+                plateDistance = distance;
+                plateWall = candidate;
+            }
+        }
+        if (plateWall >= 0) return plateWall;
         double wallDistance = distanceToModel(machineId, size, controller, cell, wall);
         for (int candidate = MINUS_X; candidate <= TOP; candidate++) {
             if (candidate == TOP && cell[1] != size[1] - 1) continue;
+            if (!allowedWall(size, cell, candidate)) continue;
             double distance = distanceToModel(machineId, size, controller, cell, candidate);
             if (distance + 0.25 < wallDistance) {
                 wall = candidate;

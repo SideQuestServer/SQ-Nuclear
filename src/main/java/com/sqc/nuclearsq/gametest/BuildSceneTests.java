@@ -290,4 +290,69 @@ public final class BuildSceneTests {
         failIfAny(problems);
         helper.succeed();
     }
+
+    @GameTest(template = FLOOR, batch = "build_scenes", timeoutTicks = 20)
+    public static void everyMachinePageHasAWorkingSingleMachineScene(GameTestHelper helper) {
+        List<String> problems = new ArrayList<>();
+        final String suffix = "_controller_sqc";
+        for (var node : com.sqc.nuclearsq.progression.AchievementTree.NODES) {
+            if (!node.item().endsWith(suffix)) continue;
+            String machineId = node.item().substring(0, node.item().length() - suffix.length());
+            if (!BuildData.hasMultiblockModel(machineId)) continue;
+            try {
+                BuildData scene = BuildData.ofMachine(machineId, node.page());
+                if (scene.machines.size() != 1) problems.add(machineId + ": " + scene.machines.size() + " Maschinen in der Einzelszene");
+                var machine = scene.machines.get(0);
+                for (String port : machine.portCells().keySet()) {
+                    double[][] points = BuildData.portPoints(machine, port);
+                    if (points == null) problems.add(machineId + ": kein Punkt fuer Anschluss " + port);
+                }
+            } catch (Exception ex) {
+                problems.add(machineId + ": " + ex);
+            }
+        }
+        failIfAny(problems);
+        helper.succeed();
+    }
+
+    @GameTest(template = FLOOR, batch = "build_scenes", timeoutTicks = 20)
+    public static void thePortPlateDecidesTheWallAtACorner(GameTestHelper helper) {
+        int[] size = {4, 5, 3}, controller = {0, 0, 0};
+        int energyWall = PortFaces.wallOfPort("pattern_rack", size, controller, new int[] {0, 0, 2});
+        int dataWall = PortFaces.wallOfPort("pattern_rack", size, controller, new int[] {3, 0, 2});
+        if (energyWall != PortFaces.PLUS_Z || dataWall != PortFaces.PLUS_Z) throw new GameTestAssertException("pattern_rack ports sit on the back wall but got " + energyWall + " and " + dataWall);
+        helper.succeed();
+    }
+
+    @GameTest(template = FLOOR, batch = "build_scenes", timeoutTicks = 20)
+    public static void everyMachinePortHasATooltipLabelAndSitsNearItsModel(GameTestHelper helper) {
+        List<String> problems = new ArrayList<>();
+        var lang = net.minecraft.locale.Language.getInstance();
+        final String suffix = "_controller_sqc";
+        var seen = new java.util.HashSet<String>();
+        for (var node : com.sqc.nuclearsq.progression.AchievementTree.NODES) {
+            if (!node.item().endsWith(suffix)) continue;
+            String machineId = node.item().substring(0, node.item().length() - suffix.length());
+            if (!seen.add(machineId) || !BuildData.hasMultiblockModel(machineId)) continue;
+            try {
+                JsonObject multiblock = BuildData.multiblock(machineId);
+                int[] size = intsOf(multiblock.getAsJsonArray("size")), controller = intsOf(multiblock.getAsJsonArray("controller"));
+                for (var portElement : multiblock.getAsJsonArray("ports")) {
+                    JsonObject port = portElement.getAsJsonObject();
+                    String portName = port.get("name").getAsString(), kind = port.get("type").getAsString();
+                    int[] cell = intsOf(port.getAsJsonArray("cell"));
+                    int wall = PortFaces.wallOfPort(machineId, size, controller, cell);
+                    double distance = PortFaces.distanceToModel(machineId, size, controller, cell, wall);
+                    String where = machineId + "." + portName + " kind=" + kind + " cell=" + java.util.Arrays.toString(cell) + " wall=" + wall;
+                    if (distance > 0.75) problems.add("FAR " + where + " dist=" + String.format("%.2f", distance));
+                    if (!lang.has("port.nuclearsq." + machineId + "." + portName)) problems.add("NOLABEL " + where);
+
+                }
+            } catch (Exception ex) {
+                problems.add(machineId + ": " + ex);
+            }
+        }
+        failIfAny(problems);
+        helper.succeed();
+    }
 }

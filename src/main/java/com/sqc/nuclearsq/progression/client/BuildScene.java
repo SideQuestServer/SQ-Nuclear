@@ -37,6 +37,7 @@ import com.sqc.nuclearsq.progression.BuildData.Step;
 
 final class BuildScene {
     private static final int STRIP_HEIGHT = 70;
+    private static final java.util.Map<String, Integer> PORT_KIND_COLORS = java.util.Map.ofEntries(java.util.Map.entry("energy", 0xFFE05050), java.util.Map.entry("item", 0xFFE0C060), java.util.Map.entry("terminal", 0xFF5ADCE8), java.util.Map.entry("signal", 0xFFD04040), java.util.Map.entry("water", 0xFF4FA3D9), java.util.Map.entry("big_water", 0xFF4FA3D9), java.util.Map.entry("feedwater", 0xFF4FA3D9), java.util.Map.entry("primary", 0xFFD9684A), java.util.Map.entry("steam", 0xFFE6EDF2), java.util.Map.entry("wet_steam", 0xFFC9D3DC), java.util.Map.entry("coolant", 0xFF6FD0E0), java.util.Map.entry("acid", 0xFF8AD04A), java.util.Map.entry("gas", 0xFFB48AE0));
 
     private static final class Q {
         final float group, d;
@@ -58,6 +59,11 @@ final class BuildScene {
 
     private final String prefix;
     private final BuildData data;
+    private final boolean single;
+    private final int stripHeight;
+    private int hoverPort = -1;
+    private List<Object[]> markerSpecs;
+    private final List<Object[]> portMarkers = new ArrayList<>();
     private String[] textCache;
     private final List<Machine> machines;
     private final List<Pipe> pipes;
@@ -98,12 +104,23 @@ final class BuildScene {
 
     static BuildScene create(String pageId) {
         BuildData d = BuildData.load(pageId);
-        return d == null ? null : new BuildScene(pageId, d);
+        return d == null ? null : new BuildScene(pageId, d, false);
     }
 
-    private BuildScene(String pageId, BuildData d) {
+    static BuildScene createForMachine(String machineId, String pageId) {
+        try {
+            return new BuildScene(pageId, BuildData.ofMachine(machineId, pageId), true);
+        } catch (Exception e) {
+            com.mojang.logging.LogUtils.getLogger().warn("No 3D view for machine {}", machineId, e);
+            return null;
+        }
+    }
+
+    private BuildScene(String pageId, BuildData d, boolean single) {
         prefix = "compendium." + pageId;
         data = d;
+        this.single = single;
+        stripHeight = single ? 0 : STRIP_HEIGHT;
         textCache = new String[d.steps.size()];
         machines = d.machines;
         pipes = d.pipes;
@@ -363,7 +380,7 @@ final class BuildScene {
         visibleTop = areaTop;
         visibleHeight = h;
         ax = x; ay = y; aw = w; ah = h;
-        vh = h - STRIP_HEIGHT;
+        vh = h - stripHeight;
         g.enableScissor(x, areaTop, x + w, areaTop + h);
         long now = System.currentTimeMillis();
         float dt = lastMs == 0 ? 0 : Math.min(0.1f, (now - lastMs) / 1000f);
@@ -412,7 +429,7 @@ final class BuildScene {
 
         List<Q> pipeQuads = new ArrayList<>();
         hoverPipe = drag < 0 && inView(mx, my) ? pipeAt(mx, my) : -1;
-        hoverMachine = hoverPipe < 0 && drag < 0 && inView(mx, my) ? machineAt(mx, my) : -1;
+        hoverMachine = !single && hoverPipe < 0 && drag < 0 && inView(mx, my) ? machineAt(mx, my) : -1;
         if (hoverMachine >= 0) highlight(over, machines.get(hoverMachine));
         hitSegs.clear();
         drawPipeBlocks(pipeQuads);
@@ -430,7 +447,7 @@ final class BuildScene {
         flushQuads(g, over, false);
 
         for (int i = 0; i < machines.size(); i++) {
-            if (mBox[i] == null || stepOfMachine[i] < 0) continue;
+            if (single || mBox[i] == null || stepOfMachine[i] < 0) continue;
             Machine m = machines.get(i);
             float bestD = -1e9f;
             float[] bp = null;
@@ -470,11 +487,15 @@ final class BuildScene {
             g.fill((int) top[0] - 10, (int) top[1] - 10, (int) top[0] + 10, (int) top[1] + 10, 0xE0101216);
             MachineThumbs.drawStack(g, stackOf(makes), (int) top[0] - 8, (int) top[1] - 8);
         }
+        hoverPort = -1;
+        if (single) drawPortMarkers(g, mx, my);
         g.disableScissor();
+        if (single) g.drawString(font, tr("compendium.build.portshint"), x + 6, y + vh - 24, 0xFF6C727C, false);
         g.drawString(font, tr("compendium.build.hint"), x + 6, y + vh - 12, 0xFF6C727C, false);
-        drawStrip(g, font, x, y + vh, w, mx, my);
+        if (!single) drawStrip(g, font, x, y + vh, w, mx, my);
         g.disableScissor();
         if (hoverPipe >= 0) tooltip(g, font, mx, my);
+        else if (hoverPort >= 0) portTooltip(g, font, mx, my);
         else if (hoverMachine >= 0) machineTooltip(g, font, mx, my);
     }
 
@@ -503,6 +524,179 @@ final class BuildScene {
         double[][] g = {{x0, z0}, {x1, z0}, {x1, z1}, {x0, z1}};
         for (int i = 0; i < 4; i++)
             line(over, 0, 0, proj(g[i][0], 0, g[i][1]), proj(g[(i + 1) % 4][0], 0, g[(i + 1) % 4][1]), 2f, withAlpha(0xE8A33D, 230));
+    }
+
+    private void drawPortMarkers(GuiGraphics g, int mx, int my) {
+        if (machineProgress(0) < 1f) return;
+        Machine machine = machines.get(0);
+        double towardsViewerX = sinA * cosF, towardsViewerY = sinF, towardsViewerZ = cosA * cosF;
+        portMarkers.clear();
+        for (Object[] spec : markerSpecs()) {
+            String port = (String) spec[0];
+            double[] portCenter = BuildData.portPoints(machine, port)[0], outward = BuildData.outwardOf((int) spec[1]);
+            double outwardX = outward[0], outwardY = outward[1], outwardZ = outward[2];
+            if (outwardX * towardsViewerX + outwardY * towardsViewerY + outwardZ * towardsViewerZ <= 0.05) continue;
+            double[] marker = snapToModel(mesh(0), new double[] {portCenter[0] + outwardX * 0.5, portCenter[1] + outwardY * 0.5, portCenter[2] + outwardZ * 0.5}, outward);
+            float[] screen = proj(marker[0], marker[1], marker[2]);
+            portMarkers.add(new Object[] {port, screen[0], screen[1]});
+        }
+        final float hoverRadius = 8f;
+        float nearest = hoverRadius * hoverRadius;
+        if (drag < 0 && inView(mx, my)) {
+            for (int k = 0; k < portMarkers.size(); k++) {
+                float dx = (float) portMarkers.get(k)[1] - mx, dy = (float) portMarkers.get(k)[2] - my;
+                if (dx * dx + dy * dy <= nearest) { nearest = dx * dx + dy * dy; hoverPort = k; }
+            }
+        }
+        for (int k = 0; k < portMarkers.size(); k++) {
+            int centerX = Math.round((float) portMarkers.get(k)[1]), centerY = Math.round((float) portMarkers.get(k)[2]);
+            int color = PORT_KIND_COLORS.getOrDefault(portKind(machine, (String) portMarkers.get(k)[0]), 0xFF9AA0A8);
+            int half = k == hoverPort ? 5 : 4;
+            g.fill(centerX - half - 1, centerY - half - 1, centerX + half + 1, centerY + half + 1, k == hoverPort ? 0xFFE8A33D : 0xFF101216);
+            g.fill(centerX - half, centerY - half, centerX + half, centerY + half, color);
+        }
+    }
+
+    private List<Object[]> markerSpecs() {
+        if (markerSpecs != null) return markerSpecs;
+        ModelMesh mesh = mesh(0);
+        if (mesh == null) return List.of();
+        List<Object[]> specs = new ArrayList<>();
+        Machine machine = machines.get(0);
+        JsonObject multiblock = mb(machine.id());
+        if (!multiblock.has("ports")) return specs;
+        int[] size = intsOf(multiblock.getAsJsonArray("size")), controller = intsOf(multiblock.getAsJsonArray("controller"));
+        for (JsonElement portElement : multiblock.getAsJsonArray("ports")) {
+            JsonObject portJson = portElement.getAsJsonObject();
+            String port = portJson.get("name").getAsString();
+            if (!machine.portWalls().containsKey(port)) continue;
+            List<Integer> plateWalls = com.sqc.nuclearsq.progression.PortFaces.platesOnWalls(machine.id(), size, controller, intsOf(portJson.getAsJsonArray("cell")));
+            if (plateWalls.isEmpty()) {
+                specs.add(new Object[] {port, machine.portWalls().get(port)});
+                continue;
+            }
+            double[] portCenter = BuildData.portPoints(machine, port)[0];
+            int bestWall = -1;
+            double bestChroma = -1;
+            List<Integer> coloredWalls = new ArrayList<>();
+            for (int wall : plateWalls) {
+                int turnedWall = com.sqc.nuclearsq.progression.PortFaces.turnWall(wall, machine.quarterTurns());
+                double[] outward = BuildData.outwardOf(turnedWall);
+                double chroma = plateChroma(mesh, new double[] {portCenter[0] + outward[0] * 0.5, portCenter[1] + outward[1] * 0.5, portCenter[2] + outward[2] * 0.5}, outward);
+                if (chroma >= MINIMUM_PLATE_CHROMA) coloredWalls.add(turnedWall);
+                if (chroma > bestChroma) { bestChroma = chroma; bestWall = turnedWall; }
+            }
+            if (coloredWalls.isEmpty()) coloredWalls.add(bestWall);
+            for (int turnedWall : coloredWalls) specs.add(new Object[] {port, turnedWall});
+        }
+        markerSpecs = specs;
+        return markerSpecs;
+    }
+
+    private static final double MINIMUM_PLATE_CHROMA = 55;
+    private static final Map<ResourceLocation, com.mojang.blaze3d.platform.NativeImage> TEXTURE_IMAGES = new HashMap<>();
+
+    private static com.mojang.blaze3d.platform.NativeImage imageOf(ResourceLocation texture) {
+        if (texture == null) return null;
+        com.mojang.blaze3d.platform.NativeImage cached = TEXTURE_IMAGES.get(texture);
+        if (cached != null) return cached;
+        try (var stream = Minecraft.getInstance().getResourceManager().open(texture)) {
+            com.mojang.blaze3d.platform.NativeImage image = com.mojang.blaze3d.platform.NativeImage.read(stream);
+            TEXTURE_IMAGES.put(texture, image);
+            return image;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static double chromaOf(ModelMesh mesh, int face) {
+        var image = imageOf(mesh.tex);
+        if (image == null) return 255;
+        float[] uv = mesh.uv.get(face);
+        float lowU = Math.min(Math.min(uv[0], uv[2]), Math.min(uv[4], uv[6])), highU = Math.max(Math.max(uv[0], uv[2]), Math.max(uv[4], uv[6]));
+        float lowV = Math.min(Math.min(uv[1], uv[3]), Math.min(uv[5], uv[7])), highV = Math.max(Math.max(uv[1], uv[3]), Math.max(uv[5], uv[7]));
+        int fromX = Math.max(0, (int) Math.floor(lowU * image.getWidth())), toX = Math.min(image.getWidth(), Math.max(fromX + 1, (int) Math.ceil(highU * image.getWidth())));
+        int fromY = Math.max(0, (int) Math.floor(lowV * image.getHeight())), toY = Math.min(image.getHeight(), Math.max(fromY + 1, (int) Math.ceil(highV * image.getHeight())));
+        double total = 0;
+        int count = 0;
+        for (int pixelX = fromX; pixelX < toX; pixelX++) {
+            for (int pixelY = fromY; pixelY < toY; pixelY++) {
+                int abgr = image.getPixelRGBA(pixelX, pixelY);
+                if ((abgr >>> 24) < 128) continue;
+                int red = abgr & 255, green = (abgr >> 8) & 255, blue = (abgr >> 16) & 255;
+                total += Math.max(red, Math.max(green, blue)) - Math.min(red, Math.min(green, blue));
+                count++;
+            }
+        }
+        return count == 0 ? 0 : total / count;
+    }
+
+    private static double plateChroma(ModelMesh mesh, double[] wallPoint, double[] outward) {
+        double best = 0;
+        for (int face = 0; face < mesh.pos.size(); face++) {
+            float[] normal = mesh.nrm.get(face), corners = mesh.pos.get(face);
+            if (normal[0] * outward[0] + normal[1] * outward[1] + normal[2] * outward[2] < 0.6) continue;
+            double distanceSquared = 0;
+            for (int axis = 0; axis < 3; axis++) {
+                double low = Math.min(Math.min(corners[axis], corners[3 + axis]), Math.min(corners[6 + axis], corners[9 + axis]));
+                double high = Math.max(Math.max(corners[axis], corners[3 + axis]), Math.max(corners[6 + axis], corners[9 + axis]));
+                double clamped = Math.max(low, Math.min(high, wallPoint[axis]));
+                distanceSquared += (clamped - wallPoint[axis]) * (clamped - wallPoint[axis]);
+            }
+            if (distanceSquared <= 0.45 * 0.45) best = Math.max(best, chromaOf(mesh, face));
+        }
+        return best;
+    }
+
+    private static int[] intsOf(com.google.gson.JsonArray array) {
+        int[] values = new int[array.size()];
+        for (int i = 0; i < values.length; i++) values[i] = array.get(i).getAsInt();
+        return values;
+    }
+
+    private static double[] snapToModel(ModelMesh mesh, double[] wallPoint, double[] outward) {
+        if (mesh == null) return wallPoint;
+        double nearest = 1.0;
+        double[] snapped = wallPoint;
+        for (int face = 0; face < mesh.pos.size(); face++) {
+            float[] normal = mesh.nrm.get(face), corners = mesh.pos.get(face);
+            if (normal[0] * outward[0] + normal[1] * outward[1] + normal[2] * outward[2] < 0.6) continue;
+            double[] clamped = new double[3];
+            double distanceSquared = 0;
+            for (int axis = 0; axis < 3; axis++) {
+                double low = Math.min(Math.min(corners[axis], corners[3 + axis]), Math.min(corners[6 + axis], corners[9 + axis]));
+                double high = Math.max(Math.max(corners[axis], corners[3 + axis]), Math.max(corners[6 + axis], corners[9 + axis]));
+                clamped[axis] = Math.max(low, Math.min(high, wallPoint[axis]));
+                distanceSquared += (clamped[axis] - wallPoint[axis]) * (clamped[axis] - wallPoint[axis]);
+            }
+            if (distanceSquared < nearest * nearest) {
+                nearest = Math.sqrt(distanceSquared);
+                snapped = clamped;
+            }
+        }
+        return snapped;
+    }
+
+    private String kindNameOf(String kind) {
+        Language lang = Language.getInstance();
+        return lang.has("gui.nuclearsq.term.kind." + kind) ? tr("gui.nuclearsq.term.kind." + kind) : tr("block.nuclearsq.machine_port_" + kind + "_sqc");
+    }
+
+    private void portTooltip(GuiGraphics g, Font font, int mx, int my) {
+        Machine machine = machines.get(0);
+        String port = (String) portMarkers.get(hoverPort)[0];
+        String kind = portKind(machine, port);
+        Language lang = Language.getInstance();
+        String labelKey = "port.nuclearsq." + machine.id() + "." + port;
+        String label = lang.has(labelKey) ? tr(labelKey) : port;
+        List<FormattedCharSequence> lines = new ArrayList<>();
+        lines.addAll(font.split(Component.literal(label).withStyle(net.minecraft.ChatFormatting.GOLD, net.minecraft.ChatFormatting.BOLD), 230));
+        lines.addAll(font.split(Component.literal(kindNameOf(kind)).withStyle(style -> style.withColor(PORT_KIND_COLORS.getOrDefault(kind, 0xFF9AA0A8) & 0xFFFFFF)), 230));
+        Object[] rate = portRate(machine.id(), port);
+        if (rate != null) lines.addAll(font.split(Component.literal(tr("compendium.build.tip.rate").formatted(String.format(java.util.Locale.ROOT, "%,d", (int) rate[0]) + " " + rate[1])), 230));
+        String hintKey = "gui.nuclearsq.term.kindhint." + kind;
+        lines.addAll(font.split(Component.literal(tr(lang.has(hintKey) ? hintKey : "compendium.build.tip.pipe")), 230));
+        drawTip(g, font, mx, my, lines);
     }
 
     private void machineTooltip(GuiGraphics g, Font font, int mx, int my) {
@@ -772,7 +966,7 @@ final class BuildScene {
 
     private void drawStrip(GuiGraphics g, Font font, int x, int y, int w, int mx, int my) {
         buttons.clear();
-        g.fill(x, y, x + w, y + STRIP_HEIGHT, 0xFF16181C);
+        g.fill(x, y, x + w, y + stripHeight, 0xFF16181C);
         g.fill(x, y, x + w, y + 1, 0xFF38383C);
         int bx = x + 6, by = y + 5, bs = 14;
         button(g, bx, by, bs, 0, mx, my, false);
@@ -803,8 +997,8 @@ final class BuildScene {
         float total = 0, doneT = 0;
         for (int k = 0; k < steps.size(); k++) { total += steps.get(k).totalSeconds(); if (k < step) doneT += steps.get(k).totalSeconds(); }
         doneT += Math.min(t, steps.get(step).totalSeconds());
-        g.fill(x, y + STRIP_HEIGHT - 2, x + w, y + STRIP_HEIGHT, 0xFF101216);
-        g.fill(x, y + STRIP_HEIGHT - 2, x + (int) (w * doneT / total), y + STRIP_HEIGHT, 0xFFE8A33D);
+        g.fill(x, y + stripHeight - 2, x + w, y + stripHeight, 0xFF101216);
+        g.fill(x, y + stripHeight - 2, x + (int) (w * doneT / total), y + stripHeight, 0xFFE8A33D);
     }
 
     int totalHeight() {
@@ -842,10 +1036,10 @@ final class BuildScene {
         if (inView(mx, my)) {
             drag = button;
             dragMoved = false;
-            pressedPage = hoverMachine >= 0 ? machines.get(hoverMachine).page() : null;
+            pressedPage = !single && hoverMachine >= 0 ? machines.get(hoverMachine).page() : null;
             return true;
         }
-        if (button == 0 && mx >= ax && mx < ax + aw && my >= Math.max(ay + vh, visibleTop) && my < Math.min(ay + vh + STRIP_HEIGHT, visibleTop + visibleHeight)) {
+        if (button == 0 && mx >= ax && mx < ax + aw && my >= Math.max(ay + vh, visibleTop) && my < Math.min(ay + vh + stripHeight, visibleTop + visibleHeight)) {
             for (int[] b : buttons) {
                 if (mx >= b[0] && mx < b[2] && my >= b[1] && my < b[3]) {
                     int id = b[4];

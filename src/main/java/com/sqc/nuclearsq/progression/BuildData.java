@@ -109,6 +109,27 @@ public final class BuildData {
         return new BuildData(readJson("/data/nuclearsq/compendium/builds/" + pageId + ".json"));
     }
 
+    private static final Map<String, Boolean> SHOWABLE_MACHINES = new HashMap<>();
+
+    public static boolean hasMultiblockModel(String machineId) {
+        return SHOWABLE_MACHINES.computeIfAbsent(machineId, id -> BuildData.class.getResource("/data/nuclearsq/multiblocks/" + id + ".json") != null && PortFaces.hasModel(id));
+    }
+
+    public static BuildData ofMachine(String machineId, String pageId) throws Exception {
+        JsonObject root = new JsonObject();
+        JsonArray nodes = new JsonArray();
+        JsonObject node = new JsonObject();
+        node.addProperty("key", "machine");
+        node.addProperty("machine", machineId);
+        node.addProperty("page", pageId);
+        node.addProperty("col", 0);
+        node.addProperty("row", 0);
+        nodes.add(node);
+        root.add("nodes", nodes);
+        root.add("links", new JsonArray());
+        return new BuildData(root);
+    }
+
     public static BuildData load(String pageId) {
         try {
             return parse(pageId);
