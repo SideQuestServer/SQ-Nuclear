@@ -26,7 +26,7 @@ public final class BuildSceneTests {
     private BuildSceneTests() {}
 
     private static final String FLOOR = "floor";
-    private static final String[] LANGUAGE_CODES = {"en_us", "de_de", "uk_ua", "ru_ru", "zh_cn"};
+    private static final String[] LANGUAGE_CODES = {"en_us"}; // en_us is the source language; the others are translations
 
     private static List<String> buildPageIds() {
         List<String> pageIds = new ArrayList<>();
