@@ -93,6 +93,7 @@ public final class MultiblockRegistry {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modBus.addListener(com.sqc.nuclearsq.client.ZoomClient::registerKeys);
             modBus.addListener(com.sqc.nuclearsq.client.VeinMinerClient::registerKeys);
+            modBus.addListener(com.sqc.nuclearsq.progression.client.GuideKeysClient::registerKeys);
             modBus.addListener(com.sqc.nuclearsq.nanobot.client.GadgetKeysClient::registerKeys);
         }
     }
