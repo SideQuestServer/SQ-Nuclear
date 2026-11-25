@@ -266,6 +266,11 @@ public class ProgressionScreen extends Screen {
         this.startQuery = startQuery;
     }
 
+    public ProgressionScreen(int[] page) {
+        this();
+        this.lastPage = page;
+    }
+
     public ProgressionScreen() {
         super(Component.translatable("gui.nuclearsq.tree.title"));
         row("materials", ii("zirconium_dust_sqc"), ii("zirconium_ingot_sqc"), ii("zircaloy_sheet_sqc"), ii("reactor_plate_sqc"));
@@ -3167,6 +3172,37 @@ public class ProgressionScreen extends Screen {
             }
             catalogGroups.add(new Group(e.getKey(), subs));
         }
+    }
+
+    private static final java.util.Map<Item, java.util.Optional<int[]>> GUIDE_PAGES = new java.util.HashMap<>();
+    private static java.util.Map<String, int[]> examplesByItem;
+
+    private static boolean ours(Item item) {
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(com.sqc.nuclearsq.NuclearSQ.MODID);
+    }
+
+    @javax.annotation.Nullable
+    static int[] guidePage(Item item) {
+        if (!ours(item)) return null;
+        return GUIDE_PAGES.computeIfAbsent(item, it -> java.util.Optional.ofNullable(pageFor(it))).orElse(null);
+    }
+
+    @javax.annotation.Nullable
+    static int[] examplePage(Item item) {
+        if (!ours(item)) return null;
+        if (examplesByItem == null) {
+            examplesByItem = new java.util.HashMap<>();
+            for (Section s : SECTIONS) if (s.id().equals("examples"))
+                for (Chapter ch : s.chapters()) for (Page pg : ch.pages()) {
+                    if (pg.anim() != Anim.BUILD) continue;
+                    int[] at = findPage(pg.id());
+                    for (String[] node : com.sqc.nuclearsq.progression.BuildData.nodes(pg.id())) {
+                        examplesByItem.putIfAbsent(node[1], at);
+                        if (node[1].endsWith("_controller_sqc")) examplesByItem.putIfAbsent(node[1].replace("_controller_sqc", "_kit_sqc"), at);
+                    }
+                }
+        }
+        return examplesByItem.get(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item).getPath());
     }
 
     @javax.annotation.Nullable

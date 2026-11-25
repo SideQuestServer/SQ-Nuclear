@@ -260,6 +260,17 @@ public final class BuildSceneTests {
     }
 
     @GameTest(template = FLOOR, batch = "build_scenes", timeoutTicks = 20)
+    public static void everyExampleNodeIsARealModItem(GameTestHelper helper) {
+        List<String> problems = new ArrayList<>();
+        for (String pageId : buildPageIds())
+            for (String[] node : BuildData.nodes(pageId))
+                if (!net.minecraft.core.registries.BuiltInRegistries.ITEM.containsKey(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(NuclearSQ.MODID, node[1])))
+                    problems.add(pageId + ": unbekannter Knoten-Gegenstand " + node[1]);
+        failIfAny(problems);
+        helper.succeed();
+    }
+
+    @GameTest(template = FLOOR, batch = "build_scenes", timeoutTicks = 20)
     public static void shownItemsExistAndHaveRealDestinations(GameTestHelper helper) {
         List<String> problems = new ArrayList<>();
         for (String pageId : buildPageIds()) {
