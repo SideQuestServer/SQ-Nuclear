@@ -1,0 +1,6 @@
+{
+  "parent": "nuclearsq:block/net_pipe_adapter_sqc_l",
+  "textures": {
+    "panel": "nuclearsq:block/net_pipe_adapter_sqc_panel_export_off"
+  }
+}

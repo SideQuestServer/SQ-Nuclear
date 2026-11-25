@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "nuclearsq:block/cnc_mill_controller_sqc"
+    },
+    "formed=true": {
+      "model": "nuclearsq:block/cnc_mill_shell_sqc"
+    }
+  }
+}

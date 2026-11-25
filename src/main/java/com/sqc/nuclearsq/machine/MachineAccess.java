@@ -14,6 +14,15 @@ import net.minecraft.server.level.ServerPlayer;
 public final class MachineAccess {
     public static final int USE = 1, ADMIN = 7;
 
+    public interface Holder {
+        MachineAccess access();
+
+        @Nullable
+        UUID owner();
+
+        void setChanged();
+    }
+
     private final Map<String, Integer> grants = new TreeMap<>();
 
     public Map<String, Integer> grants() {

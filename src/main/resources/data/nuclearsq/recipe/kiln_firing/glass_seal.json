@@ -1,0 +1,21 @@
+{
+  "type": "nuclearsq:kiln_firing",
+  "ingredient": {
+    "item": "minecraft:glass"
+  },
+  "count": 30,
+  "time": 100,
+  "energy_per_tick": 300,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:glass_seal_sqc",
+        "count": 1
+      }
+    }
+  ],
+  "aux": {
+    "item": "minecraft:clay_ball"
+  },
+  "aux_count": 8
+}

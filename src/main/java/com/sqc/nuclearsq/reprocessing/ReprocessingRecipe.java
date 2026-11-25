@@ -51,7 +51,9 @@ public record ReprocessingRecipe(Ingredient ingredient, int count, int time, int
         VITRIFICATION("vitrification"),
         CHEMISTRY("chemistry"),
         PLATE_MILLING("plate_milling"),
-        DUST_MILLING("dust_milling");
+        DUST_MILLING("dust_milling"),
+        KILN_FIRING("kiln_firing"),
+        BLAST_SMELTING("blast_smelting");
 
         public final String id;
 

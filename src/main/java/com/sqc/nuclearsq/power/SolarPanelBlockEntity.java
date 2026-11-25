@@ -41,7 +41,7 @@ public class SolarPanelBlockEntity extends BlockEntity {
     }
 
     public IEnergyStorage port(Direction side) {
-        return side == Direction.UP ? null : PORT;
+        return side == Direction.UP || side != null && !outputs(side) ? null : PORT;
     }
 
     public int peak() { return peak; }
@@ -83,6 +83,8 @@ public class SolarPanelBlockEntity extends BlockEntity {
 
     protected boolean tracks() { return false; }
 
+    protected boolean outputs(Direction d) { return true; }
+
     public int deliver(int amount) {
         return pushToSinks(amount, amount);
     }
@@ -92,6 +94,7 @@ public class SolarPanelBlockEntity extends BlockEntity {
         int given = 0;
         for (Direction dir : SIDES) {
             if (left <= 0) break;
+            if (!outputs(dir)) continue;
             BlockPos n = worldPosition.relative(dir);
             if (!level.isLoaded(n) || level.getBlockEntity(n) instanceof SolarPanelBlockEntity) continue;
             IEnergyStorage target = level.getCapability(Capabilities.EnergyStorage.BLOCK, n, dir.getOpposite());
@@ -105,6 +108,7 @@ public class SolarPanelBlockEntity extends BlockEntity {
 
     protected boolean hasSink() {
         for (Direction dir : SIDES) {
+            if (!outputs(dir)) continue;
             BlockPos n = worldPosition.relative(dir);
             if (!level.isLoaded(n) || level.getBlockEntity(n) instanceof SolarPanelBlockEntity) continue;
             IEnergyStorage t = level.getCapability(Capabilities.EnergyStorage.BLOCK, n, dir.getOpposite());

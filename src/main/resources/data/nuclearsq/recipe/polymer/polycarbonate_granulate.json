@@ -1,0 +1,23 @@
+{
+  "type": "nuclearsq:polymer",
+  "ingredient": {
+    "item": "nuclearsq:pbt_granulate_sqc"
+  },
+  "count": 2,
+  "time": 320,
+  "energy_per_tick": 2100,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:polycarbonate_granulate_sqc",
+        "count": 1
+      }
+    }
+  ],
+  "fluids": [
+    {
+      "port": "ethylene_in",
+      "amount": 500
+    }
+  ]
+}

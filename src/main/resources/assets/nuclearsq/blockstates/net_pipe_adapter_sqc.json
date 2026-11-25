@@ -1,0 +1,1084 @@
+{
+  "variants": {
+    "facing=down,mode=demand,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_off"
+    },
+    "facing=down,mode=demand,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_ok"
+    },
+    "facing=down,mode=demand,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_wait"
+    },
+    "facing=down,mode=demand,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_err"
+    },
+    "facing=down,mode=store,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_off"
+    },
+    "facing=down,mode=store,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_ok"
+    },
+    "facing=down,mode=store,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_wait"
+    },
+    "facing=down,mode=store,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_err"
+    },
+    "facing=down,mode=export,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_off"
+    },
+    "facing=down,mode=export,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_ok"
+    },
+    "facing=down,mode=export,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_wait"
+    },
+    "facing=down,mode=export,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_err"
+    },
+    "facing=down,mode=demand,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_off",
+      "y": 90
+    },
+    "facing=down,mode=demand,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_ok",
+      "y": 90
+    },
+    "facing=down,mode=demand,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_wait",
+      "y": 90
+    },
+    "facing=down,mode=demand,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_err",
+      "y": 90
+    },
+    "facing=down,mode=store,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_off",
+      "y": 90
+    },
+    "facing=down,mode=store,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_ok",
+      "y": 90
+    },
+    "facing=down,mode=store,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_wait",
+      "y": 90
+    },
+    "facing=down,mode=store,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_err",
+      "y": 90
+    },
+    "facing=down,mode=export,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_off",
+      "y": 90
+    },
+    "facing=down,mode=export,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_ok",
+      "y": 90
+    },
+    "facing=down,mode=export,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_wait",
+      "y": 90
+    },
+    "facing=down,mode=export,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_err",
+      "y": 90
+    },
+    "facing=down,mode=demand,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_off",
+      "y": 180
+    },
+    "facing=down,mode=demand,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_ok",
+      "y": 180
+    },
+    "facing=down,mode=demand,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_wait",
+      "y": 180
+    },
+    "facing=down,mode=demand,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_err",
+      "y": 180
+    },
+    "facing=down,mode=store,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_off",
+      "y": 180
+    },
+    "facing=down,mode=store,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_ok",
+      "y": 180
+    },
+    "facing=down,mode=store,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_wait",
+      "y": 180
+    },
+    "facing=down,mode=store,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_err",
+      "y": 180
+    },
+    "facing=down,mode=export,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_off",
+      "y": 180
+    },
+    "facing=down,mode=export,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_ok",
+      "y": 180
+    },
+    "facing=down,mode=export,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_wait",
+      "y": 180
+    },
+    "facing=down,mode=export,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_err",
+      "y": 180
+    },
+    "facing=down,mode=demand,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_off",
+      "y": 270
+    },
+    "facing=down,mode=demand,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_ok",
+      "y": 270
+    },
+    "facing=down,mode=demand,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_wait",
+      "y": 270
+    },
+    "facing=down,mode=demand,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_demand_err",
+      "y": 270
+    },
+    "facing=down,mode=store,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_off",
+      "y": 270
+    },
+    "facing=down,mode=store,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_ok",
+      "y": 270
+    },
+    "facing=down,mode=store,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_wait",
+      "y": 270
+    },
+    "facing=down,mode=store,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_store_err",
+      "y": 270
+    },
+    "facing=down,mode=export,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_off",
+      "y": 270
+    },
+    "facing=down,mode=export,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_ok",
+      "y": 270
+    },
+    "facing=down,mode=export,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_wait",
+      "y": 270
+    },
+    "facing=down,mode=export,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_d_export_err",
+      "y": 270
+    },
+    "facing=up,mode=demand,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_off"
+    },
+    "facing=up,mode=demand,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_ok"
+    },
+    "facing=up,mode=demand,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_wait"
+    },
+    "facing=up,mode=demand,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_err"
+    },
+    "facing=up,mode=store,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_off"
+    },
+    "facing=up,mode=store,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_ok"
+    },
+    "facing=up,mode=store,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_wait"
+    },
+    "facing=up,mode=store,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_err"
+    },
+    "facing=up,mode=export,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_off"
+    },
+    "facing=up,mode=export,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_ok"
+    },
+    "facing=up,mode=export,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_wait"
+    },
+    "facing=up,mode=export,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_err"
+    },
+    "facing=up,mode=demand,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_off",
+      "y": 90
+    },
+    "facing=up,mode=demand,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_ok",
+      "y": 90
+    },
+    "facing=up,mode=demand,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_wait",
+      "y": 90
+    },
+    "facing=up,mode=demand,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_err",
+      "y": 90
+    },
+    "facing=up,mode=store,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_off",
+      "y": 90
+    },
+    "facing=up,mode=store,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_ok",
+      "y": 90
+    },
+    "facing=up,mode=store,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_wait",
+      "y": 90
+    },
+    "facing=up,mode=store,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_err",
+      "y": 90
+    },
+    "facing=up,mode=export,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_off",
+      "y": 90
+    },
+    "facing=up,mode=export,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_ok",
+      "y": 90
+    },
+    "facing=up,mode=export,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_wait",
+      "y": 90
+    },
+    "facing=up,mode=export,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_err",
+      "y": 90
+    },
+    "facing=up,mode=demand,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_off",
+      "y": 180
+    },
+    "facing=up,mode=demand,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_ok",
+      "y": 180
+    },
+    "facing=up,mode=demand,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_wait",
+      "y": 180
+    },
+    "facing=up,mode=demand,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_err",
+      "y": 180
+    },
+    "facing=up,mode=store,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_off",
+      "y": 180
+    },
+    "facing=up,mode=store,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_ok",
+      "y": 180
+    },
+    "facing=up,mode=store,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_wait",
+      "y": 180
+    },
+    "facing=up,mode=store,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_err",
+      "y": 180
+    },
+    "facing=up,mode=export,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_off",
+      "y": 180
+    },
+    "facing=up,mode=export,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_ok",
+      "y": 180
+    },
+    "facing=up,mode=export,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_wait",
+      "y": 180
+    },
+    "facing=up,mode=export,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_err",
+      "y": 180
+    },
+    "facing=up,mode=demand,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_off",
+      "y": 270
+    },
+    "facing=up,mode=demand,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_ok",
+      "y": 270
+    },
+    "facing=up,mode=demand,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_wait",
+      "y": 270
+    },
+    "facing=up,mode=demand,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_demand_err",
+      "y": 270
+    },
+    "facing=up,mode=store,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_off",
+      "y": 270
+    },
+    "facing=up,mode=store,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_ok",
+      "y": 270
+    },
+    "facing=up,mode=store,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_wait",
+      "y": 270
+    },
+    "facing=up,mode=store,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_store_err",
+      "y": 270
+    },
+    "facing=up,mode=export,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_off",
+      "y": 270
+    },
+    "facing=up,mode=export,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_ok",
+      "y": 270
+    },
+    "facing=up,mode=export,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_wait",
+      "y": 270
+    },
+    "facing=up,mode=export,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_u_export_err",
+      "y": 270
+    },
+    "facing=north,mode=demand,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off"
+    },
+    "facing=north,mode=demand,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok"
+    },
+    "facing=north,mode=demand,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait"
+    },
+    "facing=north,mode=demand,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err"
+    },
+    "facing=north,mode=store,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off"
+    },
+    "facing=north,mode=store,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok"
+    },
+    "facing=north,mode=store,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait"
+    },
+    "facing=north,mode=store,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err"
+    },
+    "facing=north,mode=export,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off"
+    },
+    "facing=north,mode=export,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok"
+    },
+    "facing=north,mode=export,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait"
+    },
+    "facing=north,mode=export,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err"
+    },
+    "facing=north,mode=demand,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_off"
+    },
+    "facing=north,mode=demand,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_ok"
+    },
+    "facing=north,mode=demand,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_wait"
+    },
+    "facing=north,mode=demand,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_err"
+    },
+    "facing=north,mode=store,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_off"
+    },
+    "facing=north,mode=store,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_ok"
+    },
+    "facing=north,mode=store,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_wait"
+    },
+    "facing=north,mode=store,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_err"
+    },
+    "facing=north,mode=export,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_off"
+    },
+    "facing=north,mode=export,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_ok"
+    },
+    "facing=north,mode=export,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_wait"
+    },
+    "facing=north,mode=export,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_err"
+    },
+    "facing=north,mode=demand,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off"
+    },
+    "facing=north,mode=demand,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok"
+    },
+    "facing=north,mode=demand,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait"
+    },
+    "facing=north,mode=demand,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err"
+    },
+    "facing=north,mode=store,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off"
+    },
+    "facing=north,mode=store,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok"
+    },
+    "facing=north,mode=store,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait"
+    },
+    "facing=north,mode=store,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err"
+    },
+    "facing=north,mode=export,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off"
+    },
+    "facing=north,mode=export,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok"
+    },
+    "facing=north,mode=export,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait"
+    },
+    "facing=north,mode=export,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err"
+    },
+    "facing=north,mode=demand,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off"
+    },
+    "facing=north,mode=demand,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok"
+    },
+    "facing=north,mode=demand,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait"
+    },
+    "facing=north,mode=demand,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err"
+    },
+    "facing=north,mode=store,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off"
+    },
+    "facing=north,mode=store,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok"
+    },
+    "facing=north,mode=store,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait"
+    },
+    "facing=north,mode=store,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err"
+    },
+    "facing=north,mode=export,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off"
+    },
+    "facing=north,mode=export,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok"
+    },
+    "facing=north,mode=export,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait"
+    },
+    "facing=north,mode=export,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err"
+    },
+    "facing=east,mode=demand,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_off",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_ok",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_wait",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_err",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_off",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_ok",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_wait",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_err",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_off",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_ok",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_wait",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_err",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 90
+    },
+    "facing=east,mode=demand,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 90
+    },
+    "facing=east,mode=store,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 90
+    },
+    "facing=east,mode=export,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 90
+    },
+    "facing=south,mode=demand,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_off",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_ok",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_wait",
+      "y": 180
+    },
+    "facing=south,mode=demand,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_err",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_off",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_ok",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_wait",
+      "y": 180
+    },
+    "facing=south,mode=store,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_err",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_off",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_ok",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_wait",
+      "y": 180
+    },
+    "facing=south,mode=export,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_err",
+      "y": 180
+    },
+    "facing=west,mode=demand,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_off",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_ok",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_wait",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_demand_err",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_off",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_ok",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_wait",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_store_err",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=north,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_off",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=north,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_ok",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=north,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_wait",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=north,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_r_export_err",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=east,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=east,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=east,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=east,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=south,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=south,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=south,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=south,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_off",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_ok",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_wait",
+      "y": 270
+    },
+    "facing=west,mode=demand,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_demand_err",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_off",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_ok",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_wait",
+      "y": 270
+    },
+    "facing=west,mode=store,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_store_err",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=west,status=off": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_off",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=west,status=ok": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_ok",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=west,status=wait": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_wait",
+      "y": 270
+    },
+    "facing=west,mode=export,panel=west,status=err": {
+      "model": "nuclearsq:block/net_pipe_adapter_sqc_l_export_err",
+      "y": 270
+    }
+  }
+}

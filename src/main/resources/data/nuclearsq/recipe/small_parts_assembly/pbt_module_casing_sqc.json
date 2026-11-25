@@ -1,0 +1,21 @@
+{
+  "type": "nuclearsq:small_parts_assembly",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "nuclearsq:pbt_granulate_sqc"
+      },
+      "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:steel_sheet_sqc"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "id": "nuclearsq:pbt_module_casing_sqc",
+    "count": 2
+  }
+}

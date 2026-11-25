@@ -197,7 +197,7 @@ public final class BakedMachines {
             cacheLevel = level;
         }
         long now = level.getGameTime();
-        boolean replay = com.sqc.nuclearsq.compat.iris.IrisCompat.shaderPackInUse();
+        boolean replay = com.sqc.nuclearsq.compat.iris.IrisCompat.shaderPackInUse() || RtxBatchBufferSource.isRtxBuffer(buffers);
         Key key = new Key(kind, rot, replay, replay ? 0 : light, variant);
         Entry e = CACHE.get(key);
         if (e == null) {

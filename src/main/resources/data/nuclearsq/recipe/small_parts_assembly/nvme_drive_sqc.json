@@ -1,0 +1,47 @@
+{
+  "type": "nuclearsq:small_parts_assembly",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:diamond"
+      },
+      "count": 8
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:glowstone_dust"
+      },
+      "count": 16
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:quartz"
+      },
+      "count": 32
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:gold_ingot"
+      },
+      "count": 12
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:control_board_3_sqc"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:polycarbonate_module_casing_sqc"
+      },
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "nuclearsq:nvme_drive_sqc",
+    "count": 1
+  },
+  "time": 640,
+  "energy_per_tick": 2400
+}

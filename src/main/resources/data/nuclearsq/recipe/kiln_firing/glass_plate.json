@@ -1,0 +1,21 @@
+{
+  "type": "nuclearsq:kiln_firing",
+  "ingredient": {
+    "item": "minecraft:glass"
+  },
+  "count": 2,
+  "time": 100,
+  "energy_per_tick": 300,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:glass_plate_sqc",
+        "count": 2
+      }
+    }
+  ],
+  "aux": {
+    "item": "minecraft:quartz"
+  },
+  "aux_count": 1
+}

@@ -1,0 +1,126 @@
+{
+ "nodes": [
+  {
+   "key": "e",
+   "machine": "battery_small",
+   "page": "transport_battery",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "a",
+   "machine": "ore_mill",
+   "page": "rod_ore_mill",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "hammer_mill",
+   "page": "hammer_mill",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "k",
+   "machine": "kiln",
+   "page": "kiln",
+   "col": 2,
+   "row": 1
+  },
+  {
+   "key": "d",
+   "machine": "blast_furnace",
+   "page": "blast_furnace",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "c",
+   "machine": "plate_mill",
+   "page": "plate_mill",
+   "col": 3,
+   "row": 0
+  },
+  {
+   "key": "f",
+   "machine": "cnc_mill",
+   "page": "cnc_mill",
+   "col": 4,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "e.energy_out",
+   "to": "a.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "e.energy_out",
+   "to": "b.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "e.energy_out",
+   "to": "d.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "e.energy_out",
+   "to": "c.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "d.item_out",
+   "to": "c.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:steel_ingot_sqc"
+  },
+  {
+   "from": "e.energy_out",
+   "to": "k.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "e.energy_out",
+   "to": "f.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "k.item_out",
+   "to": "d.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:coke_sqc"
+  },
+  {
+   "from": "c.item_out",
+   "to": "f.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:steel_sheet_sqc"
+  },
+  {
+   "from": "a.item_out",
+   "to": "d.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_dust_sqc"
+  },
+  {
+   "from": "b.item_out",
+   "to": "d.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_dust_sqc"
+  }
+ ]
+}

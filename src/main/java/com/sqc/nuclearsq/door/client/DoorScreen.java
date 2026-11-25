@@ -2,6 +2,7 @@ package com.sqc.nuclearsq.door.client;
 
 import com.sqc.nuclearsq.door.DoorBlockEntity;
 import com.sqc.nuclearsq.machine.DeviceMenu;
+import com.sqc.nuclearsq.machine.client.AccessScreen;
 import com.sqc.nuclearsq.machine.client.TermKit;
 import com.sqc.nuclearsq.network.DeviceControlPayload;
 
@@ -36,9 +37,17 @@ public class DoorScreen extends AbstractContainerScreen<DeviceMenu> {
         return mx >= leftPos + BTN_X && mx < leftPos + BTN_X + BTN_W && my >= topPos + BTN_Y && my < topPos + BTN_Y + BTN_H;
     }
 
+    private boolean overAccess(double mx, double my) {
+        return mx >= leftPos + W - 52 && mx < leftPos + W - 8 && my >= topPos + BTN_Y + 1 && my < topPos + BTN_Y + 12;
+    }
+
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
         if (button == 0 && TermKit.styleClick(mx, my)) return true;
+        if (button == 0 && overAccess(mx, my)) {
+            AccessScreen.request(menu.pos);
+            return true;
+        }
         if (button == 0 && overButton(mx, my)) {
             PacketDistributor.sendToServer(new DeviceControlPayload(DeviceControlPayload.DOOR_OPEN, flag(DoorBlockEntity.FLAG_OPEN) ? 0 : 1));
             return true;
@@ -60,6 +69,7 @@ public class DoorScreen extends AbstractContainerScreen<DeviceMenu> {
         TermKit.bar(g, x + 10, y + 68, W - 20, 6, menu.u(4) / 100f, moving ? TermKit.AMBER : TermKit.CYAN);
         TermKit.button(g, font, x + BTN_X, y + BTN_Y, BTN_W, BTN_H, t(open ? "close" : "do_open"), open ? TermKit.AMBER : TermKit.GREEN,
                 true, overButton(mx, my), false);
+        TermKit.button(g, font, x + W - 52, y + BTN_Y + 1, 44, 11, Component.translatable("gui.nuclearsq.access.button"), TermKit.CYAN, true, overAccess(mx, my), false);
         boolean locked = flag(DoorBlockEntity.FLAG_LOCKED);
         TermKit.prompt(g, font, x + 8, y + 104, t(locked ? "locked" : "hint"), locked ? TermKit.AMBER : TermKit.DIM);
         TermKit.scanlines(g, x - 4, y - 4, W + 8, H + 8);

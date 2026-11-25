@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 public final class ServerRack {
-    public static final int COMPUTE = 5;
+    public static final int COMPUTE = 7;
     public static final int MAX_PRIORITY = 9;
     private static final int ACTIVE_TICKS = 8;
     private static final double FULL = 0.98;

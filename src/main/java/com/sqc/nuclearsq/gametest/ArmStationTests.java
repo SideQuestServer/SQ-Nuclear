@@ -4,11 +4,8 @@ import com.sqc.nuclearsq.NuclearSQ;
 import com.sqc.nuclearsq.machine.big.BigMachine;
 import com.sqc.nuclearsq.machine.big.BigMachineBlockEntity;
 import com.sqc.nuclearsq.multiblock.MultiblockStructure;
-import com.sqc.nuclearsq.robotics.RobotArmBlockEntity;
-import com.sqc.nuclearsq.robotics.RoboticsRegistry;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestAssertException;
@@ -26,7 +23,7 @@ public final class ArmStationTests {
     private ArmStationTests() {}
 
     private static final String FLOOR = "floor";
-    private static final BigMachine M = BigMachine.SMALL_PARTS_ASSEMBLER;
+    private static final BigMachine M = BigMachine.SOLDER_MACHINE;
 
     private static Item item(String id) {
         return BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(NuclearSQ.MODID, id));
@@ -53,38 +50,31 @@ public final class ArmStationTests {
     }
 
     @GameTest(template = FLOOR, batch = "arm_station", timeoutTicks = 100)
-    public static void chipTwoNeedsAnArm(GameTestHelper h) {
+    public static void chipTwoWithoutArm(GameTestHelper h) {
         BigMachineBlockEntity be = build(h);
         h.runAfterDelay(25, () -> {
-            if (!be.isFormed()) throw new GameTestAssertException("Kleinteil-Assembler nicht aufgebaut");
+            if (!be.isFormed()) throw new GameTestAssertException("Loetmaschine nicht aufgebaut");
             chipTwoIngredients(be);
             h.runAfterDelay(50, () -> {
-                if (be.crafter().partsRecipe() != null) throw new GameTestAssertException("Chip II ohne Greifarm erkannt");
-                if (be.crafter().status() != com.sqc.nuclearsq.machine.big.BigCrafter.NO_ARM) throw new GameTestAssertException("Zustand " + be.crafter().status() + " statt GREIFARM FEHLT");
+                if (be.crafter().partsRecipe() == null) throw new GameTestAssertException("Chip II ohne Greifarm nicht erkannt");
+                if (be.crafter().status() == com.sqc.nuclearsq.machine.big.BigCrafter.NO_ARM) throw new GameTestAssertException("Loetmaschine meldet GREIFARM FEHLT");
                 h.succeed();
             });
         });
     }
 
-    @GameTest(template = FLOOR, batch = "arm_station", timeoutTicks = 200)
-    public static void armDockedUnlocksChipTwo(GameTestHelper h) {
-        BigMachineBlockEntity be = build(h);
-        BlockPos ctrl = controller(h);
-        h.runAfterDelay(25, () -> {
-            if (!be.isFormed()) throw new GameTestAssertException("Kleinteil-Assembler nicht aufgebaut");
-            chipTwoIngredients(be);
-            h.runAfterDelay(5, () -> {
-                if (be.crafter().partsRecipe() != null) throw new GameTestAssertException("Chip II ohne Greifarm erkannt");
-                BlockPos armPos = ctrl.offset(4, 0, 0);
-                h.getLevel().setBlockAndUpdate(armPos, RoboticsRegistry.ARM.get().defaultBlockState());
-                if (!(h.getLevel().getBlockEntity(armPos) instanceof RobotArmBlockEntity arm)) throw new GameTestAssertException("Greifarm hat keine BlockEntity");
-                arm.setTarget(ctrl, Direction.UP);
-                h.runAfterDelay(60, () -> {
-                    if (be.crafter().partsRecipe() == null) throw new GameTestAssertException("Chip II mit angedocktem Greifarm nicht erkannt");
-                    h.succeed();
-                });
-            });
-        });
+    @GameTest(template = FLOOR, batch = "arm_station", timeoutTicks = 20)
+    public static void solderMachineOwnsArmProducts(GameTestHelper h) {
+        for (String id : new String[] {"chip_2_sqc", "cpu_module_sqc", "cpu_module_8_sqc", "cpu_module_16_sqc", "ram_module_1gb_sqc", "ram_module_2gb_sqc", "ram_module_4gb_sqc"}) {
+            if (!new ItemStack(item(id)).is(com.sqc.nuclearsq.machine.big.BigCrafter.SOLDER_PRODUCTS)) throw new GameTestAssertException(id + " fehlt im Tag solder_products");
+        }
+        for (String id : new String[] {"hard_drive_2_sqc", "hard_drive_3_sqc", "solid_state_drive_sqc", "nvme_drive_sqc"}) {
+            ItemStack s = new ItemStack(item(id));
+            if (!s.is(com.sqc.nuclearsq.machine.big.BigCrafter.SOLDER_PRODUCTS)) throw new GameTestAssertException(id + " fehlt im Tag solder_products");
+            if (s.is(com.sqc.nuclearsq.machine.big.BigCrafter.ARM_PRODUCTS)) throw new GameTestAssertException(id + " braucht keinen Greifarm");
+        }
+        if (new ItemStack(item("hard_drive_1_sqc")).is(com.sqc.nuclearsq.machine.big.BigCrafter.SOLDER_PRODUCTS)) throw new GameTestAssertException("Festplatte I bleibt im Kleinteil-Assembler");
+        h.succeed();
     }
 
     @GameTest(template = FLOOR, batch = "arm_station", timeoutTicks = 20)

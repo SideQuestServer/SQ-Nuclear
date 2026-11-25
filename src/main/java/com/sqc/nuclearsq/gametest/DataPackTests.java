@@ -53,7 +53,7 @@ public final class DataPackTests {
     private DataPackTests() {}
 
     private static final String FLOOR = "floor";
-    public static final int ASSEMBLY_RECIPES = 230, MEKANISM_ONLY = 1, NO_MEKANISM = 0, POWERGRID_ONLY = 1;
+    public static final int ASSEMBLY_RECIPES = 224, MEKANISM_ONLY = 1, NO_MEKANISM = 0, POWERGRID_ONLY = 1;
 
     private static boolean onlyAbsentMods(AssemblyRecipe.Need n) {
         if (!(n.ingredient().getCustomIngredient() instanceof com.sqc.nuclearsq.assembler.OptionalIngredient o) || !o.fallback().isEmpty()) return false;
@@ -128,7 +128,9 @@ public final class DataPackTests {
 
     private static boolean sameMachine(SmallPartsRecipe a, SmallPartsRecipe b) {
         return a.result().is(BigCrafter.MICRO_PRODUCTS) == b.result().is(BigCrafter.MICRO_PRODUCTS)
-                && a.result().is(BigCrafter.CLEAN_ROOM_PRODUCTS) == b.result().is(BigCrafter.CLEAN_ROOM_PRODUCTS);
+                && a.result().is(BigCrafter.CLEAN_ROOM_PRODUCTS) == b.result().is(BigCrafter.CLEAN_ROOM_PRODUCTS)
+                && a.result().is(BigCrafter.CNC_PRODUCTS) == b.result().is(BigCrafter.CNC_PRODUCTS)
+                && a.result().is(BigCrafter.SOLDER_PRODUCTS) == b.result().is(BigCrafter.SOLDER_PRODUCTS);
     }
 
     @GameTest(template = FLOOR, batch = "s6_recipes", timeoutTicks = 20)
@@ -162,7 +164,7 @@ public final class DataPackTests {
 
     @GameTest(template = FLOOR, batch = "s6_recipes", timeoutTicks = 20)
     public static void workbenchOnlyForTheStart(GameTestHelper h) {
-        java.util.Set<String> allowed = java.util.Set.of("small_parts_assembler_kit_sqc", "coal_generator_kit_sqc", "cable_basic_sqc", "progression_book_sqc");
+        java.util.Set<String> allowed = java.util.Set.of("small_parts_assembler_kit_sqc", "coal_generator_kit_sqc", "kiln_kit_sqc", "cable_basic_sqc", "progression_book_sqc");
         java.util.Set<String> found = new java.util.TreeSet<>();
         for (var holder : h.getLevel().getRecipeManager().getAllRecipesFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING)) {
             if (holder.id().getNamespace().equals(NuclearSQ.MODID)) found.add(holder.id().getPath());

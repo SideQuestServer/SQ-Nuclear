@@ -1,0 +1,22 @@
+{
+  "type": "nuclearsq:kiln_firing",
+  "ingredient": [
+    {
+      "item": "minecraft:coal"
+    },
+    {
+      "item": "minecraft:charcoal"
+    }
+  ],
+  "count": 2,
+  "time": 100,
+  "energy_per_tick": 300,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:coke_sqc",
+        "count": 1
+      }
+    }
+  ]
+}

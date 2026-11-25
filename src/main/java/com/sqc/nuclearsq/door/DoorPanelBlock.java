@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
+import com.sqc.nuclearsq.transport.WrenchItem;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -82,14 +84,9 @@ public class DoorPanelBlock extends Block implements EntityBlock {
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
         Direction.Axis normal = state.getValue(AXIS);
-        if (state.getValue(PHASE) != Phase.OPEN) return normal == Direction.Axis.X ? X : normal == Direction.Axis.Y ? Y : Z;
-        if (kind.up()) {
-            Direction.Axis tall = normal == Direction.Axis.Y ? Direction.Axis.Z : Direction.Axis.Y;
-            return edge(level, pos, state, tall, 1) ? strip(normal, tall, 10, 16) : Shapes.empty();
-        }
-        Direction.Axis wide = normal == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
-        return Shapes.or(edge(level, pos, state, wide, -1) ? strip(normal, wide, 0, 3) : Shapes.empty(),
-                edge(level, pos, state, wide, 1) ? strip(normal, wide, 13, 16) : Shapes.empty());
+        if (state.getValue(PHASE) != Phase.OPEN || !kind.up()) return normal == Direction.Axis.X ? X : normal == Direction.Axis.Y ? Y : Z;
+        Direction.Axis tall = normal == Direction.Axis.Y ? Direction.Axis.Z : Direction.Axis.Y;
+        return edge(level, pos, state, tall, 1) ? strip(normal, tall, 10, 16) : Shapes.empty();
     }
 
     private boolean edge(BlockGetter level, BlockPos pos, BlockState state, Direction.Axis axis, int step) {
@@ -108,7 +105,7 @@ public class DoorPanelBlock extends Block implements EntityBlock {
 
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return state.getValue(PHASE) == Phase.OPEN ? Shapes.empty() : getShape(state, level, pos, ctx);
+        return state.getValue(PHASE) == Phase.OPEN || state.getValue(PHASE) == Phase.MOVING ? Shapes.empty() : getShape(state, level, pos, ctx);
     }
 
     @Nullable
@@ -136,6 +133,14 @@ public class DoorPanelBlock extends Block implements EntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                               InteractionHand hand, BlockHitResult hit) {
+        if (kind == Kind.AIRLOCK && stack.getItem() instanceof WrenchItem) {
+            if (!level.isClientSide) {
+                DoorBlockEntity door = state.getValue(PHASE) == Phase.RAW ? null : DoorBlockEntity.controllerOf(level, pos);
+                if (door == null) player.displayClientMessage(Component.translatable("message.nuclearsq.door.no_controller"), true);
+                else if (door.mayUse(player)) player.displayClientMessage(door.toggleFlat(), true);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
         return stack.getItem() instanceof BlockItem ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
@@ -143,8 +148,10 @@ public class DoorPanelBlock extends Block implements EntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide) {
             DoorBlockEntity door = state.getValue(PHASE) == Phase.RAW ? null : DoorBlockEntity.controllerOf(level, pos);
-            Component err = door == null ? Component.translatable("message.nuclearsq.door.no_controller") : door.toggle();
-            if (err != null) player.displayClientMessage(err, true);
+            if (door == null || door.mayUse(player)) {
+                Component err = door == null ? Component.translatable("message.nuclearsq.door.no_controller") : door.toggle();
+                if (err != null) player.displayClientMessage(err, true);
+            }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -155,7 +162,8 @@ public class DoorPanelBlock extends Block implements EntityBlock {
                 || !(level.getBlockState(e.getPos()).getBlock() instanceof DoorPanelBlock)) return;
         e.setCanceled(true);
         DoorBlockEntity door = level.isClientSide ? null : DoorBlockEntity.of(level, e.getPos());
-        if (door == null) return;
+        if (door == null || !door.mayUse(e.getEntity())) return;
+        door.claim(e.getEntity());
         door.adopt();
         if (door.panels().isEmpty()) e.getEntity().displayClientMessage(Component.translatable("message.nuclearsq.door.ragged"), true);
     }
@@ -173,7 +181,10 @@ public class DoorPanelBlock extends Block implements EntityBlock {
 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
-        if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof DoorBlockEntity be) be.release();
+        if (!state.is(newState.getBlock())) {
+            if (level.getBlockEntity(pos) instanceof DoorBlockEntity be) be.release();
+            else if (!level.isClientSide) DoorBlockEntity.lost(level, pos);
+        }
         super.onRemove(state, level, pos, newState, moved);
     }
 }

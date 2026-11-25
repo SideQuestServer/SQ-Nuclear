@@ -18,7 +18,9 @@ import com.sqc.nuclearsq.machine.shapes.ExoStationShapes;
 import com.sqc.nuclearsq.machine.shapes.FuelCellShapes;
 import com.sqc.nuclearsq.machine.shapes.CleanRoomShapes;
 import com.sqc.nuclearsq.machine.shapes.EquipmentAssemblerShapes;
+import com.sqc.nuclearsq.machine.shapes.BlastFurnaceShapes;
 import com.sqc.nuclearsq.machine.shapes.FoundryShapes;
+import com.sqc.nuclearsq.machine.shapes.KilnShapes;
 import com.sqc.nuclearsq.machine.shapes.FluidBufferShapes;
 import com.sqc.nuclearsq.machine.shapes.GasGeneratorShapes;
 import com.sqc.nuclearsq.machine.shapes.CrackerShapes;
@@ -27,6 +29,8 @@ import com.sqc.nuclearsq.machine.shapes.HammerMillShapes;
 import com.sqc.nuclearsq.machine.shapes.OilDerrickShapes;
 import com.sqc.nuclearsq.machine.shapes.PlateMillShapes;
 import com.sqc.nuclearsq.machine.shapes.MicroAssemblerShapes;
+import com.sqc.nuclearsq.machine.shapes.CncMillShapes;
+import com.sqc.nuclearsq.machine.shapes.SolderMachineShapes;
 import com.sqc.nuclearsq.machine.shapes.PelletFactoryShapes;
 import com.sqc.nuclearsq.machine.shapes.SlagCrusherShapes;
 import com.sqc.nuclearsq.machine.shapes.BatteryMediumShapes;
@@ -202,12 +206,16 @@ public enum BigMachine {
     INTAKE_PUMP("intake_pump", IntakePumpShapes.BOXES, IntakePumpShapes.CELLS, IntakePumpShapes.LADDER, IntakePumpShapes.MONITOR),
     PLATE_MILL("plate_mill", PlateMillShapes.BOXES, PlateMillShapes.CELLS, PlateMillShapes.LADDER, PlateMillShapes.MONITOR),
     HAMMER_MILL("hammer_mill", HammerMillShapes.BOXES, HammerMillShapes.CELLS, HammerMillShapes.LADDER, HammerMillShapes.MONITOR),
+    CNC_MILL("cnc_mill", CncMillShapes.BOXES, CncMillShapes.CELLS, CncMillShapes.LADDER, CncMillShapes.MONITOR),
+    SOLDER_MACHINE("solder_machine", SolderMachineShapes.BOXES, SolderMachineShapes.CELLS, SolderMachineShapes.LADDER, SolderMachineShapes.MONITOR),
     OIL_DERRICK("oil_derrick", OilDerrickShapes.BOXES, OilDerrickShapes.CELLS, OilDerrickShapes.LADDER, OilDerrickShapes.MONITOR),
     DISTILLATION_COLUMN("distillation_column", DistillationColumnShapes.BOXES, DistillationColumnShapes.CELLS, DistillationColumnShapes.LADDER,
             DistillationColumnShapes.MONITOR),
     CRACKER("cracker", CrackerShapes.BOXES, CrackerShapes.CELLS, CrackerShapes.LADDER, CrackerShapes.MONITOR),
     GAS_GENERATOR("gas_generator", GasGeneratorShapes.BOXES, GasGeneratorShapes.CELLS, GasGeneratorShapes.LADDER, GasGeneratorShapes.MONITOR),
-    FLUID_BUFFER("fluid_buffer", FluidBufferShapes.BOXES, FluidBufferShapes.CELLS, FluidBufferShapes.LADDER, FluidBufferShapes.MONITOR);
+    FLUID_BUFFER("fluid_buffer", FluidBufferShapes.BOXES, FluidBufferShapes.CELLS, FluidBufferShapes.LADDER, FluidBufferShapes.MONITOR),
+    KILN("kiln", KilnShapes.BOXES, KilnShapes.CELLS, KilnShapes.LADDER, KilnShapes.MONITOR),
+    BLAST_FURNACE("blast_furnace", BlastFurnaceShapes.BOXES, BlastFurnaceShapes.CELLS, BlastFurnaceShapes.LADDER, BlastFurnaceShapes.MONITOR);
 
     public boolean isWind() {
         return this == WIND_TURBINE_SMALL || this == WIND_TURBINE_MEDIUM || this == WIND_TURBINE_LARGE;
@@ -223,7 +231,7 @@ public enum BigMachine {
     }
 
     public boolean smallGrid() {
-        return this == REACTOR_ASSEMBLER || this == SMALL_PARTS_ASSEMBLER || this == COMPUTE_ASSEMBLER || this == MICRO_ASSEMBLER || this == CLEAN_ROOM || this == EQUIPMENT_ASSEMBLER;
+        return this == REACTOR_ASSEMBLER || this == SMALL_PARTS_ASSEMBLER || this == COMPUTE_ASSEMBLER || this == MICRO_ASSEMBLER || this == CLEAN_ROOM || this == EQUIPMENT_ASSEMBLER || this == CNC_MILL || this == SOLDER_MACHINE;
     }
 
     public boolean isAutocrafter() {
@@ -345,6 +353,8 @@ public enum BigMachine {
             case CHEMICAL_LAB -> com.sqc.nuclearsq.reprocessing.ReprocessingRecipe.Kind.CHEMISTRY;
             case PLATE_MILL -> com.sqc.nuclearsq.reprocessing.ReprocessingRecipe.Kind.PLATE_MILLING;
             case HAMMER_MILL -> com.sqc.nuclearsq.reprocessing.ReprocessingRecipe.Kind.DUST_MILLING;
+            case KILN -> com.sqc.nuclearsq.reprocessing.ReprocessingRecipe.Kind.KILN_FIRING;
+            case BLAST_FURNACE -> com.sqc.nuclearsq.reprocessing.ReprocessingRecipe.Kind.BLAST_SMELTING;
             default -> null;
         };
     }
@@ -358,7 +368,7 @@ public enum BigMachine {
     }
 
     public boolean hasAuxSlot() {
-        return this == UF6_CONVERTER || this == PELLET_FACTORY || this == FOUNDRY || this == POLYMER_PLANT || this == PLATE_MILL;
+        return this == UF6_CONVERTER || this == PELLET_FACTORY || this == FOUNDRY || this == POLYMER_PLANT || this == PLATE_MILL || this == KILN || this == BLAST_FURNACE;
     }
 
     public String controllerId() {

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "nuclearsq:block/kiln_controller_sqc",
+    "top": "nuclearsq:block/kiln_controller_sqc_top",
+    "bottom": "nuclearsq:block/kiln_controller_sqc_top"
+  }
+}

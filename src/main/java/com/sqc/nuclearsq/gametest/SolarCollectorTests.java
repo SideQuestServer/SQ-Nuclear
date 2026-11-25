@@ -2,6 +2,7 @@ package com.sqc.nuclearsq.gametest;
 
 import com.sqc.nuclearsq.NuclearSQ;
 import com.sqc.nuclearsq.machine.big.BigMachineBlockEntity;
+import com.sqc.nuclearsq.power.SolarCollectorBlock;
 import com.sqc.nuclearsq.power.SolarCollectorBlockEntity;
 import com.sqc.nuclearsq.registry.PowerRegistry;
 
@@ -76,6 +77,47 @@ public final class SolarCollectorTests {
                     }
                     h.succeed();
                 });
+            });
+        });
+    }
+
+    @GameTest(template = FLOOR, batch = "solar_collector", timeoutTicks = 200)
+    public static void collectorIsTwoByTwo(GameTestHelper h) {
+        var lvl = h.getLevel();
+        lvl.setWeatherParameters(12000, 0, false, false);
+        lvl.setDayTime(6000);
+        BlockPos sink = new BlockPos(3, 2, 2), m = new BlockPos(3, 2, 3);
+        BigMachineBlockEntity bat = TestSinks.battery(h, sink, Direction.SOUTH);
+        for (int p = 0; p < 4; p++) {
+            h.setBlock(m.offset(SolarCollectorBlock.dx(p), 0, SolarCollectorBlock.dz(p)),
+                    PowerRegistry.SOLAR_COLLECTOR.get().defaultBlockState().setValue(SolarCollectorBlock.PART, p).setValue(SolarCollectorBlock.PORT, 0));
+        }
+        h.runAfterDelay(40, () -> {
+            SolarCollectorBlockEntity master = collector(h, m);
+            if (master.peak() != 312 || master.distance() != 0) throw new GameTestAssertException("Hauptteil: Spitze " + master.peak() + ", Abstand " + master.distance());
+            for (int p = 1; p < 4; p++) {
+                SolarCollectorBlockEntity c = collector(h, m.offset(SolarCollectorBlock.dx(p), 0, SolarCollectorBlock.dz(p)));
+                if (c.peak() != 0) throw new GameTestAssertException("Teil " + p + " erzeugt selbst " + c.peak() + " FE/t");
+                if (c.distance() == SolarCollectorBlockEntity.NO_ROUTE) throw new GameTestAssertException("Teil " + p + " ohne Weg");
+            }
+            for (int p = 0; p < 4; p++) {
+                BlockPos q = h.absolutePos(m.offset(SolarCollectorBlock.dx(p), 0, SolarCollectorBlock.dz(p)));
+                for (Direction d : SolarCollectorBlockEntity.SIDES) {
+                    boolean port = p == 0 && d == Direction.NORTH;
+                    if ((lvl.getCapability(Capabilities.EnergyStorage.BLOCK, q, d) != null) != port) throw new GameTestAssertException("Teil " + p + " Seite " + d + ": Port " + !port);
+                }
+            }
+            int before = bat.energy().getEnergyStored();
+            SolarCollectorBlockEntity far = collector(h, m.offset(1, 0, 1));
+            if (far.deliver(800) != 800) throw new GameTestAssertException("Teil reicht nicht durch");
+            if (bat.energy().getEnergyStored() - before != 800) throw new GameTestAssertException("Akku bekam " + (bat.energy().getEnergyStored() - before) + " statt 800 FE");
+            h.setBlock(m.offset(1, 0, 1), Blocks.AIR);
+            h.runAfterDelay(2, () -> {
+                for (int p = 0; p < 4; p++) {
+                    BlockPos q = m.offset(SolarCollectorBlock.dx(p), 0, SolarCollectorBlock.dz(p));
+                    if (!h.getBlockState(q).isAir()) throw new GameTestAssertException("Teil " + p + " blieb nach dem Abbau stehen");
+                }
+                h.succeed();
             });
         });
     }

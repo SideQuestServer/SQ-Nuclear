@@ -27,6 +27,8 @@ public final class MachineRecipesScreen extends Screen {
     private final List<MachineRecipes.Row> rows;
     private final int[] top;
     private final int total;
+    private final List<net.minecraft.resources.ResourceLocation> ids;
+    private final boolean pick, template;
     private int x, y, w, h, lx, ly, lw, lh;
     private double scroll;
     private boolean drag;
@@ -44,6 +46,24 @@ public final class MachineRecipesScreen extends Screen {
             yy += rowHeight(rows.get(i));
         }
         total = yy;
+        template = parent.getMenu() instanceof com.sqc.nuclearsq.storage.ComponentAssemblerMenu;
+        pick = mc.level != null && (template || parent.getMenu() instanceof com.sqc.nuclearsq.machine.big.BigCrafterMenu cm && cm.lockable());
+        ids = pick ? MachineRecipes.ids(machine, mc.level.getRecipeManager()) : List.of();
+    }
+
+    private int lockOf(MachineRecipes.Row r) {
+        return r.id() == null ? 0 : ids.indexOf(r.id()) + 1;
+    }
+
+    private int locked() {
+        return parent.getMenu() instanceof com.sqc.nuclearsq.machine.big.BigCrafterMenu cm ? cm.lock() : 0;
+    }
+
+    private int rowAt(double mx, double my) {
+        if (!pick || mx < lx || mx >= lx + lw || my < ly || my >= ly + lh) return -1;
+        double yy = my - ly + (int) scroll;
+        for (int i = 0; i < rows.size(); i++) if (yy >= top[i] && yy < top[i] + rowHeight(rows.get(i))) return lockOf(rows.get(i)) > 0 ? i : -1;
+        return -1;
     }
 
     private static int rowHeight(MachineRecipes.Row r) {
@@ -99,12 +119,16 @@ public final class MachineRecipesScreen extends Screen {
         boolean inList = mx >= lx && mx < lx + lw && my >= ly && my < ly + lh;
         long ms = Util.getMillis();
         int off = (int) scroll, room = (lw - SIDE - 14) / ICON;
+        int hoverRow = rowAt(mx, my), lock = locked();
         g.enableScissor(lx, ly, lx + lw, ly + lh);
         for (int i = 0; i < rows.size(); i++) {
             MachineRecipes.Row r = rows.get(i);
             int ry = ly + top[i] - off, rh = rowHeight(r);
             if (ry + rh <= ly) continue;
             if (ry >= ly + lh) break;
+            boolean mine = lock > 0 && lockOf(r) == lock;
+            if (i == hoverRow || mine) TermKit.fill(g, lx, ry, lx + lw, ry + rh - 1, TermKit.FAINT);
+            if (mine) TermKit.fill(g, lx, ry, lx + 1, ry + rh - 1, TermKit.GREEN);
             int iy = ry + 2, ix = lx + 1, ins = r.needs().size(), outs = r.results().size();
             int shown = ins + outs <= room ? ins : Math.max(0, room - outs - 1);
             for (int k = 0; k < shown; k++) {
@@ -149,6 +173,11 @@ public final class MachineRecipesScreen extends Screen {
             TermKit.fill(g, bx, ty, bx + BAR, ty + th, TermKit.MID);
         }
 
+        if (hoverRow >= 0 && hover.isEmpty()) {
+            boolean mine = lock > 0 && lockOf(rows.get(hoverRow)) == lock;
+            TermKit.tip(lx, ly + top[hoverRow] - off, lw, rowHeight(rows.get(hoverRow)), Component.translatable("gui.nuclearsq.term.recipes.pick"),
+                    Component.translatable(template ? "gui.nuclearsq.term.recipes.pick.template" : mine ? "gui.nuclearsq.term.recipes.pick.clear" : "gui.nuclearsq.term.recipes.pick.tip"));
+        }
         if (!TermKit.renderTip(g, font, mx, my) && !hover.isEmpty()) {
             List<Component> lines = new ArrayList<>(getTooltipFromItem(minecraft, hover));
             if (chance < 1f) lines.add(Component.translatable("jei.nuclearsq.chance", Math.round(chance * 1000) / 10.0).withStyle(ChatFormatting.GRAY));
@@ -192,6 +221,20 @@ public final class MachineRecipesScreen extends Screen {
         if (button == 0 && total > lh && mx >= x + w - 8 - BAR && mx < x + w - 8 && my >= ly && my < ly + lh) {
             drag = true;
             dragTo(my);
+            return true;
+        }
+        int row = button == 0 ? rowAt(mx, my) : -1;
+        if (row >= 0 && template) {
+            net.neoforged.neoforge.network.PacketDistributor.sendToServer(new com.sqc.nuclearsq.storage.CraftingPayloads.Fill(
+                    parent.getMenu().containerId, rows.get(row).id()));
+            onClose();
+            return true;
+        }
+        if (row >= 0) {
+            int want = lockOf(rows.get(row));
+            net.neoforged.neoforge.network.PacketDistributor.sendToServer(new com.sqc.nuclearsq.network.DeviceControlPayload(
+                    com.sqc.nuclearsq.network.DeviceControlPayload.RECIPE_LOCK, want == locked() ? 0 : want));
+            onClose();
             return true;
         }
         if (mx < x - 4 || mx >= x + w + 4 || my < y - 4 || my >= y + h + 4) {

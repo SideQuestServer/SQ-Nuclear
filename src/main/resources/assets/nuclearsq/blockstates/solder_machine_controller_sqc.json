@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "nuclearsq:block/solder_machine_controller_sqc"
+    },
+    "formed=true": {
+      "model": "nuclearsq:block/solder_machine_shell_sqc"
+    }
+  }
+}

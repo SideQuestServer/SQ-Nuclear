@@ -1,0 +1,41 @@
+{
+  "type": "nuclearsq:heavy_assembly",
+  "pattern": [
+    "cIiIc",
+    "IKBKI",
+    "cIFIe",
+    "cIiIm"
+  ],
+  "key": {
+    "B": {
+      "item": "nuclearsq:control_board_1_sqc"
+    },
+    "F": {
+      "item": "minecraft:blast_furnace"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "K": {
+      "item": "nuclearsq:copper_coil_sqc"
+    },
+    "c": {
+      "item": "nuclearsq:reactor_casing_sqc"
+    },
+    "e": {
+      "item": "nuclearsq:machine_port_energy_sqc"
+    },
+    "i": {
+      "item": "nuclearsq:machine_port_item_sqc"
+    },
+    "m": {
+      "item": "nuclearsq:machine_port_terminal_sqc"
+    }
+  },
+  "result": {
+    "id": "nuclearsq:blast_furnace_kit_sqc",
+    "count": 1
+  },
+  "time": 400,
+  "energy_per_tick": 5760
+}

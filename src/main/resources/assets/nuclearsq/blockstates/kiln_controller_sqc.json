@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "nuclearsq:block/kiln_controller_sqc"
+    },
+    "formed=true": {
+      "model": "nuclearsq:block/kiln_shell_sqc"
+    }
+  }
+}

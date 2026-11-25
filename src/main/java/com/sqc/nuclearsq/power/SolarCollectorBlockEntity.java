@@ -23,14 +23,26 @@ public class SolarCollectorBlockEntity extends SolarPanelBlockEntity {
     private long outTick = -1;
 
     public SolarCollectorBlockEntity(BlockPos pos, BlockState state) {
-        super(PowerRegistry.SOLAR_COLLECTOR_BE.get(), pos, state, peakPerTick());
+        super(PowerRegistry.SOLAR_COLLECTOR_BE.get(), pos, state, producing(state) ? peakPerTick() : 0);
     }
 
     public static int peakPerTick() {
         return 312;
     }
 
+    private static boolean producing(BlockState state) {
+        if (!state.hasProperty(SolarCollectorBlock.PART)) return true;
+        int p = state.getValue(SolarCollectorBlock.PART);
+        return p == 0 || p == SolarCollectorBlock.SINGLE;
+    }
+
     public int distance() { return dist; }
+
+    @Override
+    protected boolean outputs(Direction d) {
+        BlockState s = getBlockState();
+        return !s.hasProperty(SolarCollectorBlock.PART) || SolarCollectorBlock.outputs(s, d);
+    }
 
     @Override
     protected boolean tracks() { return true; }
@@ -39,7 +51,7 @@ public class SolarCollectorBlockEntity extends SolarPanelBlockEntity {
     protected void onSecond() {
         updateGroup();
         int tilt = Math.round(SolarMath.track(level, 1f) / SolarMath.TRACK_MAX * 2f) + 2;
-        if (getBlockState().getValue(SolarCollectorBlock.TILT) != tilt) level.setBlock(worldPosition, getBlockState().setValue(SolarCollectorBlock.TILT, tilt), 2);
+        if (producing(getBlockState()) && getBlockState().getValue(SolarCollectorBlock.TILT) != tilt) level.setBlock(worldPosition, getBlockState().setValue(SolarCollectorBlock.TILT, tilt), 2);
     }
 
     @Nullable

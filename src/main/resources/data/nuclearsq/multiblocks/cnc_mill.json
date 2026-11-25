@@ -1,0 +1,79 @@
+{
+  "id": "cnc_mill",
+  "size": [
+    2,
+    2,
+    3
+  ],
+  "controller": [
+    0,
+    0,
+    0
+  ],
+  "anchor": [
+    0,
+    0,
+    0
+  ],
+  "ports": [
+    {
+      "name": "item_in",
+      "type": "item",
+      "dir": "in",
+      "cell": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "name": "energy_in",
+      "type": "energy",
+      "dir": "in",
+      "cell": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "name": "item_out",
+      "type": "item",
+      "dir": "out",
+      "cell": [
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "name": "data",
+      "type": "terminal",
+      "dir": "both",
+      "cell": [
+        1,
+        1,
+        2
+      ]
+    }
+  ],
+  "legend": {
+    "@": "nuclearsq:cnc_mill_controller_sqc",
+    "R": "nuclearsq:reactor_casing_sqc",
+    "i": "nuclearsq:machine_port_item_sqc",
+    "e": "nuclearsq:machine_port_energy_sqc",
+    "t": "nuclearsq:machine_port_terminal_sqc"
+  },
+  "layers": [
+    [
+      "@R",
+      "RR",
+      "ei"
+    ],
+    [
+      "RR",
+      "RR",
+      "it"
+    ]
+  ]
+}

@@ -30,6 +30,12 @@
         "item": "nuclearsq:control_board_3_sqc"
       },
       "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:hdpe_module_casing_sqc"
+      },
+      "count": 2
     }
   ],
   "result": {

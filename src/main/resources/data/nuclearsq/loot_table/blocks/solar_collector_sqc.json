@@ -12,6 +12,25 @@
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
+        },
+        {
+          "condition": "minecraft:any_of",
+          "terms": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "nuclearsq:solar_collector_sqc",
+              "properties": {
+                "part": "0"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "nuclearsq:solar_collector_sqc",
+              "properties": {
+                "part": "4"
+              }
+            }
+          ]
         }
       ]
     }

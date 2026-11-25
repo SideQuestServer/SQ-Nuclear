@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "nuclearsq:item/blast_furnace_kit_sqc"
+  }
+}

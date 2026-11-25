@@ -21,6 +21,8 @@ public record DeviceControlPayload(int action, int value) implements CustomPacke
     public static final int GATE_SET = 18;
     public static final int DOOR_OPEN = 19;
     public static final int AIRLOCK_DOOR = 20;
+    public static final int RECIPE_LOCK = 21;
+    public static final int RECIPE_FILL = 22;
 
     public static final Type<DeviceControlPayload> TYPE =
             new Type<>(ResourceLocation.fromNamespaceAndPath(NuclearSQ.MODID, "device_control"));

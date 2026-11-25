@@ -1,0 +1,25 @@
+{
+  "type": "nuclearsq:small_parts_assembly",
+  "ingredients": [
+    {
+      "ingredient": {
+        "type": "nuclearsq:optional",
+        "items": [
+          "mekanism:hdpe_sheet",
+          "nuclearsq:hdpe_sheet_sqc"
+        ]
+      },
+      "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:steel_sheet_sqc"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "id": "nuclearsq:hdpe_module_casing_sqc",
+    "count": 2
+  }
+}

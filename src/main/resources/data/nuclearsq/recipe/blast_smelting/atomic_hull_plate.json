@@ -1,0 +1,26 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": {
+    "type": "nuclearsq:optional",
+    "items": [
+      "mekanism:alloy_atomic",
+      "minecraft:netherite_ingot"
+    ],
+    "tags": []
+  },
+  "count": 4,
+  "time": 240,
+  "energy_per_tick": 4500,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:atomic_hull_plate_sqc",
+        "count": 1
+      }
+    }
+  ],
+  "aux": {
+    "item": "nuclearsq:lead_shielding_sqc"
+  },
+  "aux_count": 4
+}

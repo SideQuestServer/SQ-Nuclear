@@ -1,0 +1,684 @@
+{
+ "nodes": [
+  {
+   "key": "hull",
+   "machine": "containment",
+   "page": "big_containment",
+   "at": [81, 0, 79],
+   "rot": 0,
+   "open": true
+  },
+  {
+   "key": "drive",
+   "machine": "control_rod_drive",
+   "page": "rod_drive",
+   "at": [94, 21, 92],
+   "rot": 0
+  },
+  {
+   "key": "sg",
+   "machine": "steam_generator",
+   "page": "big_steam_generator",
+   "at": [85, 0, 91],
+   "rot": 2
+  },
+  {
+   "key": "pump",
+   "machine": "main_coolant_pump",
+   "page": "cool_bigpumps",
+   "at": [87, 0, 86],
+   "rot": 3
+  },
+  {
+   "key": "emerg",
+   "machine": "emergency_cooling",
+   "page": "big_emergency",
+   "at": [116, 0, 88],
+   "rot": 2
+  },
+  {
+   "key": "intake",
+   "machine": "intake_pump",
+   "page": "plant_intake",
+   "at": [117, -4, 99],
+   "rot": 0
+  },
+  {
+   "key": "treat",
+   "machine": "water_treatment",
+   "page": "plant_treatment",
+   "at": [116, 0, 112],
+   "rot": 1
+  },
+  {
+   "key": "sep",
+   "machine": "steam_separator",
+   "page": "big_separator",
+   "at": [73, 0, 92],
+   "rot": 0
+  },
+  {
+   "key": "tur",
+   "machine": "turbine",
+   "page": "energy_turbine",
+   "at": [59, 0, 81],
+   "rot": 0
+  },
+  {
+   "key": "bat",
+   "machine": "battery_large",
+   "page": "transport_battery",
+   "at": [68, 0, 71],
+   "rot": 0
+  },
+  {
+   "key": "press",
+   "machine": "pressurizer",
+   "page": "big_pressurizer",
+   "at": [101, 0, 84],
+   "rot": 3
+  },
+  {
+   "key": "relief",
+   "machine": "relief_tank",
+   "page": "big_relief_tank",
+   "at": [85, 0, 63],
+   "rot": 0
+  },
+  {
+   "key": "hpi",
+   "machine": "high_pressure_injection",
+   "page": "big_hp_injection",
+   "at": [100, 0, 65],
+   "rot": 0
+  },
+  {
+   "key": "tower",
+   "machine": "cooling_tower_large",
+   "page": "big_tower",
+   "at": [17, 0, 101],
+   "rot": 0
+  },
+  {
+   "key": "sub",
+   "machine": "substation",
+   "page": "transport_substation",
+   "at": [68, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "derrick",
+   "machine": "oil_derrick",
+   "page": "oil_derrick",
+   "at": [3, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "column",
+   "machine": "distillation_column",
+   "page": "distillation_column",
+   "at": [15, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "cracker",
+   "machine": "cracker",
+   "page": "cracker",
+   "at": [27, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "gasgen",
+   "machine": "gas_generator",
+   "page": "gas_generator",
+   "at": [37, 0, 35],
+   "rot": 0
+  },
+  {
+   "key": "polymer",
+   "machine": "polymer_plant",
+   "page": "rod_polymer",
+   "at": [15, 0, 23],
+   "rot": 0
+  },
+  {
+   "key": "gasgen2",
+   "machine": "gas_generator",
+   "page": "gas_generator",
+   "at": [49, 0, 35],
+   "rot": 0
+  },
+  {
+   "key": "mill",
+   "machine": "ore_mill",
+   "page": "rod_ore_mill",
+   "at": [83, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "hammer",
+   "machine": "hammer_mill",
+   "page": "hammer_mill",
+   "at": [93, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "kiln",
+   "machine": "kiln",
+   "page": "kiln",
+   "at": [103, 0, 47],
+   "rot": 0
+  },
+  {
+   "key": "blast",
+   "machine": "blast_furnace",
+   "page": "blast_furnace",
+   "at": [103, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "plate",
+   "machine": "plate_mill",
+   "page": "plate_mill",
+   "at": [115, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "cnc",
+   "machine": "cnc_mill",
+   "page": "cnc_mill",
+   "at": [125, 0, 37],
+   "rot": 0
+  },
+  {
+   "key": "rack1",
+   "machine": "server_rack_large",
+   "page": "storage_racks",
+   "at": [83, 0, 21],
+   "rot": 0
+  },
+  {
+   "key": "rack2",
+   "machine": "server_rack",
+   "page": "storage_racks",
+   "at": [105, 0, 21],
+   "rot": 0
+  },
+  {
+   "key": "term",
+   "block": "storage_terminal_sqc",
+   "page": "storage_terminal",
+   "at": [83, 0, 3],
+   "rot": 0
+  },
+  {
+   "key": "craft",
+   "block": "crafting_terminal_sqc",
+   "page": "storage_crafting",
+   "at": [105, 0, 3],
+   "rot": 0
+  },
+  {
+   "key": "asm",
+   "machine": "component_assembler",
+   "page": "component_assembler",
+   "makes": "nuclearsq:battery_large_controller_sqc",
+   "makesTo": "rack2",
+   "at": [125, 0, 21],
+   "rot": 0
+  },
+  {
+   "key": "pat",
+   "machine": "pattern_rack",
+   "page": "pattern_rack",
+   "at": [125, 0, 3],
+   "rot": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "intake.water_out_l_1",
+   "to": "treat.water_in_2",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[117, 1, 108], [117, 1, 111]]
+  },
+  {
+   "from": "intake.water_out_l_2",
+   "to": "treat.water_in",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[118, 1, 108], [118, 1, 111]]
+  },
+  {
+   "from": "intake.water_out_l_3",
+   "to": "treat.water_in_4",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[117, 2, 108], [117, 2, 111]]
+  },
+  {
+   "from": "intake.water_out_l_4",
+   "to": "treat.water_in_3",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[118, 2, 108], [118, 2, 111]]
+  },
+  {
+   "from": "drive.primary_hot_out",
+   "to": "sg.primary_hot_in",
+   "color": "D9684A",
+   "kind": "pipe",
+   "path": [[93, 23, 94], [92, 23, 94], [92, 23, 92], [93, 23, 92], [93, 1, 92], [93, 1, 94], [92, 1, 94]]
+  },
+  {
+   "from": "sg.primary_cold_out",
+   "to": "pump.primary_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[84, 1, 94], [83, 1, 94], [83, 0, 94], [83, 0, 90], [88, 0, 90], [88, 0, 89]]
+  },
+  {
+   "from": "pump.primary_out",
+   "to": "drive.primary_cold_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[90, 0, 87], [100, 0, 87], [100, 0, 94], [100, 23, 94], [99, 23, 94]]
+  },
+  {
+   "from": "pump.primary_out",
+   "to": "press.primary_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[90, 0, 87], [100, 0, 87], [100, 0, 91], [102, 0, 91], [102, 0, 87]]
+  },
+  {
+   "from": "hull.emc_out",
+   "to": "drive.primary_cold_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[108, 0, 91], [100, 0, 91], [100, 0, 94], [100, 23, 94], [99, 23, 94]]
+  },
+  {
+   "from": "hull.emc_out",
+   "to": "press.primary_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[108, 0, 91], [102, 0, 91], [102, 0, 87]]
+  },
+  {
+   "from": "hull.hpi_out",
+   "to": "drive.primary_cold_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[99, 0, 82], [99, 0, 87], [100, 0, 87], [100, 0, 94], [100, 23, 94], [99, 23, 94]]
+  },
+  {
+   "from": "hull.hpi_out",
+   "to": "press.primary_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[99, 0, 82], [99, 0, 87], [100, 0, 87], [100, 0, 91], [102, 0, 91], [102, 0, 87]]
+  },
+  {
+   "from": "emerg.primary_out",
+   "to": "hull.emc_in",
+   "color": "6FD0E0",
+   "kind": "pipe",
+   "path": [[115, 1, 90], [114, 1, 90], [114, 0, 90], [114, 0, 91], [112, 0, 91]]
+  },
+  {
+   "from": "hull.feedwater_out",
+   "to": "sg.feedwater_in",
+   "color": "5EC2C2",
+   "kind": "pipe",
+   "path": [[109, 9, 94], [108, 9, 94], [108, 9, 97], [93, 9, 97], [93, 9, 94], [92, 9, 94]]
+  },
+  {
+   "from": "sg.wet_steam_out",
+   "to": "hull.wet_steam_in",
+   "color": "C9D3DC",
+   "kind": "pipe",
+   "path": [[88, 16, 94], [88, 17, 94], [86, 17, 94], [86, 16, 94], [83, 16, 94]]
+  },
+  {
+   "from": "hull.hyd_out",
+   "to": "drive.hydraulic_in",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[99, 1, 82], [99, 1, 83], [99, 25, 83], [99, 25, 98], [95, 25, 98], [95, 25, 97]]
+  },
+  {
+   "from": "hull.energy_out",
+   "to": "pump.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[109, 0, 94], [108, 0, 94], [108, 1, 94], [108, 1, 93], [100, 1, 93], [100, 1, 84], [88, 1, 84], [88, 0, 84], [88, 0, 85]]
+  },
+  {
+   "from": "hull.energy_out",
+   "to": "drive.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[109, 0, 94], [108, 0, 94], [108, 1, 94], [108, 1, 93], [100, 1, 93], [100, 1, 84], [95, 1, 84], [95, 25, 84], [95, 25, 91]]
+  },
+  {
+   "from": "hull.energy_out",
+   "to": "press.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[109, 0, 94], [108, 0, 94], [108, 1, 94], [108, 1, 93], [100, 1, 93], [100, 1, 84], [100, 0, 84], [100, 0, 82], [102, 0, 82], [102, 0, 83]]
+  },
+  {
+   "from": "intake.water_out_s_1",
+   "to": "emerg.water_in",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[120, 1, 108], [120, 1, 109], [120, 0, 109], [116, 0, 109], [116, 0, 98], [122, 0, 98], [122, 0, 89], [121, 0, 89]]
+  },
+  {
+   "from": "intake.water_out_s_2",
+   "to": "hull.hyd_in",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[122, 1, 108], [122, 1, 109], [126, 1, 109], [126, 1, 77], [99, 1, 77], [99, 1, 78]]
+  },
+  {
+   "from": "hull.wet_steam_out",
+   "to": "sep.wet_steam_in",
+   "color": "C9D3DC",
+   "kind": "pipe",
+   "path": [[80, 16, 94], [79, 16, 94], [79, 16, 90], [73, 16, 90], [73, 0, 90], [73, 0, 91]]
+  },
+  {
+   "from": "sep.steam_out",
+   "to": "tur.steam_in",
+   "color": "E6EDF2",
+   "kind": "pipe",
+   "path": [[74, 6, 93], [74, 8, 93], [62, 8, 93], [62, 8, 87], [62, 7, 87]]
+  },
+  {
+   "from": "sep.water_out",
+   "to": "treat.water_in_9",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[76, 1, 93], [77, 1, 93], [77, 5, 93], [77, 5, 114], [118, 5, 114], [118, 4, 114]]
+  },
+  {
+   "from": "tur.energy_out",
+   "to": "bat.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[63, 1, 80], [63, 1, 79], [63, 0, 79], [63, 0, 72], [67, 0, 72]]
+  },
+  {
+   "from": "press.relief_out",
+   "to": "hull.relief_in",
+   "color": "D9684A",
+   "kind": "pipe",
+   "path": [[102, 8, 85], [102, 9, 85], [93, 9, 85], [93, 0, 85], [93, 0, 82]]
+  },
+  {
+   "from": "hull.relief_out",
+   "to": "relief.relief_in",
+   "color": "D9684A",
+   "kind": "pipe",
+   "path": [[93, 0, 78], [93, 0, 77], [93, 4, 77], [89, 4, 77], [89, 4, 64], [89, 3, 64]]
+  },
+  {
+   "from": "relief.primary_out",
+   "to": "hpi.primary_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[94, 0, 67], [99, 0, 67]]
+  },
+  {
+   "from": "hpi.primary_out",
+   "to": "hull.hpi_in",
+   "color": "4FA3D9",
+   "kind": "pipe",
+   "path": [[103, 0, 66], [104, 0, 66], [104, 0, 71], [99, 0, 71], [99, 0, 78]]
+  },
+  {
+   "from": "tower.coolant_out",
+   "to": "relief.coolant_in",
+   "color": "6FD9A8",
+   "kind": "pipe",
+   "path": [[28, 0, 100], [28, 0, 66], [84, 0, 66]]
+  },
+  {
+   "from": "relief.coolant_out",
+   "to": "tower.coolant_in",
+   "color": "E0A858",
+   "kind": "pipe",
+   "path": [[84, 0, 68], [83, 0, 68], [83, 2, 68], [26, 2, 68], [26, 0, 68], [26, 0, 100]]
+  },
+  {
+   "from": "treat.feedwater_out",
+   "to": "hull.feedwater_in",
+   "color": "5EC2C2",
+   "kind": "pipe",
+   "path": [[120, 1, 112], [120, 1, 111], [120, 9, 111], [120, 9, 94], [112, 9, 94]]
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "hull.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[71, 0, 72], [72, 0, 72], [72, 2, 72], [113, 2, 72], [113, 2, 94], [113, 0, 94], [112, 0, 94]]
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "emerg.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[71, 0, 72], [72, 0, 72], [72, 2, 72], [113, 2, 72], [113, 2, 94], [113, 0, 94], [119, 0, 94], [119, 0, 92]]
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "intake.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[71, 0, 72], [72, 0, 72], [72, 2, 72], [113, 2, 72], [113, 2, 94], [113, 0, 94], [119, 0, 94], [119, 1, 94], [123, 1, 94], [123, 0, 94], [127, 0, 94], [127, 0, 103], [126, 0, 103]]
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "treat.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[71, 0, 72], [72, 0, 72], [72, 2, 72], [113, 2, 72], [113, 2, 94], [113, 0, 94], [119, 0, 94], [119, 1, 94], [123, 1, 94], [123, 0, 94], [127, 0, 94], [127, 0, 103], [127, 1, 103], [127, 1, 120], [120, 1, 120], [120, 1, 119]]
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "hpi.energy_in",
+   "color": "E05050",
+   "kind": "power",
+   "path": [[71, 0, 72], [72, 0, 72], [72, 2, 72], [101, 2, 72], [101, 2, 70], [101, 0, 70], [101, 0, 69]]
+  },
+  {
+   "from": "bat.energy_out_2",
+   "to": "sub.energy_in_0",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "derrick.crude_out",
+   "to": "column.crude_in",
+   "color": "5A4A40",
+   "kind": "pipe",
+   "fluid": "nuclearsq:crude_oil"
+  },
+  {
+   "from": "column.naphtha_out",
+   "to": "cracker.naphtha_in",
+   "color": "E0B84A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:naphtha"
+  },
+  {
+   "from": "cracker.ethylene_out",
+   "to": "gasgen.ethylene_in",
+   "color": "7ED6E0",
+   "kind": "pipe",
+   "fluid": "nuclearsq:ethylene"
+  },
+  {
+   "from": "column.tar_out",
+   "to": "polymer.tar_in",
+   "color": "8A6A48",
+   "kind": "pipe",
+   "fluid": "nuclearsq:tar"
+  },
+  {
+   "from": "column.diesel_out",
+   "to": "gasgen2.ethylene_in",
+   "color": "C9A44A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:diesel"
+  },
+  {
+   "from": "gasgen.energy_out",
+   "to": "bat.energy_in_2",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "gasgen2.energy_out",
+   "to": "sub.energy_in_1",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "mill.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "hammer.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "blast.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "plate.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "kiln.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "cnc.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_0",
+   "to": "rack1.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_1",
+   "to": "rack2.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_2",
+   "to": "asm.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_2",
+   "to": "pat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "rack1.data",
+   "to": "rack2.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack1.data",
+   "to": "term.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack2.data",
+   "to": "craft.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack2.data",
+   "to": "asm.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "pat.data",
+   "to": "asm.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "blast.item_out",
+   "to": "plate.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:steel_ingot_sqc"
+  },
+  {
+   "from": "plate.item_out",
+   "to": "cnc.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:steel_sheet_sqc"
+  },
+  {
+   "from": "cnc.item_out",
+   "to": "asm.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:lead_shielding_sqc"
+  },
+  {
+   "from": "kiln.item_out",
+   "to": "blast.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:coke_sqc"
+  },
+  {
+   "from": "mill.item_out",
+   "to": "blast.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_dust_sqc"
+  },
+  {
+   "from": "hammer.item_out",
+   "to": "blast.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_dust_sqc"
+  }
+ ]
+}

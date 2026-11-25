@@ -21,7 +21,9 @@ public class DataCableBlock extends CableBlock {
 
     @Override
     protected boolean hasTarget(Level level, BlockPos n, Direction side) {
-        return level.getBlockState(n).getBlock() instanceof DataDevice || DataSources.isPort(level, n);
+        net.minecraft.world.level.block.state.BlockState st = level.getBlockState(n);
+        if (st.getBlock() instanceof com.sqc.nuclearsq.storage.NetPipeAdapterBlock) return side == com.sqc.nuclearsq.storage.NetPipeAdapterBlock.back(st);
+        return st.getBlock() instanceof DataDevice || DataSources.isPort(level, n);
     }
 
     public static boolean off(BlockGetter level, BlockPos pos, Direction d) {

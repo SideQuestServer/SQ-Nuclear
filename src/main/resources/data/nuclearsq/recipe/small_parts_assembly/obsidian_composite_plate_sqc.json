@@ -1,0 +1,25 @@
+{
+  "type": "nuclearsq:small_parts_assembly",
+  "ingredients": [
+    {
+      "ingredient": {
+        "type": "nuclearsq:optional",
+        "items": [
+          "mekanism:ingot_refined_obsidian",
+          "nuclearsq:refined_obsidian_ingot_sqc"
+        ]
+      },
+      "count": 4
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:steel_sheet_sqc"
+      },
+      "count": 8
+    }
+  ],
+  "result": {
+    "id": "nuclearsq:obsidian_composite_plate_sqc",
+    "count": 1
+  }
+}

@@ -24,6 +24,12 @@
         "item": "nuclearsq:chip_1_sqc"
       },
       "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:lcp_module_casing_sqc"
+      },
+      "count": 1
     }
   ],
   "result": {

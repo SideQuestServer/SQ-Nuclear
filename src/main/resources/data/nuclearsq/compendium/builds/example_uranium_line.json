@@ -1,0 +1,90 @@
+{
+ "nodes": [
+  {
+   "key": "mill",
+   "machine": "ore_mill",
+   "page": "rod_ore_mill",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "acid",
+   "machine": "acid_plant",
+   "page": "rod_acid",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "leach",
+   "machine": "leaching_plant",
+   "page": "rod_leaching",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "uf6",
+   "machine": "uf6_converter",
+   "page": "rod_uf6",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "cent",
+   "machine": "enrichment_centrifuge",
+   "page": "rod_centrifuge",
+   "col": 3,
+   "row": 0
+  },
+  {
+   "key": "pel",
+   "machine": "pellet_factory",
+   "page": "rod_pellets",
+   "col": 4,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "mill.item_out",
+   "to": "leach.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:yellowcake_sqc"
+  },
+  {
+   "from": "acid.acid_out",
+   "to": "leach.acid_in",
+   "color": "C8D45A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:sulfuric_acid"
+  },
+  {
+   "from": "acid.hf_out",
+   "to": "uf6.hf_in",
+   "color": "C8D45A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:hydrofluoric_acid"
+  },
+  {
+   "from": "leach.item_out",
+   "to": "uf6.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:uranium_oxide_sqc"
+  },
+  {
+   "from": "uf6.item_out",
+   "to": "cent.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:uf6_cylinder_sqc"
+  },
+  {
+   "from": "cent.item_out",
+   "to": "pel.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:enriched_uranium_sqc"
+  }
+ ]
+}

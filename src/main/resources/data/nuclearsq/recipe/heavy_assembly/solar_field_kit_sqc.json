@@ -1,10 +1,9 @@
 {
   "type": "nuclearsq:heavy_assembly",
   "pattern": [
-    "ppppp",
     "pK@Kp",
     "cBeBm",
-    "ppppp"
+    "p   p"
   ],
   "key": {
     "@": {

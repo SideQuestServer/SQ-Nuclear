@@ -1,13 +1,13 @@
 {
   "max_size": 6,
-  "machine": {"cpu": 32, "ram_gb": 128, "fe_per_tick": 780},
+  "machine": {"cpu": 32, "ram_gb": 512, "fe_per_tick": 780},
   "core": {"fe_per_tick": 30, "buffer": 600000, "max_receive": 12000, "tank": 8000},
   "coprocessor": {"cpu": 16, "fe_per_tick": 90},
   "ram": [
-    {"gb": 1, "fe_per_tick": 6},
-    {"gb": 4, "fe_per_tick": 18},
-    {"gb": 16, "fe_per_tick": 60},
-    {"gb": 64, "fe_per_tick": 192}
+    {"gb": 4, "fe_per_tick": 6},
+    {"gb": 16, "fe_per_tick": 18},
+    {"gb": 64, "fe_per_tick": 60},
+    {"gb": 256, "fe_per_tick": 192}
   ],
   "heat": {"per_fe": 0.0033333, "passive": 0.3, "cool_target": 200, "cool_per_mb": 0.5, "throttle_from": 500, "min_pct": 25, "shutdown": 1000, "restart": 700}
 }

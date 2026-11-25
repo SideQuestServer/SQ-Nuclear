@@ -54,6 +54,7 @@ public final class DataCcCompat {
         machine(event, com.sqc.nuclearsq.robotics.RoboticsRegistry.ARM_BE.get());
         machine(event, com.sqc.nuclearsq.storage.StorageRegistry.WIFI_ADAPTER_BE.get());
         machine(event, com.sqc.nuclearsq.storage.StorageRegistry.ITEM_PORT_BE.get());
+        machine(event, com.sqc.nuclearsq.storage.StorageRegistry.NET_PIPE_ADAPTER_BE.get());
         machine(event, com.sqc.nuclearsq.crate.CrateRegistry.BLOCK_ENTITY.get());
         machine(event, ProtectionRegistry.MONITOR_BE.get());
     }

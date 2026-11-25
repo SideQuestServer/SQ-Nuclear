@@ -469,6 +469,27 @@ public final class ChunkMachines {
         BlockPos c = be.getBlockPos();
         BlockPos.MutableBlockPos mp = new BlockPos.MutableBlockPos();
         int block = 0, sky = 0;
+        try {
+            BigMachine m = be.machine();
+            int rot = be.formedRot();
+            BlockPos a = m.structure.world(c, rot, 0, 0, 0), b = m.structure.world(c, rot, m.w - 1, m.h - 1, m.d - 1);
+            int x0 = Math.min(a.getX(), b.getX()) - 1, x1 = Math.max(a.getX(), b.getX()) + 1;
+            int y0 = Math.min(a.getY(), b.getY()) - 1, y1 = Math.max(a.getY(), b.getY()) + 1;
+            int z0 = Math.min(a.getZ(), b.getZ()) - 1, z1 = Math.max(a.getZ(), b.getZ()) + 1;
+            for (int x = x0; x <= x1; x++)
+                for (int y = y0; y <= y1; y++)
+                    for (int z = z0; z <= z1; z++) {
+                        if (x > x0 && x < x1 && y > y0 && y < y1 && z > z0 && z < z1) continue;
+                        mp.set(x, y, z);
+                        int l = LevelRenderer.getLightColor(be.getLevel(), mp);
+                        block = Math.max(block, l >> 4 & 15);
+                        sky = Math.max(sky, l >> 20 & 15);
+                    }
+            return block << 4 | sky << 20;
+        } catch (RuntimeException e) {
+            block = 0;
+            sky = 0;
+        }
         for (int dx = -1; dx <= 1; dx++)
             for (int dy = -1; dy <= 1; dy++)
                 for (int dz = -1; dz <= 1; dz++) {

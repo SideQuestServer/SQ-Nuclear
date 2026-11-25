@@ -168,6 +168,17 @@ public class ComponentAssemblerMenu extends AbstractContainerMenu {
         return true;
     }
 
+    public void templateRecipe(net.minecraft.resources.ResourceLocation id) {
+        if (!(player.level().getBlockEntity(pos) instanceof BigMachineBlockEntity be) || be.assembler() != assembler) return;
+        var r = player.level().getRecipeManager().byKey(id).map(net.minecraft.world.item.crafting.RecipeHolder::value).orElse(null);
+        if (r == null || !com.sqc.nuclearsq.progression.MachineRecipes.makes(be.machine(), r)) return;
+        ItemStack[] grid = com.sqc.nuclearsq.progression.MachineRecipes.template(r, ComponentAssembler.GRID, player.level().registryAccess());
+        if (grid == null) return;
+        for (int i = 0; i < ComponentAssembler.GRID; i++) assembler.template().setStackInSlot(i, grid[i]);
+        assembler.updatePreview(player.level());
+        be.setChanged();
+    }
+
     @Override
     public ItemStack quickMoveStack(Player p, int index) {
         if (index < CARDS) return ItemStack.EMPTY;

@@ -1,0 +1,17 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": {
+    "tag": "c:raw_materials/iron"
+  },
+  "count": 8,
+  "time": 200,
+  "energy_per_tick": 3600,
+  "results": [
+    {
+      "item": {
+        "id": "minecraft:iron_ingot",
+        "count": 8
+      }
+    }
+  ]
+}

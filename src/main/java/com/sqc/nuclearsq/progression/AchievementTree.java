@@ -13,10 +13,13 @@ public final class AchievementTree {
             n("micro", "micro_assembler_controller_sqc", "micro_assembler", Group.ASSEMBLY),
             n("assembler", PlantOverview.ASSEMBLER_ITEM, "reactor_assembler", Group.ASSEMBLY),
             n("plate_mill", "plate_mill_controller_sqc", "plate_mill", Group.ASSEMBLY),
+            n("cnc_mill", "cnc_mill_controller_sqc", "cnc_mill", Group.ASSEMBLY),
             n("hammer_mill", "hammer_mill_controller_sqc", "hammer_mill", Group.ASSEMBLY),
+            n("kiln", "kiln_controller_sqc", "kiln", Group.ASSEMBLY),
             n("solar_panel", "solar_panel_sqc", "energy_solar", Group.START),
             n("solar_collector", "solar_collector_sqc", "energy_solar", Group.START),
             n("heavy", "heavy_assembler_controller_sqc", "mach_heavy", Group.ASSEMBLY),
+            n("blast_furnace", "blast_furnace_controller_sqc", "blast_furnace", Group.ASSEMBLY),
             n("solar", "solar_field_controller_sqc", "energy_solar", Group.START),
             n("wind_small", "wind_turbine_small_controller_sqc", "energy_wind", Group.POWER),
             n("wind_medium", "wind_turbine_medium_controller_sqc", "energy_wind", Group.POWER),
@@ -30,6 +33,7 @@ public final class AchievementTree {
             n("wifi_adapter", "wifi_adapter_sqc", "storage_wifi", Group.STORAGE),
             n("wifi_terminal", "wifi_terminal_sqc", "storage_wifi", Group.STORAGE),
             n("storage_crate", "storage_crate_sqc", "storage_crate", Group.STORAGE),
+            n("pipe_adapter", "net_pipe_adapter_sqc", "storage_pipe_adapter", Group.STORAGE),
             n("bank_server", "bank_server_sqc", "bank_server", Group.STORAGE),
             n("bank_terminal", "bank_terminal_sqc", "bank_terminal", Group.STORAGE),
             n("bank_modem", "bank_modem_sqc", "bank_modem", Group.STORAGE),
@@ -45,6 +49,7 @@ public final class AchievementTree {
             n("chemlab", "chemical_lab_controller_sqc", "rod_chemlab", Group.CYCLE),
             n("robot_arm", "robot_arm_sqc", "robot_arm", Group.ASSEMBLY),
             n("arm_upgrade", "robot_arm_upgrade_sqc", "robot_arm", Group.ASSEMBLY),
+            n("solder_machine", "solder_machine_controller_sqc", "solder_machine", Group.ASSEMBLY),
             n("clean_room", "clean_room_controller_sqc", "clean_room", Group.ASSEMBLY),
             n("component", "component_assembler_controller_sqc", "component_assembler", Group.ASSEMBLY),
             n("rack_pattern", "pattern_rack_controller_sqc", "pattern_rack", Group.STORAGE),
@@ -157,7 +162,11 @@ public final class AchievementTree {
             case "assembler" -> RecipeSources.Where.REACTOR_ASSEMBLER;
             case "equipment" -> RecipeSources.Where.EQUIPMENT_ASSEMBLER;
             case "plate_mill" -> RecipeSources.Where.PLATE_MILLING;
+            case "cnc_mill" -> RecipeSources.Where.CNC_MILL;
+            case "solder_machine" -> RecipeSources.Where.SOLDER_MACHINE;
             case "hammer_mill" -> RecipeSources.Where.DUST_MILLING;
+            case "kiln" -> RecipeSources.Where.KILN_FIRING;
+            case "blast_furnace" -> RecipeSources.Where.BLAST_SMELTING;
             case "heavy" -> RecipeSources.Where.HEAVY_ASSEMBLER;
             case "ore" -> RecipeSources.Where.ORE_MILLING;
             case "acid" -> RecipeSources.Where.ACID_PLANT;

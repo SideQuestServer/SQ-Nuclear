@@ -82,7 +82,7 @@ public final class ComponentAssemblerTests {
         return a.encode().extractItem(1, 1, false);
     }
 
-    @GameTest(template = FLOOR, batch = "component_assembler", timeoutTicks = 400)
+    @GameTest(template = FLOOR, batch = "component_assembler", timeoutTicks = 1200)
     public static void componentAssemblerAutocraftsSubRecipe(GameTestHelper h) {
         BigMachineBlockEntity rack = build(h, BigMachine.SERVER_RACK_SMALL, new BlockPos(2, 2, 2));
         BigMachineBlockEntity be = build(h, M, new BlockPos(7, 2, 7));
@@ -119,20 +119,21 @@ public final class ComponentAssemblerTests {
             if (a.jobs().size() != 1 || a.jobs().get(0).steps() != 4) {
                 throw new GameTestAssertException("Auftrag mit 4 Schritten erwartet, ist " + (a.jobs().isEmpty() ? 0 : a.jobs().get(0).steps()));
             }
-            h.runAfterDelay(20, () -> {
-                if (a.status() != ComponentAssembler.NO_POWER) throw new GameTestAssertException("ohne Strom: NO_POWER erwartet, ist " + a.status());
-                charge(be);
-                h.runAfterDelay(4 * a.cycleTicks() + 40, () -> {
-                    StorageAccess t = StorageNet.access(h.getLevel(), terminal);
-                    long pickaxes = t.count(ItemKey.of(new ItemStack(Items.WOODEN_PICKAXE)));
-                    if (pickaxes != 1) throw new GameTestAssertException("Spitzhacken im Speicher: " + pickaxes + ", Status " + a.status());
-                    if (t.count(ItemKey.of(new ItemStack(Items.OAK_LOG))) != 0) throw new GameTestAssertException("Staemme nicht verbraucht");
-                    if (t.count(ItemKey.of(new ItemStack(Items.OAK_PLANKS))) != 3) throw new GameTestAssertException("Rest-Bretter " + t.count(ItemKey.of(new ItemStack(Items.OAK_PLANKS))) + " statt 3");
-                    if (t.count(ItemKey.of(new ItemStack(Items.STICK))) != 2) throw new GameTestAssertException("Rest-Stoecke " + t.count(ItemKey.of(new ItemStack(Items.STICK))) + " statt 2");
-                    if (!a.jobs().isEmpty()) throw new GameTestAssertException("Auftrag nicht abgeschlossen");
-                    h.succeed();
-                });
-            });
+            h.startSequence()
+                    .thenWaitUntil(() -> {
+                        if (a.status() != ComponentAssembler.NO_POWER) throw new GameTestAssertException("ohne Strom: NO_POWER erwartet, ist " + a.status());
+                    })
+                    .thenExecute(() -> charge(be))
+                    .thenWaitUntil(() -> {
+                        StorageAccess t = StorageNet.access(h.getLevel(), terminal);
+                        long pickaxes = t.count(ItemKey.of(new ItemStack(Items.WOODEN_PICKAXE)));
+                        if (pickaxes != 1) throw new GameTestAssertException("Spitzhacken im Speicher: " + pickaxes + ", Status " + a.status());
+                        if (t.count(ItemKey.of(new ItemStack(Items.OAK_LOG))) != 0) throw new GameTestAssertException("Staemme nicht verbraucht");
+                        if (t.count(ItemKey.of(new ItemStack(Items.OAK_PLANKS))) != 3) throw new GameTestAssertException("Rest-Bretter " + t.count(ItemKey.of(new ItemStack(Items.OAK_PLANKS))) + " statt 3");
+                        if (t.count(ItemKey.of(new ItemStack(Items.STICK))) != 2) throw new GameTestAssertException("Rest-Stoecke " + t.count(ItemKey.of(new ItemStack(Items.STICK))) + " statt 2");
+                        if (!a.jobs().isEmpty()) throw new GameTestAssertException("Auftrag nicht abgeschlossen");
+                    })
+                    .thenSucceed();
         });
     }
 

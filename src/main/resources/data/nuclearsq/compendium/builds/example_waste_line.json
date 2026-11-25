@@ -1,0 +1,62 @@
+{
+ "nodes": [
+  {
+   "key": "a",
+   "machine": "reprocessing_plant",
+   "page": "reprocessing_plant",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "slag_crusher",
+   "page": "rod_slag",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "e",
+   "machine": "acid_plant",
+   "page": "rod_acid",
+   "col": 2,
+   "row": 1
+  },
+  {
+   "key": "c",
+   "machine": "vitrification_plant",
+   "page": "rod_vitrify",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "d",
+   "machine": "waste_repository",
+   "page": "rod_repository",
+   "col": 3,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "a.item_out",
+   "to": "b.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:nuclear_ash_sqc"
+  },
+  {
+   "from": "e.acid_out",
+   "to": "c.acid_in",
+   "color": "C8D45A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:sulfuric_acid"
+  },
+  {
+   "from": "c.item_out",
+   "to": "d.items",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:glass_canister_sqc"
+  }
+ ]
+}

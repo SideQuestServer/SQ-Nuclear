@@ -160,7 +160,7 @@ public final class PolymerTests {
             if (result.is(item("cable_hardened_sqc"))) cableUse |= usesRubber;
             if (result.is(item("ion_resin_sqc"))) resinAssembler = true;
         }
-        int want = 9;
+        int want = 11;
         if (polymer != want) throw new GameTestAssertException("Polymer-Rezepte: " + polymer + " statt " + want);
         if (!sealUse) throw new GameTestAssertException("Schutzanzug II braucht keine Gummidichtung");
         if (!maskUse) throw new GameTestAssertException("Maske braucht keine Gummidichtung");

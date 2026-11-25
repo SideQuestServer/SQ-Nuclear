@@ -66,6 +66,52 @@ public class BigCrafterScreen extends AbstractContainerScreen<BigCrafterMenu> {
     private int segX() { return asm() || particle() ? 120 : 8; }
     private int segY() { return asm() ? 102 : particle() ? 114 : rack() ? 54 : 84; }
 
+    private int clearX() { return asm() ? 112 : 120; }
+    private int clearY() { return asm() ? 89 : 36; }
+    private static final int CLEAR_W = 74, CLEAR_H = 11, FILL_X = 196, FILL_W = 36;
+
+    private int ghostFor = -1;
+    @javax.annotation.Nullable
+    private net.minecraft.world.item.crafting.Recipe<?> ghost;
+
+    @javax.annotation.Nullable
+    private net.minecraft.world.item.crafting.Recipe<?> ghost() {
+        int lock = menu.lockable() ? menu.lock() : 0;
+        if (lock != ghostFor && minecraft != null && minecraft.level != null) {
+            ghostFor = lock;
+            var ids = com.sqc.nuclearsq.progression.MachineRecipes.ids(menu.machine, minecraft.level.getRecipeManager());
+            ghost = lock > 0 && lock <= ids.size() ? minecraft.level.getRecipeManager().byKey(ids.get(lock - 1))
+                    .map(net.minecraft.world.item.crafting.RecipeHolder::value).orElse(null) : null;
+        }
+        return ghost;
+    }
+
+    private void ghosts(GuiGraphics g, int x, int y, int mx, int my) {
+        var r = ghost();
+        if (r == null || minecraft == null || minecraft.level == null) return;
+        int own = menu.slots.size() - 36;
+        net.minecraft.world.item.ItemStack[] st = com.sqc.nuclearsq.progression.MachineRecipes.ghost(r, BigCrafter.GRID + 1,
+                minecraft.level.registryAccess(), net.minecraft.Util.getMillis());
+        for (int i = 0; i < own; i++) {
+            Slot s = menu.slots.get(i);
+            int k = s instanceof net.neoforged.neoforge.items.SlotItemHandler h ? h.getSlotIndex() : -1;
+            if (s.hasItem() || k < 0 || k >= st.length || st[k].isEmpty()) continue;
+            g.renderFakeItem(st[k], x + s.x, y + s.y);
+            g.renderItemDecorations(font, st[k], x + s.x, y + s.y);
+            g.pose().pushPose();
+            g.pose().translate(0, 0, 250);
+            g.fill(x + s.x, y + s.y, x + s.x + 16, y + s.y + 16, (TermKit.col(TermKit.SCREEN) & 0xFFFFFF) | 0xA0000000);
+            g.pose().popPose();
+            tip(s.x - 1, s.y - 1, 18, 18, st[k].getHoverName(), t("tip.ghost"));
+        }
+        boolean hover = in(mx, my, clearX(), clearY(), CLEAR_W, CLEAR_H);
+        TermKit.button(g, font, x + clearX(), y + clearY(), CLEAR_W, CLEAR_H, t("ghost.clear"), AMBER, true, hover, false);
+        tip(clearX(), clearY(), CLEAR_W, CLEAR_H, t("ghost.clear"), t("tip.ghost.clear"));
+        boolean fh = in(mx, my, FILL_X, clearY(), FILL_W, CLEAR_H);
+        TermKit.button(g, font, x + FILL_X, y + clearY(), FILL_W, CLEAR_H, t("ghost.fill"), GREEN, true, fh, false);
+        tip(FILL_X, clearY(), FILL_W, CLEAR_H, t("ghost.fill"), t("tip.ghost.fill"), t("tip.ghost.fill.all"));
+    }
+
     private int rightsX() { int rx = segX() + segW() + 6; return rx + 44 > W - 8 ? W - 52 : rx; }
     private int rightsY() { return segX() + segW() + 6 + 44 > W - 8 ? segY() + SEG_H + 4 : segY() + 1; }
 
@@ -89,6 +135,14 @@ public class BigCrafterScreen extends AbstractContainerScreen<BigCrafterMenu> {
         int shaft = rack() && button == 0 ? shaftAt(mx, my) : -1;
         if (shaft >= 0 && placeState(shaft) != BigCrafter.RackView.EMPTY) {
             PacketDistributor.sendToServer(new DeviceControlPayload(DeviceControlPayload.RACK_TOGGLE, shaft));
+            return true;
+        }
+        if (button == 0 && ghost() != null && in(mx, my, clearX(), clearY(), CLEAR_W, CLEAR_H)) {
+            PacketDistributor.sendToServer(new DeviceControlPayload(DeviceControlPayload.RECIPE_LOCK, 0));
+            return true;
+        }
+        if (button == 0 && ghost() != null && in(mx, my, FILL_X, clearY(), FILL_W, CLEAR_H)) {
+            PacketDistributor.sendToServer(new DeviceControlPayload(DeviceControlPayload.RECIPE_FILL, hasShiftDown() ? 1 : 0));
             return true;
         }
         if (button == 0 && in(mx, my, rightsX(), rightsY(), 44, 12)) {
@@ -135,6 +189,7 @@ public class BigCrafterScreen extends AbstractContainerScreen<BigCrafterMenu> {
             TermKit.frame(g, font, x + s.x - 1, y + s.y - 1, 18, 18, null, own ? MID : TermKit.FAINT);
         }
 
+        ghosts(g, x, y, mx, my);
         int cap = Math.max(1, menu.capacity());
         float fe = menu.energy() / (float) cap;
         boolean powerOk = st != BigCrafter.NO_POWER;

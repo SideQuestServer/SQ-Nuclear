@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "nuclearsq:item/advanced_reactor_casing_sqc"
+  }
+}

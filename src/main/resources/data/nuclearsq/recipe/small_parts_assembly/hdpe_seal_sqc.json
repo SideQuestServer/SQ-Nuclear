@@ -1,0 +1,25 @@
+{
+  "type": "nuclearsq:small_parts_assembly",
+  "ingredients": [
+    {
+      "ingredient": {
+        "type": "nuclearsq:optional",
+        "items": [
+          "mekanism:hdpe_sheet",
+          "nuclearsq:hdpe_sheet_sqc"
+        ]
+      },
+      "count": 8
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:glass_seal_sqc"
+      },
+      "count": 4
+    }
+  ],
+  "result": {
+    "id": "nuclearsq:hdpe_seal_sqc",
+    "count": 1
+  }
+}

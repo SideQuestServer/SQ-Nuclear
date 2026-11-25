@@ -14265,6 +14265,118 @@
           "ingredients": [
             {
               "type": "projecte:item",
+              "id": "nuclearsq:enriched_carbon_sqc",
+              "amount": 2
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:lcp_granulate_sqc"
+          },
+          "count": 2
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:enriched_carbon_sqc"
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:pbt_granulate_sqc"
+          },
+          "count": 2
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:pbt_granulate_sqc",
+              "amount": 2
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:polycarbonate_granulate_sqc"
+          }
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:lcp_granulate_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:steel_sheet_sqc"
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:lcp_module_casing_sqc"
+          },
+          "count": 2
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:pbt_granulate_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:steel_sheet_sqc"
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:pbt_module_casing_sqc"
+          },
+          "count": 2
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:fake",
+              "description": "alt_6",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:steel_sheet_sqc"
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:hdpe_module_casing_sqc"
+          },
+          "count": 2
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:polycarbonate_granulate_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:steel_sheet_sqc"
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:polycarbonate_module_casing_sqc"
+          },
+          "count": 2
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
               "id": "minecraft:dried_kelp",
               "amount": 8
             },
@@ -14801,6 +14913,11 @@
               "type": "projecte:item",
               "id": "nuclearsq:chip_3_sqc",
               "amount": 3
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:polycarbonate_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -14837,6 +14954,10 @@
               "type": "projecte:item",
               "id": "nuclearsq:chip_2_sqc",
               "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:hdpe_module_casing_sqc"
             }
           ],
           "output": {
@@ -14865,6 +14986,10 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_1_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:lcp_module_casing_sqc"
             }
           ],
           "output": {
@@ -14900,6 +15025,11 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_1_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:lcp_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -14935,6 +15065,11 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_3_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:hdpe_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -14976,6 +15111,10 @@
               "type": "projecte:item",
               "id": "nuclearsq:chip_3_sqc",
               "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:polycarbonate_module_casing_sqc"
             }
           ],
           "output": {
@@ -15012,6 +15151,11 @@
               "type": "projecte:item",
               "id": "nuclearsq:chip_2_sqc",
               "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:pbt_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -15047,6 +15191,10 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_2_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:pbt_module_casing_sqc"
             }
           ],
           "output": {
@@ -15686,6 +15834,11 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:control_board_1_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:lcp_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -15718,6 +15871,11 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:control_board_2_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:pbt_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -16568,6 +16726,121 @@
           "ingredients": [
             {
               "type": "projecte:item",
+              "id": "nuclearsq:control_board_1_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:reactor_casing_sqc",
+              "amount": 8
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:machine_port_energy_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:machine_port_item_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:machine_port_terminal_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:steel_sheet_sqc",
+              "amount": 8
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:copper_coil_sqc",
+              "amount": 4
+            },
+            {
+              "type": "projecte:item",
+              "id": "minecraft:diamond",
+              "amount": 4
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:cnc_mill_kit_sqc"
+          }
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:advanced_reactor_casing_sqc",
+              "amount": 4
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:control_board_1_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:chip_1_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:machine_port_energy_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:machine_port_item_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:machine_port_terminal_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:copper_coil_sqc",
+              "amount": 4
+            },
+            {
+              "type": "projecte:item",
+              "id": "minecraft:gold_ingot",
+              "amount": 6
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:solder_machine_kit_sqc"
+          }
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:reactor_casing_sqc",
+              "amount": 4
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:osmium_heat_plate_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:lead_shielding_sqc"
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:advanced_reactor_casing_sqc",
+            "count": 4
+          }
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
               "id": "nuclearsq:steel_sheet_sqc",
               "amount": 4
             },
@@ -16708,6 +16981,10 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_2_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:pbt_module_casing_sqc"
             }
           ],
           "output": {
@@ -16732,6 +17009,10 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_1_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:lcp_module_casing_sqc"
             }
           ],
           "output": {
@@ -16763,6 +17044,11 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_2_sqc",
+              "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:pbt_module_casing_sqc",
               "amount": 2
             }
           ],
@@ -16800,6 +17086,11 @@
               "type": "projecte:item",
               "id": "nuclearsq:chip_3_sqc",
               "amount": 3
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:polycarbonate_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -16836,6 +17127,10 @@
               "type": "projecte:item",
               "id": "nuclearsq:chip_2_sqc",
               "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:hdpe_module_casing_sqc"
             }
           ],
           "output": {
@@ -16866,6 +17161,11 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_1_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:lcp_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -16901,6 +17201,11 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:chip_3_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:hdpe_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
@@ -16942,6 +17247,10 @@
               "type": "projecte:item",
               "id": "nuclearsq:chip_3_sqc",
               "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:polycarbonate_module_casing_sqc"
             }
           ],
           "output": {
@@ -17118,11 +17427,53 @@
             {
               "type": "projecte:item",
               "id": "nuclearsq:control_board_3_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:hdpe_module_casing_sqc",
+              "amount": 2
             }
           ],
           "output": {
             "type": "projecte:item",
             "id": "nuclearsq:solid_state_drive_sqc"
+          }
+        },
+        {
+          "ingredients": [
+            {
+              "type": "projecte:item",
+              "id": "minecraft:diamond",
+              "amount": 8
+            },
+            {
+              "type": "projecte:item",
+              "id": "minecraft:glowstone_dust",
+              "amount": 16
+            },
+            {
+              "type": "projecte:item",
+              "id": "minecraft:quartz",
+              "amount": 32
+            },
+            {
+              "type": "projecte:item",
+              "id": "minecraft:gold_ingot",
+              "amount": 12
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:control_board_3_sqc"
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:polycarbonate_module_casing_sqc",
+              "amount": 2
+            }
+          ],
+          "output": {
+            "type": "projecte:item",
+            "id": "nuclearsq:nvme_drive_sqc"
           }
         },
         {

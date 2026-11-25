@@ -1,0 +1,21 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": {
+    "tag": "c:ingots/iron"
+  },
+  "count": 8,
+  "time": 200,
+  "energy_per_tick": 3600,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:steel_ingot_sqc",
+        "count": 8
+      }
+    }
+  ],
+  "aux": {
+    "tag": "minecraft:coals"
+  },
+  "aux_count": 8
+}

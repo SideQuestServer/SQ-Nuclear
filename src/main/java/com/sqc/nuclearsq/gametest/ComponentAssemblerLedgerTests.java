@@ -279,13 +279,14 @@ public final class ComponentAssemblerLedgerTests {
             BlockPos far = cells.get(cells.size() - 1);
             ChunkGuard.hide(p -> p.equals(far));
             check(terminal(h, r).order(new ItemStack(Items.OAK_PLANKS), 16), "Bestellung abgelehnt");
-            h.runAfterDelay(a.cycleTicks() * 2, () -> {
-                int status = a.status();
-                ChunkGuard.clear();
-                check(status == ComponentAssembler.CHUNK, "Status Chunk erwartet, ist " + status);
-                check(count(h, r, LOG) == 16 && count(h, r, PLANKS) == 0, "Es wurde etwas verbraucht: " + count(h, r, LOG) + " Staemme, " + count(h, r, PLANKS) + " Bretter");
-                h.succeedWhen(() -> check(a.jobs().isEmpty() && count(h, r, PLANKS) == 16, "Auftrag nach dem Laden nicht fertig, Status " + a.status()));
-            });
+            h.startSequence()
+                    .thenWaitUntil(() -> check(a.status() == ComponentAssembler.CHUNK, "Status Chunk erwartet, ist " + a.status()))
+                    .thenExecute(() -> {
+                        ChunkGuard.clear();
+                        check(count(h, r, LOG) == 16 && count(h, r, PLANKS) == 0, "Es wurde etwas verbraucht: " + count(h, r, LOG) + " Staemme, " + count(h, r, PLANKS) + " Bretter");
+                    })
+                    .thenWaitUntil(() -> check(a.jobs().isEmpty() && count(h, r, PLANKS) == 16, "Auftrag nach dem Laden nicht fertig, Status " + a.status()))
+                    .thenSucceed();
         });
     }
 

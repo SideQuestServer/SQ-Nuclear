@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.sqc.nuclearsq.NuclearSQ;
-import com.sqc.nuclearsq.machine.big.BigMachineBlockEntity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
@@ -52,7 +51,7 @@ public final class AccessPayloads {
         ctx.enqueueWork(() -> {
             if (!(ctx.player() instanceof ServerPlayer sp) || !sp.level().isLoaded(a.pos())
                     || sp.distanceToSqr(a.pos().getX() + 0.5, a.pos().getY() + 0.5, a.pos().getZ() + 0.5) > 64
-                    || !(sp.level().getBlockEntity(a.pos()) instanceof BigMachineBlockEntity be)) return;
+                    || !(sp.level().getBlockEntity(a.pos()) instanceof MachineAccess.Holder be)) return;
             MachineAccess acc = be.access();
             if (!acc.can(sp, be.owner(), MachineAccess.USE)) return;
             boolean admin = acc.can(sp, be.owner(), MachineAccess.ADMIN);

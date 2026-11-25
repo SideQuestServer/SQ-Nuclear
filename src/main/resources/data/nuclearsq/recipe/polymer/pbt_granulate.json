@@ -1,0 +1,23 @@
+{
+  "type": "nuclearsq:polymer",
+  "ingredient": {
+    "item": "nuclearsq:enriched_carbon_sqc"
+  },
+  "count": 1,
+  "time": 200,
+  "energy_per_tick": 1800,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:pbt_granulate_sqc",
+        "count": 2
+      }
+    }
+  ],
+  "fluids": [
+    {
+      "port": "naphtha_in",
+      "amount": 250
+    }
+  ]
+}
