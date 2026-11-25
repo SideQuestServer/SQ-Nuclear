@@ -91,7 +91,9 @@ Development remains a manual, creative process where AI helps overcome hurdles f
 
 - SQ-Nuclear by SideQuestChris, released under the MIT License (see `LICENSE`).
 - Ore block textures by superhatosh, used with permission under the MIT License.
-- Translations: Ukrainian by zakharfsk, Simplified Chinese by yhk037.
+- Translations: Ukrainian by zakharfsk, Simplified Chinese by yhk037, Hungarian by N. Kristóf.
+- RTX Remix compatibility by LithicDev, contributed under the MIT License.
+- Compendium examples page and 3D view with port markers by zakharfsk, contributed under the MIT License.
 - Developed with the assistance of Claude.ai by Anthropic (see "Use of AI").
 - [GeckoLib](https://github.com/bernie-g/geckolib) (MIT) for animated machine models.
 - Sable Companion by RyanHCode and Ocelot (MIT), bundled in the jar with its license.

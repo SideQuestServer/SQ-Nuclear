@@ -55,6 +55,10 @@ public class SqcJeiPlugin implements IModPlugin {
             RecipeType.create(NuclearSQ.MODID, "equipment_assembler", SqcJeiCategories.Needs.class);
     private static final RecipeType<SqcJeiCategories.Needs> MICRO =
             RecipeType.create(NuclearSQ.MODID, "micro_assembler", SqcJeiCategories.Needs.class);
+    private static final RecipeType<SqcJeiCategories.Needs> CNC =
+            RecipeType.create(NuclearSQ.MODID, "cnc_mill", SqcJeiCategories.Needs.class);
+    private static final RecipeType<SqcJeiCategories.Needs> SOLDER =
+            RecipeType.create(NuclearSQ.MODID, "solder_machine", SqcJeiCategories.Needs.class);
     private static final RecipeType<HeavyAssemblyRecipe> HEAVY = RecipeType.create(NuclearSQ.MODID, "heavy_assembly", HeavyAssemblyRecipe.class);
     private static final RecipeType<SqcJeiCategories.Drop> PARTICLE = RecipeType.create(NuclearSQ.MODID, "particle_assembler", SqcJeiCategories.Drop.class);
     private final Map<ReprocessingRecipe.Kind, RecipeType<RecipeHolder<ReprocessingRecipe>>> machineTypes = new EnumMap<>(ReprocessingRecipe.Kind.class);
@@ -70,6 +74,8 @@ public class SqcJeiPlugin implements IModPlugin {
                 new SqcJeiCategories.Formless(gui, ASSEMBLY, "reactor_assembler", controller(BigMachine.REACTOR_ASSEMBLER)),
                 new SqcJeiCategories.Formless(gui, SMALL_PARTS, "small_parts_assembler", controller(BigMachine.SMALL_PARTS_ASSEMBLER)),
                 new SqcJeiCategories.Formless(gui, MICRO, "micro_assembler", controller(BigMachine.MICRO_ASSEMBLER)),
+                new SqcJeiCategories.Formless(gui, CNC, "cnc_mill", controller(BigMachine.CNC_MILL)),
+                new SqcJeiCategories.Formless(gui, SOLDER, "solder_machine", controller(BigMachine.SOLDER_MACHINE)),
                 new SqcJeiCategories.Formless(gui, EQUIPMENT, "equipment_assembler", controller(BigMachine.EQUIPMENT_ASSEMBLER)),
                 new SqcJeiCategories.Heavy(gui, HEAVY, controller(BigMachine.HEAVY_ASSEMBLER)),
                 new SqcJeiCategories.Particle(gui, PARTICLE, controller(BigMachine.PARTICLE_ASSEMBLER)));
@@ -95,8 +101,10 @@ public class SqcJeiPlugin implements IModPlugin {
         var needs = java.util.Comparator.comparing(SqcJeiCategories.Needs::result, byTab);
         reg.addRecipes(ASSEMBLY, manager.getAllRecipesFor(AssemblyRegistry.TYPE.get()).stream().map(h -> SqcJeiCategories.needs(h.value())).sorted(needs).toList());
         var parts = manager.getAllRecipesFor(SmallPartsRegistry.TYPE.get());
-        reg.addRecipes(SMALL_PARTS, parts.stream().filter(h -> !h.value().result().is(BigCrafter.MICRO_PRODUCTS)).map(h -> SqcJeiCategories.needs(h.value())).sorted(needs).toList());
+        reg.addRecipes(SMALL_PARTS, parts.stream().filter(h -> !h.value().result().is(BigCrafter.MICRO_PRODUCTS) && !h.value().result().is(BigCrafter.CNC_PRODUCTS) && !h.value().result().is(BigCrafter.SOLDER_PRODUCTS)).map(h -> SqcJeiCategories.needs(h.value())).sorted(needs).toList());
         reg.addRecipes(MICRO, parts.stream().filter(h -> h.value().result().is(BigCrafter.MICRO_PRODUCTS)).map(h -> SqcJeiCategories.needs(h.value())).sorted(needs).toList());
+        reg.addRecipes(CNC, parts.stream().filter(h -> h.value().result().is(BigCrafter.CNC_PRODUCTS) || h.value().result().is(BigCrafter.CNC_SHARED)).map(h -> SqcJeiCategories.needs(h.value())).sorted(needs).toList());
+        reg.addRecipes(SOLDER, parts.stream().filter(h -> h.value().result().is(BigCrafter.SOLDER_PRODUCTS)).map(h -> SqcJeiCategories.needs(h.value())).sorted(needs).toList());
         reg.addRecipes(EQUIPMENT, manager.getAllRecipesFor(EquipmentRegistry.TYPE.get()).stream().map(h -> SqcJeiCategories.needs(h.value().base())).sorted(needs).toList());
         reg.addRecipes(HEAVY, manager.getAllRecipesFor(HeavyAssemblyRegistry.TYPE.get()).stream().map(h -> h.value()).sorted(java.util.Comparator.comparing(HeavyAssemblyRecipe::result, byTab)).toList());
         reg.addRecipes(PARTICLE, SqcJeiCategories.particleDrops());
@@ -111,10 +119,15 @@ public class SqcJeiPlugin implements IModPlugin {
                 controller(BigMachine.QUANTUM_COMPUTER));
         reg.addRecipeCatalysts(MICRO, controller(BigMachine.MICRO_ASSEMBLER), controller(BigMachine.COMPONENT_ASSEMBLER),
                 controller(BigMachine.QUANTUM_COMPUTER));
+        reg.addRecipeCatalysts(CNC, controller(BigMachine.CNC_MILL), controller(BigMachine.COMPONENT_ASSEMBLER),
+                controller(BigMachine.QUANTUM_COMPUTER));
+        reg.addRecipeCatalysts(SOLDER, controller(BigMachine.SOLDER_MACHINE), controller(BigMachine.COMPONENT_ASSEMBLER),
+                controller(BigMachine.QUANTUM_COMPUTER));
         reg.addRecipeCatalysts(EQUIPMENT, controller(BigMachine.EQUIPMENT_ASSEMBLER));
         reg.addRecipeCatalysts(HEAVY, controller(BigMachine.HEAVY_ASSEMBLER));
         reg.addRecipeCatalysts(PARTICLE, controller(BigMachine.PARTICLE_ASSEMBLER));
         reg.addRecipeCatalysts(RecipeTypes.CRAFTING, controller(BigMachine.COMPONENT_ASSEMBLER), controller(BigMachine.QUANTUM_COMPUTER));
+        reg.addRecipeCatalysts(RecipeTypes.SMELTING, controller(BigMachine.KILN));
         for (BigMachine m : BigMachine.values()) {
             ReprocessingRecipe.Kind kind = m.recipeKind();
             if (kind != null) reg.addRecipeCatalysts(machineTypes.get(kind), controller(m));

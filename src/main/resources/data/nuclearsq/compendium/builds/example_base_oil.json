@@ -1,0 +1,102 @@
+{
+ "nodes": [
+  {
+   "key": "derrick",
+   "machine": "oil_derrick",
+   "page": "oil_derrick",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "column",
+   "machine": "distillation_column",
+   "page": "distillation_column",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "cracker",
+   "machine": "cracker",
+   "page": "cracker",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "gasgen",
+   "machine": "gas_generator",
+   "page": "gas_generator",
+   "col": 3,
+   "row": 0
+  },
+  {
+   "key": "bat",
+   "machine": "battery_large",
+   "page": "transport_battery",
+   "col": 4,
+   "row": 0
+  },
+  {
+   "key": "polymer",
+   "machine": "polymer_plant",
+   "page": "rod_polymer",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "gasgen2",
+   "machine": "gas_generator",
+   "page": "gas_generator",
+   "col": 3,
+   "row": 1
+  }
+ ],
+ "links": [
+  {
+   "from": "derrick.crude_out",
+   "to": "column.crude_in",
+   "color": "5A4A40",
+   "kind": "pipe",
+   "fluid": "nuclearsq:crude_oil"
+  },
+  {
+   "from": "column.naphtha_out",
+   "to": "cracker.naphtha_in",
+   "color": "E0B84A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:naphtha"
+  },
+  {
+   "from": "cracker.ethylene_out",
+   "to": "gasgen.ethylene_in",
+   "color": "7ED6E0",
+   "kind": "pipe",
+   "fluid": "nuclearsq:ethylene"
+  },
+  {
+   "from": "column.tar_out",
+   "to": "polymer.tar_in",
+   "color": "8A6A48",
+   "kind": "pipe",
+   "fluid": "nuclearsq:tar"
+  },
+  {
+   "from": "gasgen.energy_out",
+   "to": "bat.energy_in_2",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "column.diesel_out",
+   "to": "gasgen2.ethylene_in",
+   "color": "C9A44A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:diesel"
+  },
+  {
+   "from": "gasgen2.energy_out",
+   "to": "bat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  }
+ ]
+}

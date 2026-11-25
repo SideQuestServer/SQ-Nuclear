@@ -22,5 +22,5 @@ public final class ExoStationShapes {
             {0, 0, 0, 0}, {0, 0, 1, 1}, {0, 1, 0, 2}, {0, 1, 1, 3}, {1, 0, 0, 4}, {1, 0, 1, 5}, {1, 1, 0, 6}, {1, 1, 1, 7},
     };
 
-    public static final double[] MONITOR = {0.3125, 0.375, 0.125, 1.6875, 1.6875, 0.1875};
+    public static final double[] MONITOR = {0.3137, 0.3762, 0.125, 1.6863, 1.6863, 0.1875};
 }

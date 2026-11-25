@@ -39,7 +39,9 @@ public final class MachineRecipeListTests {
             if (want == 0 || got != want) problems.add(m + ": " + got + " statt " + want);
         }
         var parts = recipes.getAllRecipesFor(SmallPartsRegistry.TYPE.get());
-        long plain = parts.stream().filter(r -> !r.value().result().is(BigCrafter.MICRO_PRODUCTS) && !r.value().result().is(BigCrafter.CLEAN_ROOM_PRODUCTS)).count();
+        long plain = parts.stream().filter(r -> !r.value().result().is(BigCrafter.MICRO_PRODUCTS) && !r.value().result().is(BigCrafter.CLEAN_ROOM_PRODUCTS) && !r.value().result().is(BigCrafter.CNC_PRODUCTS) && !r.value().result().is(BigCrafter.SOLDER_PRODUCTS)).count();
+        long solder = parts.stream().filter(r -> r.value().result().is(BigCrafter.SOLDER_PRODUCTS)).count();
+        long cnc = parts.stream().filter(r -> r.value().result().is(BigCrafter.CNC_PRODUCTS) || r.value().result().is(BigCrafter.CNC_SHARED)).count();
         long micro = parts.stream().filter(r -> r.value().result().is(BigCrafter.MICRO_PRODUCTS) && !r.value().result().is(BigCrafter.CLEAN_ROOM_PRODUCTS)).count();
         long clean = parts.stream().filter(r -> r.value().result().is(BigCrafter.CLEAN_ROOM_PRODUCTS) && !r.value().result().is(BigCrafter.MICRO_PRODUCTS)).count();
         int assembly = recipes.getAllRecipesFor(AssemblyRegistry.TYPE.get()).size();
@@ -48,6 +50,8 @@ public final class MachineRecipeListTests {
         check(problems, BigMachine.SMALL_PARTS_ASSEMBLER, MachineRecipes.rows(BigMachine.SMALL_PARTS_ASSEMBLER, recipes, regs).size(), plain);
         check(problems, BigMachine.MICRO_ASSEMBLER, MachineRecipes.rows(BigMachine.MICRO_ASSEMBLER, recipes, regs).size(), micro);
         check(problems, BigMachine.CLEAN_ROOM, MachineRecipes.rows(BigMachine.CLEAN_ROOM, recipes, regs).size(), clean);
+        check(problems, BigMachine.CNC_MILL, MachineRecipes.rows(BigMachine.CNC_MILL, recipes, regs).size(), cnc);
+        check(problems, BigMachine.SOLDER_MACHINE, MachineRecipes.rows(BigMachine.SOLDER_MACHINE, recipes, regs).size(), solder);
         check(problems, BigMachine.EQUIPMENT_ASSEMBLER, MachineRecipes.rows(BigMachine.EQUIPMENT_ASSEMBLER, recipes, regs).size(),
                 recipes.getAllRecipesFor(EquipmentRegistry.TYPE.get()).size());
         check(problems, BigMachine.HEAVY_ASSEMBLER, MachineRecipes.rows(BigMachine.HEAVY_ASSEMBLER, recipes, regs).size(),

@@ -19,7 +19,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 public class BigCrafterMenu extends AbstractContainerMenu {
     public static final int WATER = 12, RACK_COOL = 14, RACK_COLUMN = RACK_COOL + BigCrafter.SHAFTS,
             PART_CHANCE = RACK_COLUMN + 3, PART_CLASSES = 5, PART_LAST = PART_CHANCE + PART_CLASSES, PART_BONUS = PART_LAST + 1,
-            FLUIDS = PART_BONUS + 1, FLUID_TANKS = 3, DATA = FLUIDS + 2 * FLUID_TANKS;
+            FLUIDS = PART_BONUS + 1, FLUID_TANKS = 3, LOCK = FLUIDS + 2 * FLUID_TANKS, DATA = LOCK + 1;
     public static final int PART_OX = 160, PART_OY = 40, PART_UY = 62, PART_CARD_X = 93;
     public static final int GX = 14, GY = 30, ASM_OX = 196, ASM_OY = 66, ASM_INV_Y = 134, PART_INV_Y = 150;
     public static final int SMALL_GX = GX + 18, SMALL_GY = GY + 18;
@@ -104,7 +104,8 @@ public class BigCrafterMenu extends AbstractContainerMenu {
                 }
             });
             for (int i = 0; i < BigCrafter.PLANT_OUTPUTS; i++) {
-                addSlot(takeOnly(items, 1 + i, OUT_X + (i % 2) * 18, OUT_Y + (i / 2) * 18));
+                addSlot(BigCrafter.givesXp(machine) ? xpSlot(items, 1 + i, OUT_X + (i % 2) * 18, OUT_Y + (i / 2) * 18, pos)
+                        : takeOnly(items, 1 + i, OUT_X + (i % 2) * 18, OUT_Y + (i / 2) * 18));
             }
             if (machine.hasAuxSlot()) {
                 addSlot(new SlotItemHandler(items, com.sqc.nuclearsq.reprocessing.ReprocessingRecipe.AUX_SLOT, AUX_X, AUX_Y) {
@@ -129,6 +130,24 @@ public class BigCrafterMenu extends AbstractContainerMenu {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
+            }
+        };
+    }
+
+    private static Slot xpSlot(IItemHandler h, int slot, int x, int y, BlockPos pos) {
+        return new SlotItemHandler(h, slot, x, y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+
+            @Override
+            public void onTake(Player player, ItemStack stack) {
+                if (player.level() instanceof net.minecraft.server.level.ServerLevel sl && sl.getBlockEntity(pos) instanceof BigMachineBlockEntity be && be.crafter() != null) {
+                    be.crafter().dropXp(sl, player);
+                    be.setChanged();
+                }
+                super.onTake(player, stack);
             }
         };
     }
@@ -175,6 +194,11 @@ public class BigCrafterMenu extends AbstractContainerMenu {
     public int bonus() { return data.get(PART_BONUS); }
     public int water() { return data.get(WATER); }
     public int waterCapacity() { return data.get(WATER + 1); }
+    public int lock() { return data.get(LOCK); }
+
+    public boolean lockable() {
+        return machine != BigMachine.PARTICLE_ASSEMBLER && com.sqc.nuclearsq.progression.MachineRecipes.has(machine);
+    }
 
     static ContainerData data(BigMachineBlockEntity be) {
         return new ContainerData() {
@@ -202,6 +226,7 @@ public class BigCrafterMenu extends AbstractContainerMenu {
                     case RACK_COLUMN + 1 -> c.columnNeeded();
                     case RACK_COLUMN + 2 -> c.flow();
                     case PART_LAST -> c.lastClass() + 1;
+                    case LOCK -> c.lockIndex();
                     case FLUIDS, FLUIDS + 2, FLUIDS + 4 -> c.fluidAmount((i - FLUIDS) / 2);
                     case FLUIDS + 1, FLUIDS + 3, FLUIDS + 5 -> c.fluidCapacity((i - FLUIDS) / 2);
                     case PART_BONUS -> be.machine() == BigMachine.PARTICLE_ASSEMBLER
@@ -245,8 +270,8 @@ public class BigCrafterMenu extends AbstractContainerMenu {
                     : machine == BigMachine.SPENT_FUEL_RACK ? 0 : machine == BigMachine.COAL_GENERATOR ? 4 : 1;
             int start = machine == BigMachine.PARTICLE_ASSEMBLER ? com.sqc.nuclearsq.particle.ParticleClasses.OUTPUTS : 0;
             if (machine == BigMachine.PARTICLE_ASSEMBLER) end = com.sqc.nuclearsq.particle.ParticleClasses.SLOTS;
-            if (machine.hasAuxSlot() && BigCrafter.findAux(player.level(), machine, stack)
-                    && BigCrafter.findReprocessing(player.level(), machine, stack) == null) {
+            if (machine.hasAuxSlot() && (machine == BigMachine.KILN ? BigCrafter.auxFor(player.level(), machine, slots.get(0).getItem(), stack)
+                    : BigCrafter.findAux(player.level(), machine, stack) && BigCrafter.findReprocessing(player.level(), machine, stack) == null)) {
                 start = com.sqc.nuclearsq.reprocessing.ReprocessingRecipe.AUX_SLOT;
                 end = start + 1;
             }

@@ -88,7 +88,7 @@ public final class ModCreativeTabs {
                         kit("component_assembler"), kit("particle_assembler")));
                 assembly.addAll(com.sqc.nuclearsq.particle.ParticleRegistry.UPGRADES.values().stream().map(d -> (ItemLike) d.get()).toList());
                 assembly.addAll(com.sqc.nuclearsq.particle.ParticleRegistry.CARDS.stream().map(d -> (ItemLike) d.get()).toList());
-                java.util.List<ItemLike> metal = new java.util.ArrayList<>(java.util.List.of(kit("ore_mill"), kit("hammer_mill"), kit("plate_mill"), kit("foundry")));
+                java.util.List<ItemLike> metal = new java.util.ArrayList<>(java.util.List.of(kit("ore_mill"), kit("hammer_mill"), kit("plate_mill"), kit("cnc_mill"), kit("kiln"), kit("blast_furnace"), kit("foundry")));
                 metal.addAll(ResourceRegistry.tabItems());
                 metal.addAll(FusionRegistry.tabItems());
                 metal.addAll(java.util.List.of(ReactorRegistry.IRON_DUST.get(), ReactorRegistry.GOLD_DUST.get(), ReactorRegistry.COPPER_DUST.get(),
@@ -110,7 +110,8 @@ public final class ModCreativeTabs {
                 chest.addAll(java.util.List.of(TestSourceRegistry.ENERGY_SOURCE_ITEM.get(), TestSourceRegistry.FLUID_SOURCE_ITEM.get()));
                 groups(out, H_MANUFACTURING, java.util.List.of(assembly, metal,
                         com.sqc.nuclearsq.module.ModuleRegistry.ITEM.values().stream().map(d -> (ItemLike) d.get()).toList(),
-                        java.util.List.of(i("zircaloy_sheet_sqc"), i("steel_sheet_sqc"), i("iron_plate_sqc"), i("copper_plate_sqc"), i("gold_plate_sqc"), i("reactor_plate_sqc"),
+                        java.util.List.of(i("zircaloy_sheet_sqc"), i("steel_sheet_sqc"), i("iron_plate_sqc"), i("copper_plate_sqc"), i("gold_plate_sqc"), i("glass_plate_sqc"), i("reactor_plate_sqc"), i("advanced_reactor_casing_sqc"),
+                                i("lcp_module_casing_sqc"), i("pbt_module_casing_sqc"), i("hdpe_module_casing_sqc"), i("polycarbonate_module_casing_sqc"),
                                 i("osmium_heat_plate_sqc"), i("obsidian_composite_plate_sqc"), i("atomic_hull_plate_sqc"),
                                 i("glass_seal_sqc"), i("hdpe_seal_sqc"), i("lead_shielding_sqc")),
                         java.util.List.of(i("uranium_core_sqc"), i("fluorite_cooling_core_sqc"), i("plutonium_core_sqc"),
@@ -138,7 +139,7 @@ public final class ModCreativeTabs {
                                 i("glass_canister_sqc"), i("lubricant_sqc")),
                         java.util.List.of(kit("reprocessing_plant"), kit("slag_crusher"), kit("vitrification_plant")),
                         java.util.List.of(com.sqc.nuclearsq.oil.OilRegistry.WELL_ITEM.get(), kit("oil_derrick"), kit("distillation_column"), kit("cracker"), kit("polymer_plant"),
-                                i("rubber_sqc"), i("rubber_seal_sqc"), i("photoresist_sqc"), kit("gas_generator"), kit("fluid_buffer"))));
+                                i("rubber_sqc"), i("rubber_seal_sqc"), i("photoresist_sqc"), i("lcp_granulate_sqc"), i("pbt_granulate_sqc"), i("polycarbonate_granulate_sqc"), kit("gas_generator"), kit("fluid_buffer"))));
                 java.util.List<ItemLike> robots = new java.util.ArrayList<>(java.util.List.of(com.sqc.nuclearsq.robotics.RoboticsRegistry.ARM_ITEM.get(),
                         com.sqc.nuclearsq.robotics.RoboticsRegistry.HEAVY_ARM_ITEM.get(), com.sqc.nuclearsq.robotics.RoboticsRegistry.ROD_GRIPPER_ITEM.get(), com.sqc.nuclearsq.robotics.RoboticsRegistry.LINK_TOOL.get(),
                         com.sqc.nuclearsq.robotics.RoboticsRegistry.ARM_UPGRADE.get(), com.sqc.nuclearsq.nanobot.NanobotRegistry.CANISTER.get()));
@@ -167,6 +168,7 @@ public final class ModCreativeTabs {
                 storage.addAll(java.util.List.of(com.sqc.nuclearsq.storage.StorageRegistry.QUANTUM_MODULE.get(),
                         com.sqc.nuclearsq.storage.StorageRegistry.TERMINAL.get(), com.sqc.nuclearsq.storage.StorageRegistry.MONITOR.get(),
                         com.sqc.nuclearsq.storage.StorageRegistry.CRAFTING_TERMINAL.get(), com.sqc.nuclearsq.storage.StorageRegistry.ITEM_PORT.get(),
+                        com.sqc.nuclearsq.storage.StorageRegistry.NET_PIPE_ADAPTER.get(),
                         com.sqc.nuclearsq.crate.CrateRegistry.ITEM.get(), com.sqc.nuclearsq.crate.CrateRegistry.UPGRADE_1.get(), com.sqc.nuclearsq.crate.CrateRegistry.UPGRADE_2.get(),
                         com.sqc.nuclearsq.storage.StorageRegistry.WIFI_ADAPTER.get(), com.sqc.nuclearsq.storage.StorageRegistry.WIFI_ANTENNA.get(),
                         com.sqc.nuclearsq.storage.StorageRegistry.WIFI_ANTENNA_SECTOR.get(), com.sqc.nuclearsq.storage.StorageRegistry.WIFI_ANTENNA_DISH.get(),
@@ -174,7 +176,7 @@ public final class ModCreativeTabs {
                         com.sqc.nuclearsq.storage.StorageRegistry.WIFI_TERMINAL.get(), com.sqc.nuclearsq.storage.StorageRegistry.ASSEMBLER_TEMPO.get()));
                 groups(out, H_COMPUTING, java.util.List.of(
                         java.util.List.of(kit("chemical_lab"), i("silicon_raw_sqc"), i("silicon_pure_sqc"), i("silicon_wafer_sqc"), i("chip_1_sqc"), i("chip_2_sqc"), i("chip_3_sqc"),
-                                kit("micro_assembler"), kit("clean_room"), kit("pattern_rack"), com.sqc.nuclearsq.storage.StorageRegistry.PATTERN_CARD.get(),
+                                kit("micro_assembler"), kit("solder_machine"), kit("clean_room"), kit("pattern_rack"), com.sqc.nuclearsq.storage.StorageRegistry.PATTERN_CARD.get(),
                                 kit("compute_assembler"), kit("quantum_computer")),
                         data, storage,
                         java.util.List.of(com.sqc.nuclearsq.economy.EconomyRegistry.TERMINAL.get(), com.sqc.nuclearsq.economy.EconomyRegistry.SERVER.get(),

@@ -1,0 +1,15 @@
+{
+  "values": [
+    "nuclearsq:chip_2_sqc",
+    "nuclearsq:cpu_module_sqc",
+    "nuclearsq:cpu_module_8_sqc",
+    "nuclearsq:cpu_module_16_sqc",
+    "nuclearsq:ram_module_1gb_sqc",
+    "nuclearsq:ram_module_2gb_sqc",
+    "nuclearsq:ram_module_4gb_sqc",
+    "nuclearsq:hard_drive_2_sqc",
+    "nuclearsq:hard_drive_3_sqc",
+    "nuclearsq:solid_state_drive_sqc",
+    "nuclearsq:nvme_drive_sqc"
+  ]
+}

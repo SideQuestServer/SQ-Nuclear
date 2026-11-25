@@ -127,7 +127,7 @@ public class BigMachineGeoModel extends GeoModel<BigMachineBlockEntity> {
             boolean full = com.sqc.nuclearsq.storage.ServerRack.full(c);
             hide("disk_" + k, tier == 0);
             if (tier == 0) continue;
-            for (int i = 1; i <= 4; i++) hide("tier_" + k + "_" + i, i != tier);
+            for (int i = 1; i <= 5; i++) hide("tier_" + k + "_" + i, i != tier);
             hide("led_" + k + "_ok", !on || full);
             hide("led_" + k + "_full", !on || !full);
             hide("act_" + k, !on || !com.sqc.nuclearsq.storage.ServerRack.busy(c) || ((t + k) & 2) == 0);

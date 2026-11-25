@@ -1,0 +1,55 @@
+{
+ "nodes": [
+  {
+   "key": "a",
+   "machine": "micro_assembler",
+   "page": "micro_assembler",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "s",
+   "machine": "solder_machine",
+   "page": "solder_machine",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "b",
+   "machine": "clean_room",
+   "page": "clean_room",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "c",
+   "machine": "compute_assembler",
+   "page": "compute_assembler",
+   "col": 3,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "a.item_out",
+   "to": "s.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:chip_1_sqc"
+  },
+  {
+   "from": "s.item_out",
+   "to": "b.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:chip_2_sqc"
+  },
+  {
+   "from": "b.item_out",
+   "to": "c.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:chip_3_sqc"
+  }
+ ]
+}

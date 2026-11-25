@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "nuclearsq:block/blast_furnace_controller_sqc"
+    },
+    "formed=true": {
+      "model": "nuclearsq:block/blast_furnace_shell_sqc"
+    }
+  }
+}

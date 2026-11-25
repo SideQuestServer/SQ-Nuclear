@@ -1,0 +1,215 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "nuclearsq:block/solar_collector_sqc_side",
+    "side": "nuclearsq:block/solar_collector_sqc_side",
+    "port": "nuclearsq:block/solar_collector_sqc_power_port",
+    "core": "nuclearsq:block/solar_collector_sqc_power_port_core"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        0.5
+      ],
+      "to": [
+        11,
+        3,
+        2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            13,
+            11,
+            16
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            5,
+            13,
+            11,
+            16
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            13,
+            2,
+            16
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            13,
+            2,
+            16
+          ],
+          "texture": "#side"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#side"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#side"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        3,
+        0.5
+      ],
+      "to": [
+        13,
+        13,
+        2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ],
+          "texture": "#port"
+        },
+        "south": {
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ],
+          "texture": "#port"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            3,
+            2,
+            13
+          ],
+          "texture": "#port"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            3,
+            2,
+            13
+          ],
+          "texture": "#port"
+        },
+        "up": {
+          "uv": [
+            3,
+            0.5,
+            13,
+            2
+          ],
+          "texture": "#port"
+        },
+        "down": {
+          "uv": [
+            3,
+            0.5,
+            13,
+            2
+          ],
+          "texture": "#port"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        5,
+        0
+      ],
+      "to": [
+        11,
+        11,
+        1.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ],
+          "texture": "#core"
+        },
+        "south": {
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ],
+          "texture": "#core"
+        },
+        "east": {
+          "uv": [
+            0,
+            5,
+            1.5,
+            11
+          ],
+          "texture": "#core"
+        },
+        "west": {
+          "uv": [
+            0,
+            5,
+            1.5,
+            11
+          ],
+          "texture": "#core"
+        },
+        "up": {
+          "uv": [
+            5,
+            0,
+            11,
+            1.5
+          ],
+          "texture": "#core"
+        },
+        "down": {
+          "uv": [
+            5,
+            0,
+            11,
+            1.5
+          ],
+          "texture": "#core"
+        }
+      }
+    }
+  ]
+}

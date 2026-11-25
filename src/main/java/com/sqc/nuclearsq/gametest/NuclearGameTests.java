@@ -3138,7 +3138,7 @@ public final class NuclearGameTests {
     private static final java.util.Set<String> NO_RECIPE = java.util.Set.of(
             "oil_well_sqc",
             "turbine_port_energy_sqc", "turbine_port_steam_sqc", "turbine_port_water_sqc", "coal_generator_controller_sqc",
-            "small_parts_assembler_controller_sqc", "micro_assembler_controller_sqc", "equipment_assembler_controller_sqc", "plate_mill_controller_sqc", "hammer_mill_controller_sqc", "oil_derrick_controller_sqc", "distillation_column_controller_sqc", "cracker_controller_sqc", "gas_generator_controller_sqc", "fluid_buffer_controller_sqc", "exo_station_controller_sqc",
+            "small_parts_assembler_controller_sqc", "micro_assembler_controller_sqc", "equipment_assembler_controller_sqc", "plate_mill_controller_sqc", "cnc_mill_controller_sqc", "solder_machine_controller_sqc", "hammer_mill_controller_sqc", "kiln_controller_sqc", "blast_furnace_controller_sqc", "oil_derrick_controller_sqc", "distillation_column_controller_sqc", "cracker_controller_sqc", "gas_generator_controller_sqc", "fluid_buffer_controller_sqc", "exo_station_controller_sqc",
             "server_rack_small_controller_sqc", "compute_cluster_controller_sqc", "server_rack_controller_sqc", "server_rack_large_controller_sqc", "pattern_rack_controller_sqc",
             "spent_fuel_sqc", "filter_residue_sqc", "radioactive_fallout_sqc", "bred_blanket_sqc", "bred_neptunium_sqc",
             "hot_coolant_bucket_sqc", "feedwater_bucket_sqc", "preheated_feedwater_bucket_sqc",
@@ -3210,6 +3210,7 @@ public final class NuclearGameTests {
         }
         java.util.Map<String, com.sqc.nuclearsq.progression.RecipeSources.Where> expect = java.util.Map.of(
                 "small_parts_assembler_kit_sqc", com.sqc.nuclearsq.progression.RecipeSources.Where.WORKBENCH,
+                "kiln_kit_sqc", com.sqc.nuclearsq.progression.RecipeSources.Where.WORKBENCH,
                 "reactor_assembler_kit_sqc", com.sqc.nuclearsq.progression.RecipeSources.Where.SMALL_PARTS_ASSEMBLER,
                 "uranium_fragment_sqc", com.sqc.nuclearsq.progression.RecipeSources.Where.BLAST_FURNACE,
                 "steel_sheet_sqc", com.sqc.nuclearsq.progression.RecipeSources.Where.SMALL_PARTS_ASSEMBLER,

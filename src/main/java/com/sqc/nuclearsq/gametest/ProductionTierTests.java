@@ -38,7 +38,7 @@ public final class ProductionTierTests {
     @GameTest(template = FLOOR, batch = "production_a", timeoutTicks = 20)
     public static void computeModuleTiers(GameTestHelper h) {
         int[] cores = {1, 2, 4, 8, 16, 32, 64, 128};
-        int[] mb = {256, 512, 1024, 2048, 4096, 8192, 16384, 32768};
+        int[] mb = {1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072};
         check(com.sqc.nuclearsq.storage.StorageRegistry.CPU_MODULES.length == 8 && com.sqc.nuclearsq.storage.StorageRegistry.RAM_MODULES.length == 8, "acht Stufen je Art");
         for (int i = 0; i < 8; i++) {
             StorageValues.Compute c = com.sqc.nuclearsq.storage.StorageRegistry.CPU_MODULES[i].get().values();
@@ -48,18 +48,18 @@ public final class ProductionTierTests {
         }
         check(StorageValues.gb(256).equals("0.25") && StorageValues.gb(16384).equals("16") && StorageValues.gb(512).equals("0.5"), "Anzeige in GB");
         StorageValues.Assembler a = StorageValues.assembler();
-        check(a.baseSize() == 64 && a.craftsPerGb() == 64, "Auftragsgroesse 64 + 64 je GB");
+        check(a.baseSize() == 64 && a.craftsPerGb() == 16, "Auftragsgroesse 64 + 16 je GB");
         h.succeed();
     }
 
     @GameTest(template = FLOOR, batch = "production_a", timeoutTicks = 20)
     public static void productionTierTable(GameTestHelper h) {
         check(ProductionTier.stage(0, 0) == 0, "0/0 ist Stufe 0");
-        check(ProductionTier.stage(4, 16 * 1024) == 1, "4/16 ist Stufe 1");
-        check(ProductionTier.stage(4, 15 * 1024) == 0 && ProductionTier.stage(3, 16 * 1024) == 0, "beides muss reichen");
+        check(ProductionTier.stage(4, 64 * 1024) == 1, "4/64 ist Stufe 1");
+        check(ProductionTier.stage(4, 63 * 1024) == 0 && ProductionTier.stage(3, 64 * 1024) == 0, "beides muss reichen");
         check(ProductionTier.stage(1000, 0) == 0 && ProductionTier.stage(0, 1000 * 1024) == 0, "eine Haelfte allein reicht nicht");
-        check(ProductionTier.stage(32, 128 * 1024) == 4, "ein Rechencluster (32/128) ist Stufe 4");
-        check(ProductionTier.stage(128, 512 * 1024) == 6 && ProductionTier.top() == 6, "128/512 ist die hoechste Stufe");
+        check(ProductionTier.stage(32, 512 * 1024) == 4, "ein Rechencluster (32/512) ist Stufe 4");
+        check(ProductionTier.stage(128, 2048 * 1024) == 6 && ProductionTier.top() == 6, "128/2048 ist die hoechste Stufe");
         check(ProductionTier.speedPct(BigMachine.REACTOR_ASSEMBLER, 0) == 91, "normal ohne Rechner x0,91");
         check(ProductionTier.speedPct(BigMachine.SMALL_PARTS_ASSEMBLER, 6) == 120, "normal hoechstens x1,2");
         check(ProductionTier.speedPct(BigMachine.COMPUTE_ASSEMBLER, 0) == 100, "Turbo ohne Rechner x1");
@@ -83,7 +83,7 @@ public final class ProductionTierTests {
         long perSecond = (long) q.extra("max_lanes") * q.extra("crafts_per_cycle") * 20 / q.extra("cycle_ticks");
         check(perSecond == 1024, "Quantencomputer schafft " + perSecond + " statt 1024 Teile pro Sekunde");
         StorageValues.Demand d = StorageValues.demand("quantum_computer_controller_sqc");
-        check(d != null && d.cpu() == 320 && d.ram() == 1280 * 1024, "Bedarf ist " + d);
+        check(d != null && d.cpu() == 320 && d.ram() == 5120 * 1024, "Bedarf ist " + d);
         long power = (long) q.extra("fe_per_tick") * q.extra("max_lanes");
         check(power == 855000, "Strom " + power + " FE/t statt 855000");
         check(q.isAutocrafter() && !BigMachine.COMPONENT_ASSEMBLER.equals(q), "Quantencomputer ist eine eigene Autocrafting-Maschine");

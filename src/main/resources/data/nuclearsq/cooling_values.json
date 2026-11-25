@@ -691,6 +691,28 @@
         "data": {"type": "terminal", "dir": "both", "rate": 0, "unit": "Datennetz"}
       }
     },
+    "cnc_mill": {
+      "energy": {"capacity": 120000, "use": 0},
+      "fe_per_tick": 480,
+      "craft_ticks": 50,
+      "ports": {
+        "energy_in": {"type": "energy", "dir": "in", "rate": 3000, "unit": "FE/t"},
+        "item_in": {"type": "item", "dir": "in", "rate": 1, "unit": "Stapel/t", "slots": 10},
+        "item_out": {"type": "item", "dir": "out", "rate": 1, "unit": "Stapel/t", "slots": 10},
+        "data": {"type": "terminal", "dir": "both", "rate": 0, "unit": "Datennetz"}
+      }
+    },
+    "solder_machine": {
+      "energy": {"capacity": 300000, "use": 0},
+      "fe_per_tick": 960,
+      "craft_ticks": 100,
+      "ports": {
+        "energy_in": {"type": "energy", "dir": "in", "rate": 3000, "unit": "FE/t"},
+        "item_in": {"type": "item", "dir": "in", "rate": 1, "unit": "Stapel/t", "slots": 10},
+        "item_out": {"type": "item", "dir": "out", "rate": 1, "unit": "Stapel/t", "slots": 10},
+        "data": {"type": "terminal", "dir": "both", "rate": 0, "unit": "Datennetz"}
+      }
+    },
     "micro_assembler": {
       "energy": {"capacity": 120000, "use": 0},
       "fe_per_tick": 360,
@@ -953,6 +975,24 @@
         "item_in": {"type": "item", "dir": "in", "rate": 1, "unit": "Stapel/t", "slots": 5},
         "item_out": {"type": "item", "dir": "out", "rate": 1, "unit": "Stapel/t", "slots": 5},
         "energy_in": {"type": "energy", "dir": "in", "rate": 1500, "unit": "FE/t"},
+        "data": {"type": "terminal", "dir": "both", "rate": 0, "unit": "Datennetz"}
+      }
+    },
+    "kiln": {
+      "energy": {"capacity": 180000, "use": 0},
+      "ports": {
+        "item_in": {"type": "item", "dir": "in", "rate": 1, "unit": "Stapel/t", "slots": 6},
+        "item_out": {"type": "item", "dir": "out", "rate": 1, "unit": "Stapel/t", "slots": 5},
+        "energy_in": {"type": "energy", "dir": "in", "rate": 1500, "unit": "FE/t"},
+        "data": {"type": "terminal", "dir": "both", "rate": 0, "unit": "Datennetz"}
+      }
+    },
+    "blast_furnace": {
+      "energy": {"capacity": 600000, "use": 0},
+      "ports": {
+        "item_in": {"type": "item", "dir": "in", "rate": 1, "unit": "Stapel/t", "slots": 6},
+        "item_out": {"type": "item", "dir": "out", "rate": 1, "unit": "Stapel/t", "slots": 5},
+        "energy_in": {"type": "energy", "dir": "in", "rate": 9000, "unit": "FE/t"},
         "data": {"type": "terminal", "dir": "both", "rate": 0, "unit": "Datennetz"}
       }
     },

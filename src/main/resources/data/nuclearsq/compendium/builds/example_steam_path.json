@@ -1,0 +1,119 @@
+{
+ "nodes": [
+  {
+   "key": "hull",
+   "machine": "containment",
+   "page": "big_containment",
+   "at": [37, 0, 3],
+   "rot": 0,
+   "open": true
+  },
+  {
+   "key": "sg",
+   "machine": "steam_generator",
+   "page": "big_steam_generator",
+   "at": [41, 0, 15],
+   "rot": 2
+  },
+  {
+   "key": "treat",
+   "machine": "water_treatment",
+   "page": "plant_treatment",
+   "at": [72, 0, 36],
+   "rot": 1
+  },
+  {
+   "key": "sep",
+   "machine": "steam_separator",
+   "page": "big_separator",
+   "at": [29, 0, 16],
+   "rot": 0
+  },
+  {
+   "key": "tur",
+   "machine": "turbine",
+   "page": "energy_turbine",
+   "at": [15, 0, 5],
+   "rot": 0
+  },
+  {
+   "key": "cond",
+   "machine": "condenser",
+   "page": "plant_condenser",
+   "at": [3, 0, 15],
+   "rot": 0
+  },
+  {
+   "key": "fwp",
+   "machine": "feedwater_pump",
+   "page": "plant_fwpump",
+   "at": [81, 0, 36],
+   "rot": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "hull.feedwater_out",
+   "to": "sg.feedwater_in",
+   "color": "5EC2C2",
+   "kind": "pipe",
+   "path": [[65, 9, 18], [64, 9, 18], [64, 9, 21], [49, 9, 21], [49, 9, 18], [48, 9, 18]]
+  },
+  {
+   "from": "sg.wet_steam_out",
+   "to": "hull.wet_steam_in",
+   "color": "C9D3DC",
+   "kind": "pipe",
+   "path": [[44, 16, 18], [44, 17, 18], [42, 17, 18], [42, 16, 18], [39, 16, 18]]
+  },
+  {
+   "from": "hull.wet_steam_out",
+   "to": "sep.wet_steam_in",
+   "color": "C9D3DC",
+   "kind": "pipe",
+   "path": [[36, 16, 18], [35, 16, 18], [35, 16, 14], [29, 16, 14], [29, 0, 14], [29, 0, 15]]
+  },
+  {
+   "from": "sep.steam_out",
+   "to": "tur.steam_in",
+   "color": "E6EDF2",
+   "kind": "pipe",
+   "path": [[30, 6, 17], [30, 8, 17], [18, 8, 17], [18, 8, 11], [18, 7, 11]]
+  },
+  {
+   "from": "sep.water_out",
+   "to": "treat.water_in_9",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[32, 1, 17], [33, 1, 17], [33, 5, 17], [33, 5, 38], [74, 5, 38], [74, 4, 38]]
+  },
+  {
+   "from": "treat.feedwater_out",
+   "to": "fwp.feedwater_in",
+   "color": "5EC2C2",
+   "kind": "pipe",
+   "path": [[76, 1, 36], [76, 1, 35], [76, 0, 35], [77, 0, 35], [77, 0, 37], [80, 0, 37]]
+  },
+  {
+   "from": "fwp.feedwater_out",
+   "to": "hull.feedwater_in",
+   "color": "5EC2C2",
+   "kind": "pipe",
+   "path": [[84, 1, 37], [85, 1, 37], [85, 9, 37], [85, 9, 18], [68, 9, 18]]
+  },
+  {
+   "from": "tur.exhaust_out",
+   "to": "cond.exhaust_in",
+   "color": "E6EDF2",
+   "kind": "pipe",
+   "path": [[15, 0, 17], [14, 0, 17], [14, 5, 17], [5, 5, 17], [5, 4, 17]]
+  },
+  {
+   "from": "cond.water_out",
+   "to": "treat.water_in_10",
+   "color": "4F9BD9",
+   "kind": "pipe",
+   "path": [[8, 0, 17], [9, 0, 17], [9, 0, 40], [9, 5, 40], [74, 5, 40], [74, 4, 40]]
+  }
+ ]
+}

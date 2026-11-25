@@ -151,7 +151,7 @@ public final class ChemLabTests {
             if (r.kind() == ReprocessingRecipe.Kind.CHEMISTRY) chem++;
             if (r.kind() == ReprocessingRecipe.Kind.VITRIFICATION) vitrify++;
         }
-        if (chem != 8) throw new GameTestAssertException("Chemie-Rezepte: " + chem + " statt 8");
+        if (chem != 9) throw new GameTestAssertException("Chemie-Rezepte: " + chem + " statt 9");
         if (vitrify != 5) throw new GameTestAssertException("Verglasungs-Rezepte: " + vitrify + " statt 5");
         for (String id : new String[] {"chemical_lab_kit_sqc", "chemical_lab_controller_sqc"}) item(id);
         h.succeed();

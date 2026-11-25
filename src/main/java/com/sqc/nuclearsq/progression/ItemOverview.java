@@ -55,7 +55,7 @@ public final class ItemOverview {
         ItemStack r = s.result();
         if (r.is(com.sqc.nuclearsq.machine.big.BigCrafter.MICRO_PRODUCTS)) return passed.contains("micro");
         if (r.is(com.sqc.nuclearsq.machine.big.BigCrafter.CLEAN_ROOM_PRODUCTS)) return passed.contains("clean_room") && passed.contains("robot_arm");
-        if (r.is(com.sqc.nuclearsq.machine.big.BigCrafter.ARM_PRODUCTS)) return passed.contains("robot_arm");
+        if (r.is(com.sqc.nuclearsq.machine.big.BigCrafter.SOLDER_PRODUCTS)) return passed.contains("solder_machine");
         return true;
     }
 

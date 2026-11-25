@@ -42,6 +42,12 @@
         "item": "nuclearsq:chip_3_sqc"
       },
       "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:polycarbonate_module_casing_sqc"
+      },
+      "count": 1
     }
   ],
   "result": {

@@ -118,12 +118,12 @@ public final class ComputeTests {
                 if (!s.served()) throw new GameTestAssertException("Geraet " + p + " ohne Rechenleistung: " + s);
             }
             ComputeNet.Status s = ComputeNet.status(h.getLevel(), console);
-            if (s.cpu() != 4 || s.ram() != 16 * 1024 || s.cpuUsed() != 3 || s.ramUsed() != 10 * 1024) throw new GameTestAssertException("Werte: " + s);
+            if (s.cpu() != 4 || s.ram() != 64 * 1024 || s.cpuUsed() != 3 || s.ramUsed() != 40 * 1024) throw new GameTestAssertException("Werte: " + s);
             if (says(DataConsole.runChecked(h.getLevel(), console, null, "list"), "data.nuclearsq.compute.none")) {
                 throw new GameTestAssertException("Konsole meldet trotz Modul keine Rechenleistung");
             }
             DataSource src = DataSources.of(rack);
-            if (src == null || src.value("cpu") == null || src.value("cpu").value() != 4 || src.value("ram").value() != 16) {
+            if (src == null || src.value("cpu") == null || src.value("cpu").value() != 4 || src.value("ram").value() != 64) {
                 throw new GameTestAssertException("Rack zeigt CPU/RAM nicht als Wert");
             }
             int[] codes = rack.rack().syncDue();

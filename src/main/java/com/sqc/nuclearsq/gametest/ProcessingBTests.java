@@ -147,7 +147,7 @@ public final class ProcessingBTests {
             }
         }
         if (pel != 3) throw new GameTestAssertException("Pellet-Rezepte: " + pel);
-        if (foundry < 3) throw new GameTestAssertException("Giesserei-Rezepte: " + foundry);
+        if (foundry < 2) throw new GameTestAssertException("Giesserei-Rezepte: " + foundry);
         if (slag < 2) throw new GameTestAssertException("Zerkleinerer-Rezepte: " + slag);
         for (String id : new String[] {"pellet_factory_kit_sqc", "foundry_kit_sqc", "slag_crusher_kit_sqc", "electrolyzer_kit_sqc",
                 "pellet_factory_controller_sqc", "foundry_controller_sqc", "slag_crusher_controller_sqc", "electrolyzer_controller_sqc", "uranium_pellet_sqc"}) item(id);

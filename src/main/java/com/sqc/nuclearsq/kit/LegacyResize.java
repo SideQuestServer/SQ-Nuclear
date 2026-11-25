@@ -24,7 +24,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 public final class LegacyResize {
     private LegacyResize() {}
 
-    static final Set<BigMachine> RESIZED = Set.of(BigMachine.OIL_DERRICK, BigMachine.DISTILLATION_COLUMN);
+    static final Set<BigMachine> RESIZED = Set.of(BigMachine.OIL_DERRICK, BigMachine.DISTILLATION_COLUMN, BigMachine.CNC_MILL, BigMachine.SOLDER_MACHINE);
 
     private record Job(ServerLevel level, BlockPos ctrl) {}
 

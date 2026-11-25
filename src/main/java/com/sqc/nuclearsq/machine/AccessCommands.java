@@ -11,7 +11,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.sqc.nuclearsq.NuclearSQ;
 import com.sqc.nuclearsq.kit.MachineKits;
-import com.sqc.nuclearsq.machine.big.BigMachineBlockEntity;
+import com.sqc.nuclearsq.door.DoorBlockEntity;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -61,18 +61,19 @@ public final class AccessCommands {
     }
 
     @Nullable
-    private static BigMachineBlockEntity target(ServerPlayer sp) {
+    private static MachineAccess.Holder target(ServerPlayer sp) {
         HitResult hit = sp.pick(6.0, 0f, false);
         if (!(hit instanceof BlockHitResult b)) return null;
         var pl = MachineKits.owner(sp.level(), b.getBlockPos());
         var be = sp.level().getBlockEntity(pl != null ? pl.anchor() : b.getBlockPos());
-        return be instanceof BigMachineBlockEntity m ? m : null;
+        if (be == null) be = DoorBlockEntity.controllerOf(sp.level(), b.getBlockPos());
+        return be instanceof MachineAccess.Holder m ? m : null;
     }
 
     @Nullable
-    private static BigMachineBlockEntity admin(CommandSourceStack src) throws CommandSyntaxException {
+    private static MachineAccess.Holder admin(CommandSourceStack src) throws CommandSyntaxException {
         ServerPlayer sp = src.getPlayerOrException();
-        BigMachineBlockEntity be = target(sp);
+        MachineAccess.Holder be = target(sp);
         if (be == null) {
             src.sendFailure(msg("none"));
             return null;
@@ -93,7 +94,7 @@ public final class AccessCommands {
     }
 
     private static int add(CommandContext<CommandSourceStack> c, String kind, int level) throws CommandSyntaxException {
-        BigMachineBlockEntity be = admin(c.getSource());
+        MachineAccess.Holder be = admin(c.getSource());
         if (be == null) return 0;
         String name = StringArgumentType.getString(c, "name");
         if (kind.equals("team") && TeamData.get(c.getSource().getServer()).team(name.toLowerCase(Locale.ROOT)) == null) {
@@ -107,7 +108,7 @@ public final class AccessCommands {
     }
 
     private static int remove(CommandContext<CommandSourceStack> c, String kind) throws CommandSyntaxException {
-        BigMachineBlockEntity be = admin(c.getSource());
+        MachineAccess.Holder be = admin(c.getSource());
         if (be == null) return 0;
         String name = StringArgumentType.getString(c, "name");
         boolean had = be.access().remove(key(kind, name));
@@ -118,7 +119,7 @@ public final class AccessCommands {
 
     private static int list(CommandSourceStack src) throws CommandSyntaxException {
         ServerPlayer sp = src.getPlayerOrException();
-        BigMachineBlockEntity be = target(sp);
+        MachineAccess.Holder be = target(sp);
         if (be == null) {
             src.sendFailure(msg("none"));
             return 0;

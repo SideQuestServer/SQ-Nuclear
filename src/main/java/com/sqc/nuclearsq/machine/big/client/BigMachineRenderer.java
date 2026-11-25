@@ -47,7 +47,7 @@ public class BigMachineRenderer extends GeoBlockRenderer<BigMachineBlockEntity> 
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         long t0 = com.sqc.nuclearsq.client.PerfProbe.start();
         try {
-            renderMachine(be, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
+            renderMachine(be, partialTick, poseStack, RtxBatchBufferSource.wrap(bufferSource), packedLight, packedOverlay);
         } finally {
             com.sqc.nuclearsq.client.PerfProbe.end(t0);
         }
@@ -112,6 +112,7 @@ public class BigMachineRenderer extends GeoBlockRenderer<BigMachineBlockEntity> 
             renderParticleResult(be, partialTick, poseStack, bufferSource, light, packedOverlay);
         }
         if (be.exo() != null && !be.exo().piece().getItem(0).isEmpty()) renderExoPiece(be, rot, anchor.subtract(pos), poseStack, bufferSource, light, packedOverlay);
+        if (m == BigMachine.EXO_STATION && !com.sqc.nuclearsq.compat.iris.IrisCompat.shadowPass()) renderGlass(be, partialTick, poseStack, bufferSource, light, packedOverlay, pos, anchor);
         if (m == BigMachine.CONTROL_DESK && com.sqc.nuclearsq.NuclearClientConfig.cameraDistSq(pos) <= com.sqc.nuclearsq.client.PanelCull.MAX_DIST * com.sqc.nuclearsq.client.PanelCull.MAX_DIST) com.sqc.nuclearsq.data.client.DeskScreens.render(be, rot, partialTick, poseStack, bufferSource);
         if (be.substation() != null) com.sqc.nuclearsq.transport.client.GridWireRenderer.renderLinks(be.getLevel(), be.substation(), pos, poseStack, bufferSource);
         for (RodShaft s : be.shafts()) {
@@ -233,6 +234,45 @@ public class BigMachineRenderer extends GeoBlockRenderer<BigMachineBlockEntity> 
         pose.popPose();
     }
 
+    private static final RenderType EXO_GLASS = RenderType.create("nuclearsq_exo_glass", com.mojang.blaze3d.vertex.DefaultVertexFormat.NEW_ENTITY,
+            com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS, 1536, true, true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(net.minecraft.client.renderer.RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_SHADER)
+                    .setTextureState(new net.minecraft.client.renderer.RenderStateShard.TextureStateShard(
+                            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(com.sqc.nuclearsq.NuclearSQ.MODID, "textures/block/" + BigMachine.EXO_STATION.id + ".png"), false, false))
+                    .setTransparencyState(net.minecraft.client.renderer.RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setCullState(net.minecraft.client.renderer.RenderStateShard.NO_CULL)
+                    .setLightmapState(net.minecraft.client.renderer.RenderStateShard.LIGHTMAP)
+                    .setOverlayState(net.minecraft.client.renderer.RenderStateShard.OVERLAY)
+                    .setWriteMaskState(net.minecraft.client.renderer.RenderStateShard.COLOR_WRITE)
+                    .createCompositeState(false));
+
+    private static final RenderType EXO_GLASS_SHADER = RenderType.entityTranslucent(
+            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(com.sqc.nuclearsq.NuclearSQ.MODID, "textures/block/" + BigMachine.EXO_STATION.id + ".png"));
+
+    private boolean glassPass;
+
+    private void renderGlass(BigMachineBlockEntity be, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+                             int light, int packedOverlay, BlockPos pos, BlockPos anchor) {
+        poseStack.pushPose();
+        poseStack.translate(anchor.getX() - pos.getX(), anchor.getY() - pos.getY(), anchor.getZ() - pos.getZ());
+        glassPass = true;
+        try {
+            super.render(be, partialTick, poseStack, bufferSource, light, packedOverlay);
+        } finally {
+            glassPass = false;
+            poseStack.popPose();
+        }
+    }
+
+    @Override
+    public void renderRecursively(PoseStack poseStack, BigMachineBlockEntity be, software.bernie.geckolib.cache.object.GeoBone bone, RenderType renderType,
+                                  MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
+                                  int packedOverlay, int colour) {
+        if (be.machine() == BigMachine.EXO_STATION && bone.getParent() != null && glassPass != "glass".equals(bone.getName())) return;
+        super.renderRecursively(poseStack, be, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+    }
+
     private void renderExoPiece(BigMachineBlockEntity be, int rot, BlockPos off, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         pose.pushPose();
         pose.translate(off.getX() + 0.5, off.getY(), off.getZ() + 0.5);
@@ -314,7 +354,7 @@ public class BigMachineRenderer extends GeoBlockRenderer<BigMachineBlockEntity> 
 
     @Override
     public RenderType getRenderType(BigMachineBlockEntity be, net.minecraft.resources.ResourceLocation texture, MultiBufferSource buffers, float partialTick) {
-        return be.machine() == BigMachine.EXO_STATION ? RenderType.entityTranslucent(texture) : super.getRenderType(be, texture, buffers, partialTick);
+        return glassPass ? (com.sqc.nuclearsq.compat.iris.IrisCompat.shaderPackInUse() ? EXO_GLASS_SHADER : EXO_GLASS) : super.getRenderType(be, texture, buffers, partialTick);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class AirlockBlock extends Block implements EntityBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (!level.isClientSide && player instanceof ServerPlayer sp && level.getBlockEntity(pos) instanceof AirlockBlockEntity be) {
+        if (!level.isClientSide && player instanceof ServerPlayer sp && level.getBlockEntity(pos) instanceof AirlockBlockEntity be && be.mayUse(sp)) {
             if (player.isShiftKeyDown()) be.cycle();
             else be.openTerminal(sp);
         }

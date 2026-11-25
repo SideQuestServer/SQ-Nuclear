@@ -1,0 +1,17 @@
+{
+  "type": "nuclearsq:kiln_firing",
+  "ingredient": {
+    "item": "nuclearsq:zirconium_dust_sqc"
+  },
+  "count": 8,
+  "time": 100,
+  "energy_per_tick": 300,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:zirconium_ingot_sqc",
+        "count": 1
+      }
+    }
+  ]
+}

@@ -7,7 +7,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -53,7 +55,7 @@ public class DoorControllerBlock extends Block implements EntityBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (!level.isClientSide && player instanceof ServerPlayer sp && level.getBlockEntity(pos) instanceof DoorBlockEntity be) {
+        if (!level.isClientSide && player instanceof ServerPlayer sp && level.getBlockEntity(pos) instanceof DoorBlockEntity be && be.mayUse(sp)) {
             if (player.isShiftKeyDown()) {
                 Component err = be.toggle();
                 if (err != null) player.displayClientMessage(err, true);
@@ -62,6 +64,12 @@ public class DoorControllerBlock extends Block implements EntityBlock {
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (placer instanceof Player p && level.getBlockEntity(pos) instanceof DoorBlockEntity be) be.claim(p);
     }
 
     @Override

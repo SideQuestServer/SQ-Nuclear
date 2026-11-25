@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +38,14 @@ public class AirlockBlockEntity extends BlockEntity {
     public DoorBlockEntity door(int i) {
         return doors[i] != null && level != null && level.isLoaded(doors[i]) && level.getBlockEntity(doors[i]) instanceof DoorBlockEntity d
                 && worldPosition.equals(d.airlock()) ? d : null;
+    }
+
+    public boolean mayUse(Player player) {
+        for (int i = 0; i < 2; i++) {
+            DoorBlockEntity d = door(i);
+            if (d != null && !d.mayUse(player)) return false;
+        }
+        return true;
     }
 
     public boolean busy() { return want >= 0; }

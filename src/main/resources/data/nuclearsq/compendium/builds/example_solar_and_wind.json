@@ -1,0 +1,52 @@
+{
+ "nodes": [
+  {
+   "key": "sol",
+   "machine": "solar_field",
+   "page": "energy_solar",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "wind",
+   "machine": "wind_turbine_small",
+   "page": "energy_wind",
+   "col": 0,
+   "row": 1
+  },
+  {
+   "key": "bat",
+   "machine": "battery_medium",
+   "page": "transport_battery",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "sub",
+   "machine": "substation",
+   "page": "transport_substation",
+   "col": 2,
+   "row": 0
+  }
+ ],
+ "links": [
+  {
+   "from": "sol.energy_out",
+   "to": "bat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "wind.energy_out",
+   "to": "bat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "sub.energy_in_0",
+   "color": "E05050",
+   "kind": "power"
+  }
+ ]
+}

@@ -30,6 +30,12 @@
         "item": "nuclearsq:chip_2_sqc"
       },
       "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:pbt_module_casing_sqc"
+      },
+      "count": 2
     }
   ],
   "result": {

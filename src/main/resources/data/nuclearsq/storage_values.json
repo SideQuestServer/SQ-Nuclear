@@ -3,7 +3,8 @@
     "hard_drive_1": {"items": 4096, "types": 32, "fe_per_tick": 3},
     "hard_drive_2": {"items": 16384, "types": 48, "fe_per_tick": 6},
     "hard_drive_3": {"items": 65536, "types": 63, "fe_per_tick": 12},
-    "solid_state_drive": {"items": 262144, "types": 63, "fe_per_tick": 24}
+    "solid_state_drive": {"items": 262144, "types": 63, "fe_per_tick": 24},
+    "nvme_drive": {"items": 1048576, "types": 63, "fe_per_tick": 48}
   },
   "compute_modules": {
     "cpu_module_1": {"cpu": 1, "ram": 0, "fe_per_tick": 3},
@@ -14,24 +15,24 @@
     "cpu_module_32": {"cpu": 32, "ram": 0, "fe_per_tick": 60},
     "cpu_module_64": {"cpu": 64, "ram": 0, "fe_per_tick": 96},
     "cpu_module_128": {"cpu": 128, "ram": 0, "fe_per_tick": 150},
-    "ram_module_256mb": {"cpu": 0, "ram": 0.25, "fe_per_tick": 3},
-    "ram_module_512mb": {"cpu": 0, "ram": 0.5, "fe_per_tick": 3},
-    "ram_module_1gb": {"cpu": 0, "ram": 1, "fe_per_tick": 3},
-    "ram_module_2gb": {"cpu": 0, "ram": 2, "fe_per_tick": 3},
-    "ram_module_4gb": {"cpu": 0, "ram": 4, "fe_per_tick": 3},
-    "ram_module_8gb": {"cpu": 0, "ram": 8, "fe_per_tick": 6},
-    "ram_module": {"cpu": 0, "ram": 16, "fe_per_tick": 6},
-    "ram_module_32gb": {"cpu": 0, "ram": 32, "fe_per_tick": 12}
+    "ram_module_256mb": {"cpu": 0, "ram": 1, "fe_per_tick": 3},
+    "ram_module_512mb": {"cpu": 0, "ram": 2, "fe_per_tick": 3},
+    "ram_module_1gb": {"cpu": 0, "ram": 4, "fe_per_tick": 3},
+    "ram_module_2gb": {"cpu": 0, "ram": 8, "fe_per_tick": 3},
+    "ram_module_4gb": {"cpu": 0, "ram": 16, "fe_per_tick": 3},
+    "ram_module_8gb": {"cpu": 0, "ram": 32, "fe_per_tick": 6},
+    "ram_module": {"cpu": 0, "ram": 64, "fe_per_tick": 6},
+    "ram_module_32gb": {"cpu": 0, "ram": 128, "fe_per_tick": 12}
   },
   "compute_demand": {
-    "data_terminal_sqc": {"cpu": 1, "ram": 2},
-    "data_console_sqc": {"cpu": 1, "ram": 4},
-    "storage_terminal_sqc": {"cpu": 1, "ram": 4},
-    "crafting_terminal_sqc": {"cpu": 2, "ram": 8},
-    "wifi_adapter_sqc": {"cpu": 1, "ram": 4},
-    "control_wall_sqc": {"cpu": 2, "ram": 8},
-    "control_desk_controller_sqc": {"cpu": 2, "ram": 8},
-    "quantum_computer_controller_sqc": {"cpu": 320, "ram": 1280}
+    "data_terminal_sqc": {"cpu": 1, "ram": 8},
+    "data_console_sqc": {"cpu": 1, "ram": 16},
+    "storage_terminal_sqc": {"cpu": 1, "ram": 16},
+    "crafting_terminal_sqc": {"cpu": 2, "ram": 32},
+    "wifi_adapter_sqc": {"cpu": 1, "ram": 16},
+    "control_wall_sqc": {"cpu": 2, "ram": 32},
+    "control_desk_controller_sqc": {"cpu": 2, "ram": 32},
+    "quantum_computer_controller_sqc": {"cpu": 320, "ram": 5120}
   },
   "assembler": {
     "tempo_speed_pct": [100, 150, 200, 250, 300, 350, 400, 450, 500],
@@ -39,12 +40,12 @@
     "base_lanes": 1,
     "max_lanes": 8,
     "base_size": 64,
-    "crafts_per_gb": 64,
+    "crafts_per_gb": 16,
     "stall_ticks": 6000
   },
   "production": {
     "cpu": [0, 4, 8, 16, 32, 64, 128],
-    "ram": [0, 16, 32, 64, 128, 256, 512],
+    "ram": [0, 64, 128, 256, 512, 1024, 2048],
     "normal_speed_pct": [91, 100, 110, 115, 120, 120, 120],
     "normal_power_pct": [91, 100, 110, 115, 120, 120, 120],
     "turbo_speed_pct": [100, 400, 1200, 3200, 6400, 10000, 12800],

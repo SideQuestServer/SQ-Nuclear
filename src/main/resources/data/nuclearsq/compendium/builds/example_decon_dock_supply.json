@@ -1,0 +1,69 @@
+{
+ "nodes": [
+  {
+   "key": "col",
+   "machine": "distillation_column",
+   "page": "distillation_column",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "lab",
+   "machine": "chemical_lab",
+   "page": "rod_chemlab",
+   "col": 2,
+   "row": 1
+  },
+  {
+   "key": "dock",
+   "machine": "decon_dock",
+   "page": "decon_dock",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "bufn",
+   "machine": "fluid_buffer",
+   "page": "fluid_buffer",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "buft",
+   "machine": "fluid_buffer",
+   "page": "fluid_buffer",
+   "col": 1,
+   "row": 1
+  }
+ ],
+ "links": [
+  {
+   "from": "col.diesel_out",
+   "to": "dock.diesel_in",
+   "color": "C9A44A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:diesel"
+  },
+  {
+   "from": "lab.lye_out",
+   "to": "dock.lye_in",
+   "color": "C8D45A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:lye"
+  },
+  {
+   "from": "col.naphtha_out",
+   "to": "bufn.fluid_in",
+   "color": "E0B84A",
+   "kind": "pipe",
+   "fluid": "nuclearsq:naphtha"
+  },
+  {
+   "from": "col.tar_out",
+   "to": "buft.fluid_in",
+   "color": "8A6A48",
+   "kind": "pipe",
+   "fluid": "nuclearsq:tar"
+  }
+ ]
+}

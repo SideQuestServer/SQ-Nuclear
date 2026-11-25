@@ -1,0 +1,141 @@
+{
+ "nodes": [
+  {
+   "key": "sub",
+   "machine": "substation",
+   "page": "transport_substation",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "mill",
+   "machine": "ore_mill",
+   "page": "rod_ore_mill",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "hammer",
+   "machine": "hammer_mill",
+   "page": "hammer_mill",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "kiln",
+   "machine": "kiln",
+   "page": "kiln",
+   "col": 2,
+   "row": 1
+  },
+  {
+   "key": "blast",
+   "machine": "blast_furnace",
+   "page": "blast_furnace",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "plate",
+   "machine": "plate_mill",
+   "page": "plate_mill",
+   "col": 3,
+   "row": 0
+  },
+  {
+   "key": "cnc",
+   "machine": "cnc_mill",
+   "page": "cnc_mill",
+   "col": 4,
+   "row": 0
+  },
+  {
+   "key": "asm",
+   "machine": "component_assembler",
+   "page": "component_assembler",
+   "col": 5,
+   "row": 0,
+   "makes": "nuclearsq:battery_large_controller_sqc"
+  }
+ ],
+ "links": [
+  {
+   "from": "sub.energy_out_0",
+   "to": "mill.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_1",
+   "to": "hammer.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_2",
+   "to": "blast.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "plate.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "blast.item_out",
+   "to": "plate.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:steel_ingot_sqc"
+  },
+  {
+   "from": "sub.energy_out_2",
+   "to": "kiln.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "sub.energy_out_3",
+   "to": "cnc.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "kiln.item_out",
+   "to": "blast.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:coke_sqc"
+  },
+  {
+   "from": "plate.item_out",
+   "to": "cnc.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:steel_sheet_sqc"
+  },
+  {
+   "from": "cnc.item_out",
+   "to": "asm.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:lead_shielding_sqc"
+  },
+  {
+   "from": "mill.item_out",
+   "to": "blast.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_dust_sqc"
+  },
+  {
+   "from": "hammer.item_out",
+   "to": "blast.item_in",
+   "color": "E0C060",
+   "kind": "item",
+   "item": "nuclearsq:iron_dust_sqc"
+  }
+ ]
+}

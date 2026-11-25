@@ -53,7 +53,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity, com.sqc.nuclearsq.machine.MonitorTerminal,
-        com.sqc.nuclearsq.turbine.ShaftConsumer, com.sqc.nuclearsq.reactor.Cherenkov.Holder {
+        com.sqc.nuclearsq.turbine.ShaftConsumer, com.sqc.nuclearsq.reactor.Cherenkov.Holder, com.sqc.nuclearsq.machine.MachineAccess.Holder {
     public static final int ROD_MAX = 15, ROD_STEP_TICKS = 10;
     public static final int CHANNELS = 16, LINK_RANGE = 64;
     private static final java.util.Set<BigMachineBlockEntity> DRIVES = java.util.concurrent.ConcurrentHashMap.newKeySet();
@@ -70,6 +70,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation RUNNING = RawAnimation.begin().thenLoop("running");
+    private static final RawAnimation BLOCKED = RawAnimation.begin().thenLoop("blocked");
     private static final RawAnimation DOOR_OPENING = RawAnimation.begin().thenPlay("door_open").thenLoop("door_opened");
     private static final RawAnimation DOOR_CLOSING = RawAnimation.begin().thenPlay("door_close").thenLoop("door_closed");
     private static final RawAnimation DOOR_OPENED = RawAnimation.begin().thenLoop("door_opened");
@@ -88,7 +89,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
     private final BigBattery battery;
     private int batteryFlow, charge;
 
-    private boolean formed, running;
+    private boolean formed, running, blocked;
     private boolean resizeChecked;
     private boolean reassert;
     private boolean doorOpen, doorPowered;
@@ -806,7 +807,9 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
     }
 
     public void toggleDoor(net.minecraft.world.entity.player.Player player) {
-        if (!formed) {
+        if (player instanceof net.minecraft.server.level.ServerPlayer rp && !access.can(rp, owner, com.sqc.nuclearsq.machine.MachineAccess.USE)) {
+            rp.displayClientMessage(Component.translatable("message.nuclearsq.access.denied"), true);
+        } else if (!formed) {
             player.displayClientMessage(Component.translatable("message.nuclearsq.containment.door_unformed"), true);
         } else if (!setDoor(!doorOpen)) {
             player.displayClientMessage(Component.translatable("message.nuclearsq.containment.door_blocked"), true);
@@ -948,7 +951,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
     public void serverTick() {
         if (level == null) return;
         if (!resizeChecked) resizeChecked = com.sqc.nuclearsq.kit.LegacyResize.check(this);
-        boolean wasFormed = formed, wasRunning = running, wasFault = rodFault, wasDry = vesselDry;
+        boolean wasFormed = formed, wasRunning = running, wasFault = rodFault, wasDry = vesselDry, wasBlocked = blocked;
         boolean wasHot = core != null && core.hot();
         int wasRot = formedRot, wasRod = rod, wasHeads = rodHeads(), wasCharge = chargeLevel();
         boolean full = ticks++ % 20 == 0;
@@ -969,6 +972,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
         if (!enabled && machine != BigMachine.CONTROL_ROD_DRIVE) powered = false;
         idle = lastMb > 0 ? 0 : Math.min(idle + 1, RUN_HOLD);
         running = formed && idle < RUN_HOLD;
+        blocked = machine == BigMachine.BLAST_FURNACE && formed && !running && crafter != null && crafter.status() == BigCrafter.OUTPUT_FULL;
         if (formed) pushOutputs();
         if (formed && owner != null) {
             String mark = rankMark();
@@ -986,7 +990,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
         }
         boolean rodSync = false;
         for (RodShaft s : shafts) rodSync |= s.update(level, rodBase(s), formed, stroke());
-        if (formed != wasFormed || formedRot != wasRot || running != wasRunning || rodFault != wasFault || vesselDry != wasDry || rod != wasRod || rodHeads() != wasHeads || rodSync
+        if (formed != wasFormed || formedRot != wasRot || running != wasRunning || blocked != wasBlocked || rodFault != wasFault || vesselDry != wasDry || rod != wasRod || rodHeads() != wasHeads || rodSync
                 || (core != null && core.hot() != wasHot) || chargeLevel() != wasCharge
                 || (machine == BigMachine.PARTICLE_ASSEMBLER && crafter != null && crafter.particleSyncDue())
                 || (rack != null && ticks % 5 == 0 && rack.syncDue() != null) || (exo != null && exo.takeDirty())) {
@@ -1072,7 +1076,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
             }
             case CONTAINMENT -> containment();
             case HEAVY_ASSEMBLER, REACTOR_ASSEMBLER, COMPUTE_ASSEMBLER, REPROCESSING_PLANT, ORE_MILL, ENRICHMENT_CENTRIFUGE, COAL_GENERATOR, SPENT_FUEL_RACK,
-                 PARTICLE_ASSEMBLER, SMALL_PARTS_ASSEMBLER, MICRO_ASSEMBLER, CLEAN_ROOM, EQUIPMENT_ASSEMBLER, WEAPONS_PROCESSING, LEACHING_PLANT, UF6_CONVERTER, PELLET_FACTORY, FOUNDRY, SLAG_CRUSHER, ACID_PLANT, BORIC_ACID_PLANT, ION_EXCHANGER, HEAVY_WATER_PLANT, POLYMER_PLANT, VITRIFICATION_PLANT, CHEMICAL_LAB, PLATE_MILL, HAMMER_MILL -> {
+                 PARTICLE_ASSEMBLER, SMALL_PARTS_ASSEMBLER, MICRO_ASSEMBLER, CLEAN_ROOM, EQUIPMENT_ASSEMBLER, WEAPONS_PROCESSING, LEACHING_PLANT, UF6_CONVERTER, PELLET_FACTORY, FOUNDRY, SLAG_CRUSHER, ACID_PLANT, BORIC_ACID_PLANT, ION_EXCHANGER, HEAVY_WATER_PLANT, POLYMER_PLANT, VITRIFICATION_PLANT, CHEMICAL_LAB, PLATE_MILL, HAMMER_MILL, KILN, BLAST_FURNACE, CNC_MILL, SOLDER_MACHINE -> {
                 if (crafter != null && formed && ProductionTier.handles(machine) && --tierSync <= 0) {
                     tierSync = 40;
                     crafter.setTier(ProductionTier.stageOf(level, this));
@@ -2579,6 +2583,25 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
                 Component.translatable(getBlockState().getBlock().getDescriptionId())), buf -> buf.writeBlockPos(worldPosition));
     }
 
+    public void setRecipeLock(int index) {
+        if (crafter == null || level == null) return;
+        crafter.setLock(level, index);
+        setChanged();
+    }
+
+    public int fillRecipe(net.minecraft.world.entity.player.Player p, boolean all) {
+        if (crafter == null || items == null || level == null || crafter.lockIndex() <= 0) return 0;
+        var rm = level.getRecipeManager();
+        var ids = com.sqc.nuclearsq.progression.MachineRecipes.ids(machine, rm);
+        if (crafter.lockIndex() > ids.size()) return 0;
+        var r = rm.byKey(ids.get(crafter.lockIndex() - 1)).map(net.minecraft.world.item.crafting.RecipeHolder::value).orElse(null);
+        if (r == null) return 0;
+        int moved = com.sqc.nuclearsq.progression.MachineRecipes.fill(items,
+                com.sqc.nuclearsq.progression.MachineRecipes.needs(r, items.getSlots(), level.registryAccess()), p.getInventory().items, all);
+        if (moved > 0) p.getInventory().setChanged();
+        return moved;
+    }
+
     public void openCrafter(net.minecraft.server.level.ServerPlayer sp) {
         if (crafter == null || items == null && machine != BigMachine.SPENT_FUEL_RACK) return;
         sp.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inv, pl) -> new BigCrafterMenu(id, inv, worldPosition, machine,
@@ -2838,6 +2861,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
                 com.sqc.nuclearsq.machine.big.client.ChunkMachines.forget(worldPosition);
             }
             running = g.getBoolean("running");
+            blocked = g.getBoolean("blocked");
             rod = g.getInt("rod");
             rodFault = g.getBoolean("rodFault");
             vesselDry = g.getBoolean("vesselDry");
@@ -2917,6 +2941,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
         g.putBoolean("formed", formed);
         g.putInt("rot", formedRot);
         g.putBoolean("running", running);
+        g.putBoolean("blocked", blocked);
         g.putInt("rod", rod);
         g.putBoolean("rodFault", rodFault);
         g.putBoolean("vesselDry", vesselDry);
@@ -2945,7 +2970,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "main", 10,
-                state -> state.setAndContinue(running ? RUNNING : IDLE)));
+                state -> state.setAndContinue(running ? RUNNING : blocked ? BLOCKED : IDLE)));
         if (machine == BigMachine.CONTAINMENT) {
             controllers.add(new AnimationController<>(this, "door", 0, state -> {
                 boolean open = doorOpen;

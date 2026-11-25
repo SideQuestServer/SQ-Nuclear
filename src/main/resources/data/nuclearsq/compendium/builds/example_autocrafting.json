@@ -1,0 +1,96 @@
+{
+ "nodes": [
+  {
+   "key": "bat",
+   "machine": "battery_large",
+   "page": "transport_battery",
+   "col": 0,
+   "row": 1
+  },
+  {
+   "key": "rack",
+   "machine": "server_rack_large",
+   "page": "storage_racks",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "cluster",
+   "machine": "compute_cluster",
+   "page": "storage_cluster",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "key": "craft",
+   "block": "crafting_terminal_sqc",
+   "page": "storage_crafting",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "asm",
+   "machine": "component_assembler",
+   "page": "component_assembler",
+   "col": 2,
+   "row": 1
+  },
+  {
+   "key": "pat",
+   "machine": "pattern_rack",
+   "page": "pattern_rack",
+   "col": 3,
+   "row": 1
+  }
+ ],
+ "links": [
+  {
+   "from": "bat.energy_out",
+   "to": "rack.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "cluster.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "rack.data",
+   "to": "cluster.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "rack.data",
+   "to": "craft.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "bat.energy_out_2",
+   "to": "asm.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "cluster.data",
+   "to": "asm.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  },
+  {
+   "from": "bat.energy_out_2",
+   "to": "pat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "pat.data",
+   "to": "asm.data",
+   "color": "5ADCE8",
+   "kind": "data"
+  }
+ ]
+}

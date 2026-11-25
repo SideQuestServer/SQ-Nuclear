@@ -339,7 +339,7 @@ public final class StorageTests {
         var rm = h.getLevel().getRecipeManager();
         for (String id : new String[] {"assembly/storage_terminal_sqc", "small_parts_assembly/server_rack_small_kit_sqc", "heavy_assembly/server_rack_kit_sqc", "heavy_assembly/server_rack_large_kit_sqc",
                 "small_parts_assembly/hard_drive_1_sqc", "small_parts_assembly/hard_drive_2_sqc", "small_parts_assembly/hard_drive_3_sqc",
-                "small_parts_assembly/solid_state_drive_sqc"}) {
+                "small_parts_assembly/solid_state_drive_sqc", "small_parts_assembly/nvme_drive_sqc"}) {
             if (rm.byKey(ResourceLocation.fromNamespaceAndPath(NuclearSQ.MODID, id)).isEmpty()) throw new GameTestAssertException("Rezept fehlt: " + id);
         }
         MachineKits.Placement pl = MachineKits.placement(MachineKits.def("server_rack_large"), h.absolutePos(new BlockPos(7, 4, 4)), Direction.SOUTH);
@@ -353,6 +353,10 @@ public final class StorageTests {
             if (!be.isFormed() || be.rack().slots() != 40) throw new GameTestAssertException("Grosses Rack nicht fertig oder nicht 40 Schaechte");
             be.rack().drives().setStackInSlot(3, new ItemStack(StorageRegistry.HARD_DRIVE_3.get()));
             if (ServerRack.tier(be.rack().syncDue()[3]) != 3) throw new GameTestAssertException("Anzeige zeigt die Stufe nicht");
+            be.rack().drives().setStackInSlot(4, new ItemStack(StorageRegistry.NVME_DRIVE.get()));
+            if (ServerRack.tier(be.rack().syncDue()[4]) != 5) throw new GameTestAssertException("Anzeige zeigt die NVMe nicht");
+            var nvme = StorageRegistry.NVME_DRIVE.get().limits();
+            if (nvme.items() != 1048576 || nvme.types() != 63 || nvme.fePerTick() != 48) throw new GameTestAssertException("NVMe-Werte: " + nvme);
             BlockPos part = null;
             for (MultiblockStructure.Cell c : pl.cells()) if (!c.pos().equals(pl.anchor())) { part = c.pos(); break; }
             FakePlayerFactory.getMinecraft(h.getLevel()).gameMode.destroyBlock(part);
@@ -488,7 +492,7 @@ public final class StorageTests {
         ItemStack r = s.result();
         if (r.is(com.sqc.nuclearsq.machine.big.BigCrafter.MICRO_PRODUCTS)) return passed.contains("micro");
         if (r.is(com.sqc.nuclearsq.machine.big.BigCrafter.CLEAN_ROOM_PRODUCTS)) return passed.contains("clean_room") && passed.contains("robot_arm");
-        if (r.is(com.sqc.nuclearsq.machine.big.BigCrafter.ARM_PRODUCTS)) return passed.contains("robot_arm");
+        if (r.is(com.sqc.nuclearsq.machine.big.BigCrafter.SOLDER_PRODUCTS)) return passed.contains("solder_machine");
         return true;
     }
 }

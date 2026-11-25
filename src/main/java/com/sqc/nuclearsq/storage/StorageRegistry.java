@@ -70,6 +70,15 @@ public final class StorageRegistry {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ItemPortBlockEntity>> ITEM_PORT_BE =
             BLOCK_ENTITIES.register("item_port", () -> BlockEntityType.Builder.of(ItemPortBlockEntity::new, ITEM_PORT.get()).build(null));
 
+    public static final DeferredBlock<NetPipeAdapterBlock> NET_PIPE_ADAPTER = BLOCKS.register("net_pipe_adapter_sqc",
+            () -> new NetPipeAdapterBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(2.0f, 6.0f)
+                    .sound(SoundType.METAL).noOcclusion().lightLevel(s -> 3)));
+    static {
+        ITEMS.registerSimpleBlockItem("net_pipe_adapter_sqc", NET_PIPE_ADAPTER);
+    }
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NetPipeAdapterBlockEntity>> NET_PIPE_ADAPTER_BE =
+            BLOCK_ENTITIES.register("net_pipe_adapter", () -> BlockEntityType.Builder.of(NetPipeAdapterBlockEntity::new, NET_PIPE_ADAPTER.get()).build(null));
+
     public static final DeferredItem<WifiTerminalItem> WIFI_TERMINAL = ITEMS.register("wifi_terminal_sqc",
             () -> new WifiTerminalItem(new Item.Properties()));
     public static final DeferredItem<Item> WIFI_ANTENNA = ITEMS.register("wifi_antenna_sqc", () -> new Item(new Item.Properties()));
@@ -81,6 +90,7 @@ public final class StorageRegistry {
     public static final DeferredItem<DriveItem> HARD_DRIVE_2 = drive("hard_drive_2_sqc", 2, "hard_drive_2");
     public static final DeferredItem<DriveItem> HARD_DRIVE_3 = drive("hard_drive_3_sqc", 3, "hard_drive_3");
     public static final DeferredItem<DriveItem> SOLID_STATE_DRIVE = drive("solid_state_drive_sqc", 4, "solid_state_drive");
+    public static final DeferredItem<DriveItem> NVME_DRIVE = drive("nvme_drive_sqc", 5, "nvme_drive");
 
     private static final String[] CPU_IDS = {"cpu_module_1", "cpu_module_2", "cpu_module", "cpu_module_8", "cpu_module_16",
             "cpu_module_32", "cpu_module_64", "cpu_module_128"};
@@ -127,11 +137,13 @@ public final class StorageRegistry {
             MENUS.register("component_assembler", () -> IMenuTypeExtension.create(ComponentAssemblerMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<ItemPortMenu>> ITEM_PORT_MENU =
             MENUS.register("item_port", () -> IMenuTypeExtension.create(ItemPortMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<NetPipeAdapterMenu>> NET_PIPE_ADAPTER_MENU =
+            MENUS.register("net_pipe_adapter", () -> IMenuTypeExtension.create(NetPipeAdapterMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<StorageMonitorMenu>> MONITOR_MENU =
             MENUS.register("storage_monitor", () -> IMenuTypeExtension.create(StorageMonitorMenu::new));
 
     public static List<DeferredItem<DriveItem>> drives() {
-        return List.of(HARD_DRIVE_1, HARD_DRIVE_2, HARD_DRIVE_3, SOLID_STATE_DRIVE);
+        return List.of(HARD_DRIVE_1, HARD_DRIVE_2, HARD_DRIVE_3, SOLID_STATE_DRIVE, NVME_DRIVE);
     }
 
     public static void register(IEventBus modBus) {
@@ -145,6 +157,7 @@ public final class StorageRegistry {
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, WIFI_ADAPTER_BE.get(), (be, side) -> be.energy());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ITEM_PORT_BE.get(), (be, side) -> be.handler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NET_PIPE_ADAPTER_BE.get(), NetPipeAdapterBlockEntity::handler);
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> WifiTerminalItem.storage(stack), WIFI_TERMINAL.get());
     }
 }

@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.sqc.nuclearsq.door.DoorPanelBlock.Phase;
 import com.sqc.nuclearsq.machine.DeviceMenu;
+import com.sqc.nuclearsq.machine.MachineAccess;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +25,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -30,18 +33,21 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class DoorBlockEntity extends BlockEntity {
+public class DoorBlockEntity extends BlockEntity implements MachineAccess.Holder {
     public static final int MAX_SIDE = 15, MIN_TRAVEL = 50;
     public static final int DATA = 6, FLAG_OPEN = 1, FLAG_MOVING = 2, FLAG_RAGGED = 4, FLAG_FOUND = 8, FLAG_LOCKED = 16;
 
     private final List<BlockPos> panels = new ArrayList<>();
     private Direction.Axis axis = Direction.Axis.Z;
     private DoorPanelBlock.Kind kind = DoorPanelBlock.Kind.HANGAR;
-    private boolean open, powered, ragged, flip;
+    private boolean open, powered, ragged, flip, flat = true;
     private int progress, travel = 1, clientPrev;
     private BlockPos min = BlockPos.ZERO, max = BlockPos.ZERO;
     @Nullable
     private BlockPos airlock;
+    @Nullable
+    private UUID owner;
+    private final MachineAccess access = new MachineAccess();
 
     public DoorBlockEntity(BlockPos pos, BlockState state) {
         super(DoorRegistry.CONTROLLER_BE.get(), pos, state);
@@ -50,6 +56,7 @@ public class DoorBlockEntity extends BlockEntity {
     public List<BlockPos> panels() { return panels; }
     public Direction.Axis axis() { return axis; }
     public boolean flip() { return flip; }
+    public boolean flat() { return flat; }
     public DoorPanelBlock.Kind kind() { return kind; }
     public boolean open() { return open; }
     public boolean moving() { return open ? progress < travel : progress > 0; }
@@ -58,6 +65,24 @@ public class DoorBlockEntity extends BlockEntity {
     public BlockPos max() { return max; }
     @Nullable
     public BlockPos airlock() { return airlock; }
+
+    @Nullable
+    @Override
+    public UUID owner() { return owner; }
+    @Override
+    public MachineAccess access() { return access; }
+
+    public void claim(Player player) {
+        if (owner != null || !(player instanceof ServerPlayer)) return;
+        owner = player.getUUID();
+        setChanged();
+    }
+
+    public boolean mayUse(Player player) {
+        if (!(player instanceof ServerPlayer sp) || access.can(sp, owner, MachineAccess.USE)) return true;
+        sp.displayClientMessage(Component.translatable("message.nuclearsq.access.denied"), true);
+        return false;
+    }
 
     public void setAirlock(@Nullable BlockPos pos) {
         airlock = pos;
@@ -193,7 +218,7 @@ public class DoorBlockEntity extends BlockEntity {
             if (panels.isEmpty()) return Component.translatable(ragged ? "message.nuclearsq.door.ragged" : "message.nuclearsq.door.no_panels");
             phase(Phase.MOVING);
         } else if (!want && progress >= half()) {
-            if (!level.getEntitiesOfClass(LivingEntity.class, AABB.encapsulatingFullBlocks(min, max)).isEmpty()) {
+            if (occupied()) {
                 return Component.translatable("message.nuclearsq.door.blocked");
             }
             phase(Phase.MOVING);
@@ -204,9 +229,20 @@ public class DoorBlockEntity extends BlockEntity {
         return null;
     }
 
+    public Component toggleFlat() {
+        if (level == null || !closed()) return Component.translatable("message.nuclearsq.door.flat_moving");
+        flat = !flat;
+        sync();
+        return Component.translatable(flat ? "message.nuclearsq.door.flat_on" : "message.nuclearsq.door.flat_off");
+    }
+
     @Nullable
     public Component toggle() {
         return setOpen(!open);
+    }
+
+    private boolean occupied() {
+        return !level.getEntitiesOfClass(LivingEntity.class, AABB.encapsulatingFullBlocks(min, max)).isEmpty();
     }
 
     private int half() {
@@ -233,12 +269,31 @@ public class DoorBlockEntity extends BlockEntity {
             adopt();
         }
         if (open ? progress >= travel : progress <= 0) return;
+        if (!open && progress == 1 && occupied()) return;
         progress += open ? 1 : -1;
         if (!level.isClientSide && open && progress == half() && moving()) phase(Phase.OPEN);
         if (level.isClientSide || moving()) return;
         phase(open ? Phase.OPEN : Phase.CLOSED);
         level.playSound(null, worldPosition, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 0.4f, 0.6f);
         sync();
+    }
+
+    public static void lost(Level level, BlockPos pos) {
+        Set<DoorBlockEntity> doors = new HashSet<>();
+        for (Direction d : Direction.values()) {
+            BlockPos n = pos.relative(d);
+            if (level.getBlockEntity(n) instanceof DoorBlockEntity be) doors.add(be);
+            DoorBlockEntity c = level.getBlockState(n).getBlock() instanceof DoorPanelBlock ? controllerOf(level, n) : null;
+            if (c != null) doors.add(c);
+        }
+        for (DoorBlockEntity be : doors) {
+            if (!be.panels.contains(pos)) continue;
+            if (be.closed()) be.adopt();
+            else {
+                be.release();
+                be.sync();
+            }
+        }
     }
 
     public void release() {
@@ -284,12 +339,15 @@ public class DoorBlockEntity extends BlockEntity {
         tag.putLongArray("Panels", panels.stream().mapToLong(BlockPos::asLong).toArray());
         tag.putInt("Axis", axis.ordinal());
         tag.putBoolean("Flip", flip);
+        tag.putBoolean("Flat", flat);
         tag.putBoolean("Open", open);
         tag.putInt("Kind", kind.ordinal());
         tag.putBoolean("Powered", powered);
         tag.putInt("Progress", progress);
         tag.putInt("Travel", travel);
         if (airlock != null) tag.putLong("Airlock", airlock.asLong());
+        if (owner != null) tag.putUUID("owner", owner);
+        if (!access.grants().isEmpty()) tag.put("access", access.save());
     }
 
     @Override
@@ -299,6 +357,7 @@ public class DoorBlockEntity extends BlockEntity {
         for (long l : tag.getLongArray("Panels")) panels.add(BlockPos.of(l));
         axis = Direction.Axis.values()[Math.floorMod(tag.getInt("Axis"), 3)];
         flip = tag.getBoolean("Flip");
+        flat = !tag.contains("Flat") || tag.getBoolean("Flat");
         open = tag.getBoolean("Open");
         kind = DoorPanelBlock.Kind.values()[Math.floorMod(tag.getInt("Kind"), DoorPanelBlock.Kind.values().length)];
         powered = tag.getBoolean("Powered");
@@ -306,6 +365,8 @@ public class DoorBlockEntity extends BlockEntity {
         progress = Math.max(0, Math.min(travel, tag.getInt("Progress")));
         clientPrev = progress;
         airlock = tag.contains("Airlock") ? BlockPos.of(tag.getLong("Airlock")) : null;
+        owner = tag.hasUUID("owner") ? tag.getUUID("owner") : null;
+        access.load(tag.getCompound("access"));
         bounds();
     }
 

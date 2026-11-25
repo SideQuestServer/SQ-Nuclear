@@ -58,7 +58,7 @@ public final class ClusterTests {
             check(be.cluster().thermal().state() == com.sqc.nuclearsq.storage.ClusterThermal.RUNNING,
                     "Maschine laeuft nicht: " + com.sqc.nuclearsq.storage.ClusterThermal.stateName(be.cluster().thermal().state()));
             ComputeNet.Status st = ComputeNet.status(h.getLevel(), term);
-            check(st.cpu() == 32 && st.ram() == 128 * 1024, "Netz sieht cpu " + st.cpu() + " ram " + st.ram() + ", erwartet 32 / 128");
+            check(st.cpu() == 32 && st.ram() == 512 * 1024, "Netz sieht cpu " + st.cpu() + " ram " + st.ram() + ", erwartet 32 / 512");
             check(st.served(), "Terminal wird nicht bedient");
             h.succeed();
         });

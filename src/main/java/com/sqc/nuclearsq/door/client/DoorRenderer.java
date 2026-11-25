@@ -151,8 +151,25 @@ public class DoorRenderer implements BlockEntityRenderer<DoorBlockEntity> {
         box(w / 2f - P, h - 2.5f * P, P - 0.01f, w / 2f + P, h - 1.5f * P, 15 * P + 0.01f, 0, h - 2.5f * P + (f <= 0 ? 2 : f >= 1 ? 12 : 7) * P);
         glow = false;
         use(LOCK_FRAME);
-        for (float y : tall ? new float[] {4 * P, top - 7 * P} : new float[] {2 * P, top - 5 * P}) box(P, y, P, 3 * P, y + 3 * P, 2 * P, 0, 0);
-        turn((be.axis() == Direction.Axis.Z ? 90 : -90) * swing, vDir, 2 * P, 0, 2 * P);
+        boolean flat = be.flat();
+        float[] hinges = tall ? new float[] {4 * P, top - 7 * P} : new float[] {2 * P, top - 5 * P};
+        for (float y : hinges) {
+            if (flat) {
+                box(0.5f * P, y - P, 0.5f * P, 1.5f * P, y, 2 * P, 0, 0);
+                box(0.5f * P, y + 3 * P, 0.5f * P, 1.5f * P, y + 4 * P, 2 * P, 0, 0);
+            } else {
+                box(P, y, P, 3 * P, y + 3 * P, 2 * P, 0, 0);
+            }
+        }
+        if (flat) {
+            turn((be.axis() == Direction.Axis.Z ? 180 : -180) * swing, vDir, P, 0, P);
+            for (float y : hinges) {
+                box(0.5f * P, y, 0.5f * P, 1.5f * P, y + 3 * P, 2.2f * P, 0, 0);
+                box(1.2f * P, y, 2.1f * P, 2.2f * P, y + 3 * P, 6.2f * P, 0, 0);
+            }
+        } else {
+            turn((be.axis() == Direction.Axis.Z ? 90 : -90) * swing, vDir, 3 * P, 0, 5 * P);
+        }
         use(LOCK_WEAR);
         box(u0, P, 6 * P, u1, tall ? P + 1 : vt, 10 * P, u0, P + 1);
         if (tall) {
@@ -298,35 +315,35 @@ public class DoorRenderer implements BlockEntityRenderer<DoorBlockEntity> {
             use(FRAME);
             span(hinge, -dir, 0, 2 * P, v - P, v + 5 * P, 2 * P, 3 * P);
         }
-        turn((be.axis() == Direction.Axis.Z ? 90 : -90) * dir * swing * swing * (3 - 2 * swing), vDir, hinge + dir * (P / 2 + E), 0, 4 * P);
+        turn((be.axis() == Direction.Axis.Z ? 90 : -90) * dir * swing * swing * (3 - 2 * swing), vDir, hinge + dir * (P / 2 + E), 0, 5.6f * P);
         use(VAULT);
-        span(hinge, dir, E, len - E, P + E, top - E, 5 * P, 11 * P);
+        span(hinge, dir, E, len - E, P + E, top - E, 6.2f * P, 9.8f * P);
         use(FRAME);
-        span(hinge, dir, 0, len, P, 4 * P, 4 * P, 12 * P);
-        span(hinge, dir, 0, len, top - 3 * P, top, 4 * P, 12 * P);
-        span(hinge, dir, 0, 3 * P, 4 * P, top - 3 * P, 4 * P, 12 * P);
-        span(hinge, dir, len - 3 * P, len, 4 * P, top - 3 * P, 4 * P, 12 * P);
+        span(hinge, dir, 0, len, P, 4 * P, 5.6f * P, 10.4f * P);
+        span(hinge, dir, 0, len, top - 3 * P, top, 5.6f * P, 10.4f * P);
+        span(hinge, dir, 0, 3 * P, 4 * P, top - 3 * P, 5.6f * P, 10.4f * P);
+        span(hinge, dir, len - 3 * P, len, 4 * P, top - 3 * P, 5.6f * P, 10.4f * P);
         float cut = r * 0.3f;
-        span(hinge, dir, cx - r, cx + r, cv - r + cut, cv + r - cut, 4 * P, 12 * P);
-        span(hinge, dir, cx - r + cut, cx + r - cut, cv + r - cut, cv + r, 4 * P, 12 * P);
-        span(hinge, dir, cx - r + cut, cx + r - cut, cv - r, cv - r + cut, 4 * P, 12 * P);
+        span(hinge, dir, cx - r, cx + r, cv - r + cut, cv + r - cut, 5.6f * P, 10.4f * P);
+        span(hinge, dir, cx - r + cut, cx + r - cut, cv + r - cut, cv + r, 5.6f * P, 10.4f * P);
+        span(hinge, dir, cx - r + cut, cx + r - cut, cv - r, cv - r + cut, 5.6f * P, 10.4f * P);
         if (h >= 2) {
             for (float v : new float[] {P + (top - P) * 0.18f, P + (top - P) * 0.82f - 4 * P}) {
-                span(hinge, dir, E, Math.min(len * 0.45f, cx - 2 * P), v, v + 4 * P, 3.5f * P, 12.5f * P);
+                span(hinge, dir, E, Math.min(len * 0.45f, cx - 2 * P), v, v + 4 * P, 5.3f * P, 10.7f * P);
             }
         }
         use(HULL);
-        span(hinge, dir, E + in, cx - r + E, cv - P, cv + P, 3.5f * P, 12.5f * P);
-        span(hinge, dir, cx + r - E, len - E - in, cv - P, cv + P, 3.5f * P, 12.5f * P);
-        span(hinge, dir, cx - P, cx + P, cv + r - E, top - E - in, 3.5f * P, 12.5f * P);
-        span(hinge, dir, cx - P, cx + P, P + E + in, cv - r + E, 3.5f * P, 12.5f * P);
+        span(hinge, dir, E + in, cx - r + E, cv - P, cv + P, 5.3f * P, 10.7f * P);
+        span(hinge, dir, cx + r - E, len - E - in, cv - P, cv + P, 5.3f * P, 10.7f * P);
+        span(hinge, dir, cx - P, cx + P, cv + r - E, top - E - in, 5.3f * P, 10.7f * P);
+        span(hinge, dir, cx - P, cx + P, P + E + in, cv - r + E, 5.3f * P, 10.7f * P);
         if (h >= 2) {
             use(HAZARD);
-            span(hinge, dir, 3 * P, len - 3 * P, 4 * P, 7 * P, 4.5f * P, 11.5f * P);
+            span(hinge, dir, 3 * P, len - 3 * P, 4 * P, 7 * P, 5.9f * P, 10.1f * P);
         }
         turn(360 * Mth.clamp(f / 0.3f, 0, 1), nDir, hinge + dir * cx, cv, 0);
         use(WHEEL_RED);
-        decal(hinge + dir * cx, cv, r * 0.9f, 4 * P);
+        decal(hinge + dir * cx, cv, r * 0.9f, 5.6f * P);
         back();
         back();
     }
@@ -428,7 +445,7 @@ public class DoorRenderer implements BlockEntityRenderer<DoorBlockEntity> {
     }
 
     private void shield(float f) {
-        float t = 3 * P, n0 = 4 * P, n1 = 12 * P;
+        float t = 3 * P, n0 = 6 * P, n1 = 10 * P;
         zarge(t, 2 * P, 14 * P, FRAME);
         use(HAZARD);
         box(-E / 2, h - t - E / 2, 1.5f * P, w + E / 2, h - t + 2 * P, 14.5f * P, 0, 0);
@@ -468,7 +485,7 @@ public class DoorRenderer implements BlockEntityRenderer<DoorBlockEntity> {
     }
 
     private void cold(float f) {
-        float t = 2.5f * P, n0 = 3.5f * P, n1 = 11.5f * P;
+        float t = 2.5f * P, n0 = 6 * P, n1 = 10 * P;
         zarge(t, 2.5f * P, 13.5f * P, HULL);
         leaves(f, t, 0.15f, (ff, sw, hinge, d, len) -> {
             float top = h - t;

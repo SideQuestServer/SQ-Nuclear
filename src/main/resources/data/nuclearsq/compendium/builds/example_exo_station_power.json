@@ -1,0 +1,52 @@
+{
+ "nodes": [
+  {
+   "key": "sol",
+   "machine": "solar_field",
+   "page": "energy_solar",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "key": "bat",
+   "machine": "battery_medium",
+   "page": "transport_battery",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "key": "exo",
+   "machine": "exo_station",
+   "page": "exo_station",
+   "col": 2,
+   "row": 0
+  },
+  {
+   "key": "eq",
+   "machine": "equipment_assembler",
+   "page": "equipment_assembler",
+   "col": 2,
+   "row": 1
+  }
+ ],
+ "links": [
+  {
+   "from": "sol.energy_out",
+   "to": "bat.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "exo.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
+   "from": "bat.energy_out",
+   "to": "eq.energy_in",
+   "color": "E05050",
+   "kind": "power"
+  }
+ ]
+}

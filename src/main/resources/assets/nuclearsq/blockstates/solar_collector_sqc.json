@@ -1,19 +1,140 @@
 {
-  "variants": {
-    "tilt=0": {
-      "model": "nuclearsq:block/solar_collector_sqc_tilt_0"
+  "multipart": [
+    {
+      "when": {
+        "part": "1|2|3"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_part"
+      }
     },
-    "tilt=1": {
-      "model": "nuclearsq:block/solar_collector_sqc_tilt_1"
+    {
+      "when": {
+        "part": "0",
+        "tilt": "0"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_big_tilt_0"
+      }
     },
-    "tilt=2": {
-      "model": "nuclearsq:block/solar_collector_sqc"
+    {
+      "when": {
+        "part": "4",
+        "tilt": "0"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_tilt_0"
+      }
     },
-    "tilt=3": {
-      "model": "nuclearsq:block/solar_collector_sqc_tilt_3"
+    {
+      "when": {
+        "part": "0",
+        "tilt": "1"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_big_tilt_1"
+      }
     },
-    "tilt=4": {
-      "model": "nuclearsq:block/solar_collector_sqc_tilt_4"
+    {
+      "when": {
+        "part": "4",
+        "tilt": "1"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_tilt_1"
+      }
+    },
+    {
+      "when": {
+        "part": "0",
+        "tilt": "2"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_big"
+      }
+    },
+    {
+      "when": {
+        "part": "4",
+        "tilt": "2"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc"
+      }
+    },
+    {
+      "when": {
+        "part": "0",
+        "tilt": "3"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_big_tilt_3"
+      }
+    },
+    {
+      "when": {
+        "part": "4",
+        "tilt": "3"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_tilt_3"
+      }
+    },
+    {
+      "when": {
+        "part": "0",
+        "tilt": "4"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_big_tilt_4"
+      }
+    },
+    {
+      "when": {
+        "part": "4",
+        "tilt": "4"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_tilt_4"
+      }
+    },
+    {
+      "when": {
+        "part": "0",
+        "port": "0"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_power_port"
+      }
+    },
+    {
+      "when": {
+        "part": "1",
+        "port": "1"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_power_port"
+      }
+    },
+    {
+      "when": {
+        "part": "2",
+        "port": "2"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_power_port",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "part": "3",
+        "port": "3"
+      },
+      "apply": {
+        "model": "nuclearsq:block/solar_collector_sqc_power_port",
+        "y": 180
+      }
     }
-  }
+  ]
 }

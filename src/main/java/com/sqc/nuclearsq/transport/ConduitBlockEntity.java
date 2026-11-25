@@ -430,7 +430,7 @@ public class ConduitBlockEntity extends BlockEntity {
                 continue;
             }
             IEnergyStorage s = level.getCapability(Capabilities.EnergyStorage.BLOCK, n, d.getOpposite());
-            if (s != null && s.canReceive() && s.receiveEnergy(1, true) > 0) {
+            if (s != null && s.canReceive() && s.receiveEnergy(rate(), true) > 0) {
                 int v = need(n, d.getOpposite());
                 if (v < best) {
                     best = v;
@@ -460,7 +460,7 @@ public class ConduitBlockEntity extends BlockEntity {
         IEnergyStorage s = level.getCapability(Capabilities.EnergyStorage.BLOCK, p, side);
         if (s == null || !s.canReceive()) return FAR;
         long e = s.getEnergyStored(), max = s.getMaxEnergyStored();
-        if (max <= 0) return s.receiveEnergy(1, true) > 0 ? needFor(0, 1) : FAR;
+        if (max <= 0) return s.receiveEnergy(rate(), true) > 0 ? needFor(0, 1) : FAR;
         return e < max ? needFor(e, max) : FAR;
     }
 

@@ -34,7 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
 public class ProgressionScreen extends Screen {
-    private enum Anim { NONE, WELCOME, ROD, ENERGY, HEAT, BOOM, MACHINE, TREE, CATALOG, ROADMAP, PANEL, LOOP, PRIMARY, PRIMARY_EXT, PRIMARY_FULL, FLUIDS, PLANT, ASSEMBLY, ACHIEVE, WEAPONS, GUIDE, LINE, LINES, SCOPE }
+    private enum Anim { NONE, WELCOME, ROD, ENERGY, HEAT, BOOM, MACHINE, TREE, CATALOG, ROADMAP, PANEL, LOOP, PRIMARY, PRIMARY_EXT, PRIMARY_FULL, FLUIDS, PLANT, ASSEMBLY, ACHIEVE, WEAPONS, GUIDE, LINE, LINES, SCOPE, BUILD, EXAMPLES }
 
     private static boolean isLoop(Anim a) { return a == Anim.LOOP || a == Anim.PRIMARY || a == Anim.PRIMARY_EXT || a == Anim.PRIMARY_FULL; }
     private static boolean isNet(Anim a) { return a == Anim.PLANT || a == Anim.ASSEMBLY || a == Anim.WEAPONS || a == Anim.LINE; }
@@ -53,7 +53,7 @@ public class ProgressionScreen extends Screen {
 
     private record Page(String id, Anim anim) {}
 
-    private record Chapter(String id, Supplier<ItemStack> icon, List<Page> pages) {}
+    private record Chapter(String id, Supplier<ItemStack> icon, List<Page> pages, boolean flat) {}
 
     private static Page pg(String id, Anim a) { return new Page(id, a); }
 
@@ -73,6 +73,15 @@ public class ProgressionScreen extends Screen {
         ICONS.put("grp_manufacturing", () -> modItem("small_parts_assembler_controller_sqc"));
         ICONS.put("grp_robotic", () -> modItem("robot_arm_sqc"));
         ICONS.put("grp_computing", () -> new ItemStack(com.sqc.nuclearsq.data.DataRegistry.TERMINAL.get()));
+        ICONS.put("examples", () -> new ItemStack(Items.WRITABLE_BOOK));
+        ICONS.put("examples_overview", () -> new ItemStack(Items.BOOK));
+        ICONS.put("examples_manufacturing", () -> modItem("small_parts_assembler_controller_sqc"));
+        ICONS.put("examples_chemistry", () -> modItem("chemical_lab_controller_sqc"));
+        ICONS.put("examples_robotics", () -> modItem("robot_arm_sqc"));
+        ICONS.put("examples_computing", () -> new ItemStack(com.sqc.nuclearsq.data.DataRegistry.TERMINAL.get()));
+        ICONS.put("examples_energy", () -> new ItemStack(MultiblockRegistry.TURBINE_CONTROLLER_ITEM.get()));
+        ICONS.put("examples_complete_base", () -> modItem("substation_controller_sqc"));
+        ICONS.put("examples_reactor", () -> new ItemStack(ReactorRegistry.FUEL_ROD_BLOCK_ITEM.get()));
         ICONS.put("intro", () -> new ItemStack(Items.BOOK));
         ICONS.put("guide", () -> new ItemStack(Items.WRITABLE_BOOK));
         ICONS.put("assembly", () -> modItem("small_parts_assembler_controller_sqc"));
@@ -131,7 +140,7 @@ public class ProgressionScreen extends Screen {
                         pages.add(pg(po.get("id").getAsString(), Anim.valueOf(po.get("anim").getAsString())));
                     }
                     String cid = co.get("id").getAsString();
-                    chs.add(new Chapter(cid, icon(cid), List.copyOf(pages)));
+                    chs.add(new Chapter(cid, icon(cid), List.copyOf(pages), co.has("flat") && co.get("flat").getAsBoolean()));
                 }
                 String sid = so.get("id").getAsString();
                 out.add(new Section(sid, icon(sid), List.copyOf(chs)));
@@ -448,6 +457,7 @@ public class ProgressionScreen extends Screen {
         recipeOf = ItemStack.EMPTY;
         pick = null;
         tab = 0;
+        show3d = false;
         chapter = c;
         page = p;
         scroll = 0;
@@ -652,7 +662,7 @@ public class ProgressionScreen extends Screen {
         String key = "compendium." + p.id();
         int tw = contentW() - 12 - (machineOf(p) != null && sideBrief() ? SB_W + 10 : 0);
         tabs = List.of();
-        if (p.anim() != Anim.TREE && p.anim() != Anim.CATALOG && p.anim() != Anim.ACHIEVE && p.anim() != Anim.GUIDE && !isLoop(p.anim()) && p.anim() != Anim.FLUIDS && !isNet(p.anim()) && p.anim() != Anim.SCOPE && p.anim() != Anim.WELCOME && has(key + ".text")) {
+        if (p.anim() != Anim.TREE && p.anim() != Anim.CATALOG && p.anim() != Anim.ACHIEVE && p.anim() != Anim.GUIDE && !isLoop(p.anim()) && p.anim() != Anim.FLUIDS && !isNet(p.anim()) && p.anim() != Anim.SCOPE && p.anim() != Anim.BUILD && p.anim() != Anim.EXAMPLES && p.anim() != Anim.WELCOME && has(key + ".text")) {
             String[] paras = tr(key + ".text").split("\n");
             var secs = sections(paras);
             if (secs.size() > 1 && secs.size() <= 4) {
@@ -686,6 +696,7 @@ public class ProgressionScreen extends Screen {
             setFocused(null);
         }
         if (button == 3) { back(); return true; }
+        if ((current().anim() == Anim.BUILD || show3d) && build != null && build.mouseClicked(mx, my, button)) return true;
         if (button == 1 && plantHover >= 0 && current().anim() == Anim.SCOPE && scope != null && scope.nodes.get(plantHover).page() != null) {
             int[] target = findPage(scope.nodes.get(plantHover).page());
             if (target != null) go(target[0], target[1]);
@@ -710,7 +721,8 @@ public class ProgressionScreen extends Screen {
                         case 12 -> { String k = recipeRows.get(h.a()).path(); if (!recipeOpen.remove(k)) recipeOpen.add(k); }
                         case 13 -> { var it = recipeRows.get(h.a()).part().stack().getItem(); recipeChoice.merge(it, 1, Integer::sum); buildRecipe(); }
                         case 14 -> { recipeOf = ItemStack.EMPTY; plantZoom = 0; }
-                        case 15 -> { tab = h.a(); scroll = 0; layoutText(); }
+                        case 15 -> { tab = h.a(); show3d = false; scroll = 0; layoutText(); }
+                        case 22 -> { show3d = true; scroll = 0; }
                         case 17 -> scopeLinks = !scopeLinks;
                         case 18 -> scopeNames = !scopeNames;
                         case 16 -> { if (!com.sqc.nuclearsq.client.RecipeLink.showRecipe(briefStack)) openRecipe(briefStack); }
@@ -742,6 +754,134 @@ public class ProgressionScreen extends Screen {
         return super.mouseClicked(mx, my, button);
     }
 
+    private BuildScene build;
+    private String buildFor = "";
+
+    private static final String FEATURED_EXAMPLE = "example_industrial_base";
+    private static final java.util.Map<String, Integer> LINK_KIND_COLORS = java.util.Map.of("pipe", 0xFF4FA3D9, "item", 0xFFE0C060, "power", 0xFFE05050, "data", 0xFF5ADCE8);
+
+    private void drawExamples(GuiGraphics g, int mx, int my, int x, int y, int w, int h) {
+        Section sec = null;
+        for (Section s : SECTIONS) if (s.id().equals("examples")) sec = s;
+        if (sec == null) return;
+        final int cw = w - 8, cardH = 52;
+        int cols = cw >= 330 ? 2 : 1, tw = (cw - (cols - 1) * 6) / cols;
+        scroll = Math.max(0, Math.min(scroll, Math.max(0, guideTotal - h)));
+        g.enableScissor(x, y, x + w, y + h);
+        int cy = y - scroll;
+        String tip = null;
+        Page featured = null;
+        for (Chapter ch : sec.chapters())
+            for (Page pg : ch.pages()) if (pg.anim() == Anim.BUILD && pg.id().equals(FEATURED_EXAMPLE)) featured = pg;
+        if (featured != null) {
+            g.drawString(font, tr("compendium.build.featured").toUpperCase(java.util.Locale.ROOT), x + 2, cy + 4, ACCENT, false);
+            cy += 20;
+            tip = drawExampleCard(g, mx, my, y, h, featured, x, cy, cw, cardH, true);
+            cy += cardH + 14;
+        }
+        for (Chapter ch : sec.chapters()) {
+            List<Page> pages = ch.pages().stream().filter(pg -> pg.anim() == Anim.BUILD && !pg.id().equals(FEATURED_EXAMPLE)).toList();
+            if (pages.isEmpty()) continue;
+            MachineThumbs.drawStack(g, ch.icon().get(), x + 2, cy);
+            g.drawString(font, tr("compendium." + ch.id() + ".chapter").toUpperCase(java.util.Locale.ROOT), x + 24, cy + 4, ACCENT, false);
+            cy += 20;
+            int col = 0;
+            for (Page pg : pages) {
+                String cardTip = drawExampleCard(g, mx, my, y, h, pg, x + col * (tw + 6), cy, tw, cardH, false);
+                if (cardTip != null) tip = cardTip;
+                if (++col == cols) {
+                    cy += cardH + 4;
+                    col = 0;
+                }
+            }
+            if (col > 0) cy += cardH + 4;
+            cy += 8;
+        }
+        g.disableScissor();
+        guideTotal = cy + scroll - y;
+        scrollBar(g, x, y, w, h, guideTotal);
+        if (tip != null) g.renderTooltip(font, font.split(Component.literal(tip), 220), mx, my);
+    }
+
+    private String drawExampleCard(GuiGraphics g, int mx, int my, int viewTop, int viewHeight, Page pg, int left, int top, int width, int height, boolean featured) {
+        List<String[]> nodes = com.sqc.nuclearsq.progression.BuildData.nodes(pg.id());
+        List<String> kinds = com.sqc.nuclearsq.progression.BuildData.linkKinds(pg.id());
+        boolean over = mx >= left && mx < left + width && my >= Math.max(top, viewTop) && my < Math.min(top + height, viewTop + viewHeight);
+        rrect(g, left, top, left + width, top + height, over || featured ? ACCENT : EDGE);
+        rrect(g, left + 1, top + 1, left + width - 1, top + height - 1, over ? HOVER_BG : CARD);
+
+        StringBuilder chain = new StringBuilder();
+        for (String[] node : nodes) chain.append(chain.length() > 0 ? " \u2192 " : "").append(tr("compendium." + node[0] + ".title"));
+
+        Component title = Component.literal(tr("compendium." + pg.id() + ".title")).withStyle(ChatFormatting.BOLD);
+        String titleText = title.getString();
+        int titleLimit = width - 12;
+        while (titleText.length() > 1 && font.width(Component.literal(titleText).withStyle(ChatFormatting.BOLD)) > titleLimit) titleText = titleText.substring(0, titleText.length() - 1);
+        if (titleText.length() < title.getString().length()) titleText = titleText.stripTrailing() + "\u2026";
+        g.drawString(font, Component.literal(titleText).withStyle(ChatFormatting.BOLD), left + 6, top + 5, 0xFFFFFFFF, false);
+
+        String chainLine = chain.toString();
+        int chainWidth = width - 12;
+        if (font.width(chainLine) > chainWidth) chainLine = font.plainSubstrByWidth(chainLine, chainWidth - font.width("\u2026")) + "\u2026";
+        g.drawString(font, chainLine, left + 6, top + 18, MUTED, false);
+
+        String meta = tr("compendium.build.meta").formatted(nodes.size(), kinds.size());
+        int metaX = left + width - 6 - font.width(meta);
+        g.drawString(font, meta, metaX, top + 36, MUTED, false);
+        int dotsX = metaX - 6;
+        for (String kind : LINK_KIND_COLORS.keySet().stream().sorted().toList()) {
+            if (!kinds.contains(kind)) continue;
+            dotsX -= 7;
+            g.fill(dotsX, top + 37, dotsX + 5, top + 42, LINK_KIND_COLORS.get(kind));
+        }
+
+        final int iconStride = 24;
+        int fit = Math.max(1, (dotsX - 6 - left - 6) / iconStride), shown = nodes.size() > fit ? fit - 1 : nodes.size();
+        for (int k = 0; k < shown; k++) {
+            MachineThumbs.drawStack(g, modItem(nodes.get(k)[1]), left + 6 + k * iconStride, top + 31);
+            if (k + 1 < nodes.size()) g.drawString(font, "\u203A", left + 6 + k * iconStride + 17, top + 35, MUTED, false);
+        }
+        if (shown < nodes.size()) g.drawString(font, "+" + (nodes.size() - shown), left + 8 + shown * iconStride, top + 35, MUTED, false);
+
+        int[] target = findPage(pg.id());
+        if (target != null && over) hits.add(new Hit(left, Math.max(top, viewTop), left + width, Math.min(top + height, viewTop + viewHeight), 0, target[0], target[1]));
+        if (!over) return null;
+        return chain.toString();
+    }
+
+    private String machine3dId() {
+        Page p = current();
+        var node = machineOf(p);
+        for (var o : com.sqc.nuclearsq.progression.AchievementTree.NODES) if (node != null && o.key().equals(pick) && o.page().equals(p.id())) node = o;
+        final String suffix = "_controller_sqc";
+        if (node == null || !node.item().endsWith(suffix)) return null;
+        String machineId = node.item().substring(0, node.item().length() - suffix.length());
+        return com.sqc.nuclearsq.progression.BuildData.hasMultiblockModel(machineId) ? machineId : null;
+    }
+
+    private void draw3d(GuiGraphics g, int mx, int my, int x, int y, int w, int h, String machineId) {
+        String sceneKey = "3d:" + current().id() + ":" + machineId;
+        if (!sceneKey.equals(buildFor)) {
+            buildFor = sceneKey;
+            build = BuildScene.createForMachine(machineId, current().id());
+        }
+        if (build == null) g.drawString(font, tr("compendium.build.3d_unavailable").formatted(machineId), x, y, 0xFFFF5555, false);
+        else build.render(g, font, x, y, w - 6, h - 4, mx, my, 0);
+    }
+
+    private void drawBuild(GuiGraphics g, int mx, int my, int x, int y, int w, int h, Page p) {
+        if (!p.id().equals(buildFor)) {
+            buildFor = p.id();
+            build = BuildScene.create(p.id());
+        }
+        if (build == null) g.drawString(font, tr("compendium.build.missing").formatted(p.id()), x, y, 0xFFFF5555, false);
+        else {
+            scroll = Math.max(0, Math.min(scroll, Math.max(0, build.totalHeight() - h)));
+            build.render(g, font, x, y, w, h, mx, my, scroll);
+            scrollBar(g, x, y, w, h, build.totalHeight());
+        }
+    }
+
     private boolean inPlant(double mx, double my) {
         return mx >= plantAX && mx < plantAX + plantAW && my >= plantAY && my < plantAY + plantAH;
     }
@@ -751,6 +891,10 @@ public class ProgressionScreen extends Screen {
         int bs = bar.drag(my);
         if (bs >= 0) {
             scroll = bs;
+            return true;
+        }
+        if (build != null && build.dragging()) {
+            build.mouseDragged(dx, dy);
             return true;
         }
         if (plantDrag) {
@@ -766,6 +910,12 @@ public class ProgressionScreen extends Screen {
     @Override
     public boolean mouseReleased(double mx, double my, int button) {
         bar.release();
+        if (build != null && build.dragging()) {
+            String target = build.mouseReleased();
+            int[] page = target == null ? null : findPage(target);
+            if (page != null) go(page[0], page[1]);
+            return true;
+        }
         if (plantDrag && button == 0) {
             plantDrag = false;
             if (!plantMoved && plantHover >= 0 && isNet(current().anim())) {
@@ -780,6 +930,7 @@ public class ProgressionScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mx, double my, double sx, double sy) {
+        if ((current().anim() == Anim.BUILD || show3d) && build != null && build.mouseScrolled(mx, my, sy)) return true;
         if (zoomNow() && inPlant(mx, my) && plantZoom > 0) {
             float z = Math.max(Math.min(PLANT_ZOOM_MIN, plantFit), Math.min(PLANT_ZOOM_MAX, plantZoom * (sy > 0 ? 1.15f : 1 / 1.15f)));
             float wx = (float) (mx - plantAX - plantPanX) / plantZoom, wy = (float) (my - plantAY - plantPanY) / plantZoom;
@@ -874,6 +1025,10 @@ public class ProgressionScreen extends Screen {
             drawLineTiles(g, mx, my, x, y, w, bottom - y);
         } else if (p.anim() == Anim.SCOPE) {
             drawScope(g, mx, my, x, y, w, bottom - y, p);
+        } else if (p.anim() == Anim.BUILD) {
+            drawBuild(g, mx, my, x, y, w, bottom - y, p);
+        } else if (p.anim() == Anim.EXAMPLES) {
+            drawExamples(g, mx, my, x, y, w, bottom - y);
         } else {
             headOff = 0;
             int tx = x, tw = w;
@@ -892,9 +1047,10 @@ public class ProgressionScreen extends Screen {
                 headOff = drawWelcome(g, mx, my, x, y - scroll, w - 8, y, bottom);
                 g.disableScissor();
             } else {
-                y += drawHeadRow(g, p, tx, y, tw, mx, my, t);
+                if (!(show3d && machine3dId() != null)) y += drawHeadRow(g, p, tx, y, tw, mx, my, t);
             }
-            drawText(g, tx, y, tw, bottom - y);
+            if (show3d && machine3dId() != null) draw3d(g, mx, my, tx, y, tw, bottom - y, machine3dId());
+            else drawText(g, tx, y, tw, bottom - y);
         }
         drawFooter(g, mx, my, x, w);
     }
@@ -945,7 +1101,7 @@ public class ProgressionScreen extends Screen {
                 side.add(new SideRow(1, activeSec, c, 0, vy, h));
                 vy += h + 1;
             }
-            if (c != chapter) continue;
+            if (c != chapter || (chs.get(k).flat() && chs.size() > 1)) continue;
             for (int q = 0; q < chs.get(k).pages().size(); q++) {
                 String pid = chs.get(k).pages().get(q).id();
                 int no = guideNo(pid);
@@ -1141,8 +1297,9 @@ public class ProgressionScreen extends Screen {
         List<String> fterms = terms();
         for (int i = 0; i < tabs.size(); i++)
             if (tabs.get(i).stream().anyMatch(para -> !CompendiumSearch.spans(CompendiumSearch.plain(para, ProgressionScreen::langOrNull), fterms).isEmpty())) {
-                if (i != tab) {
+                if (i != tab || show3d) {
                     tab = i;
+                    show3d = false;
                     layoutText();
                 }
                 break;
@@ -1274,6 +1431,7 @@ public class ProgressionScreen extends Screen {
     private static final int SB_W = 128;
     private List<List<String>> tabs = List.of();
     private int tab = 0;
+    private boolean show3d;
     private String pick;
     private int fitH = -1;
     private ItemStack briefStack = ItemStack.EMPTY;
@@ -1443,18 +1601,41 @@ public class ProgressionScreen extends Screen {
         return y - y0 + drawTextTabs(g, mx, my, x, y, w);
     }
 
+    private static void fitTabWidths(int[] widths, int available) {
+        int[] wanted = widths.clone();
+        int low = 0, high = 0;
+        for (int width : wanted) high = Math.max(high, width);
+        while (low < high) {
+            int cap = (low + high + 1) / 2, sum = 0;
+            for (int width : wanted) sum += Math.min(width, cap);
+            if (sum <= available) low = cap; else high = cap - 1;
+        }
+        for (int k = 0; k < widths.length; k++) widths[k] = Math.min(wanted[k], low);
+    }
+
     private int drawTextTabs(GuiGraphics g, int mx, int my, int x, int y, int w) {
         int y0 = y;
-        if (tabs.size() > 1) {
-            int n = tabs.size(), each = (w - 6) / n, tx = x;
+        boolean has3d = machine3dId() != null;
+        if (tabs.size() > 1 || has3d) {
+            int textTabs = Math.max(1, tabs.size()), n = textTabs + (has3d ? 1 : 0), tx = x;
+            String[] titles = new String[n];
+            int[] widths = new int[n];
             for (int k = 0; k < n; k++) {
-                String t = tabs.get(k).get(0).isEmpty() ? tr("compendium.brief.overview") : rich(tabs.get(k).get(0)).getString();
-                int tw = Math.min(font.width(t) + 12, each);
-                boolean cur = k == tab, hv = mx >= tx && mx < tx + tw && my >= y && my < y + 15;
+                titles[k] = k == textTabs ? tr("compendium.tab.3d") : tabs.size() < 2 || tabs.get(k).get(0).isEmpty() ? tr("compendium.brief.overview") : rich(tabs.get(k).get(0)).getString();
+                widths[k] = font.width(titles[k]) + 12;
+            }
+            fitTabWidths(widths, w - 6 - 2 * (n - 1));
+            for (int k = 0; k < n; k++) {
+                boolean threeD = k == textTabs;
+                String t = titles[k];
+                int tw = widths[k];
+                boolean cur = threeD ? show3d : k == tab && !show3d, hv = mx >= tx && mx < tx + tw && my >= y && my < y + 15;
                 if (cur || hv) g.fill(tx, y, tx + tw, y + 15, cur ? ACTIVE_BG : HOVER_BG);
                 if (cur) g.fill(tx, y + 13, tx + tw, y + 15, ACCENT);
-                g.drawString(font, font.plainSubstrByWidth(t, tw - 8), tx + 6, y + 4, cur ? 0xFFFFFFFF : MUTED, false);
-                hits.add(new Hit(tx, y, tx + tw, y + 15, 15, k, 0));
+                boolean cut = font.width(t) > tw - 8;
+                g.drawString(font, cut ? font.plainSubstrByWidth(t, tw - 8 - font.width("…")) + "…" : t, tx + 6, y + 4, cur ? 0xFFFFFFFF : MUTED, false);
+                if (cut && hv) g.renderTooltip(font, font.split(Component.literal(t), 220), mx, my);
+                hits.add(new Hit(tx, y, tx + tw, y + 15, threeD ? 22 : 15, k, 0));
                 tx += tw + 2;
             }
             g.fill(x, y + 15, x + w - 6, y + 16, EDGE);
@@ -1867,7 +2048,7 @@ public class ProgressionScreen extends Screen {
         int tipH = tipLines.isEmpty() ? 0 : tipLines.size() * LINE_H + 22;
         int textH = Math.max(LINE_H, h - tipH - (tipH > 0 ? 6 : 0));
         textVisible = textH;
-        int fit = textH + (tabs.size() > 1 ? 20 : 0);
+        int fit = textH + (tabs.size() > 1 && machine3dId() == null ? 20 : 0);
         if (fit != fitH) {
             fitH = fit;
             layoutText();
@@ -3544,6 +3725,8 @@ public class ProgressionScreen extends Screen {
         y += 12;
         List<Integer> secs = new ArrayList<>();
         for (int k = 0; k < SECTIONS.size(); k++) if (has("compendium.welcome.tile." + SECTIONS.get(k).id())) secs.add(k);
+        for (int k = 0; k < secs.size(); k++)
+            if (SECTIONS.get(secs.get(k)).id().equals("examples")) { secs.add(secs.remove(k)); break; }
         boolean wide = w >= 440;
         int cols = wide ? 4 : 2, tw = (w - (cols - 1) * 6) / cols, th = 58;
         for (int i = 0; i < secs.size(); i++) {

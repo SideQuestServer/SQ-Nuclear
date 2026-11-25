@@ -1,0 +1,17 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": {
+    "tag": "c:ingots/lead"
+  },
+  "count": 34,
+  "time": 160,
+  "energy_per_tick": 3000,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:lead_block_sqc",
+        "count": 1
+      }
+    }
+  ]
+}

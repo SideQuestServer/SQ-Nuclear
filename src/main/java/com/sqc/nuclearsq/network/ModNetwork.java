@@ -81,6 +81,9 @@ public final class ModNetwork {
                     if (ctx.player().containerMenu instanceof com.sqc.nuclearsq.machine.big.BigCrafterMenu cm
                             && ctx.player().level().getBlockEntity(cm.pos) instanceof com.sqc.nuclearsq.machine.big.BigMachineBlockEntity be) {
                         if (payload.action() == DeviceControlPayload.BIG_ENABLE) be.setEnabled(payload.value() == 1);
+                        if (payload.action() == DeviceControlPayload.RECIPE_LOCK && cm.lockable()) be.setRecipeLock(payload.value());
+                        if (payload.action() == DeviceControlPayload.RECIPE_FILL && cm.lockable() && cm.stillValid(ctx.player())
+                                && PacketLimit.allow(ctx.player(), "recipe_fill", 10)) be.fillRecipe(ctx.player(), payload.value() == 1);
                         if (payload.action() == DeviceControlPayload.RACK_TOGGLE && be.machine() == com.sqc.nuclearsq.machine.big.BigMachine.SPENT_FUEL_RACK) {
                             be.setRackReleased(payload.value(), !be.rackReleased(payload.value()));
                         }
@@ -154,6 +157,10 @@ public final class ModNetwork {
                             && m.containerId == payload.containerId() && m.stillValid(sp) && PacketLimit.allow(sp, "crafting_fill", 5)) {
                         var msg = m.fillRecipe(payload.recipe());
                         if (!msg.getString().isEmpty()) sp.displayClientMessage(msg, true);
+                    }
+                    if (ctx.player() instanceof net.minecraft.server.level.ServerPlayer sp && sp.containerMenu instanceof com.sqc.nuclearsq.storage.ComponentAssemblerMenu m
+                            && m.containerId == payload.containerId() && m.stillValid(sp) && PacketLimit.allow(sp, "assembler_template", 5)) {
+                        m.templateRecipe(payload.recipe());
                     }
                 }));
         registrar.playToClient(com.sqc.nuclearsq.storage.StoragePayloads.Craftables.TYPE, com.sqc.nuclearsq.storage.StoragePayloads.Craftables.STREAM_CODEC,

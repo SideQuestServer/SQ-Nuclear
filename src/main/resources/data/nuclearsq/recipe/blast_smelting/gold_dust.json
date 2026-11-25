@@ -1,0 +1,17 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": {
+    "item": "nuclearsq:gold_dust_sqc"
+  },
+  "count": 8,
+  "time": 200,
+  "energy_per_tick": 3600,
+  "results": [
+    {
+      "item": {
+        "id": "minecraft:gold_ingot",
+        "count": 8
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "nuclearsq:block/net_pipe_adapter_sqc_d",
+  "textures": {
+    "panel": "nuclearsq:block/net_pipe_adapter_sqc_panel_store_wait"
+  }
+}

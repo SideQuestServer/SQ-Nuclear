@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "nuclearsq:block/cnc_mill_shell_sqc"
+    }
+  }
+}

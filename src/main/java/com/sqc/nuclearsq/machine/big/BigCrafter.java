@@ -27,6 +27,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -73,6 +75,11 @@ public final class BigCrafter {
     @Nullable
     private int[] offset;
     private ItemStack pending = ItemStack.EMPTY;
+    private RecipeHolder<SmeltingRecipe> smeltFrom;
+    private RecipeHolder<ReprocessingRecipe> smeltAs;
+    public static final int KILN_SMELT_FE = 300;
+    public static final float OWN_XP = 0.5f;
+    private float xp;
 
     public ItemStack takePending() {
         ItemStack out = pending;
@@ -138,13 +145,32 @@ public final class BigCrafter {
     public static boolean handles(BigMachine m) {
         return m == BigMachine.HEAVY_ASSEMBLER || m == BigMachine.REACTOR_ASSEMBLER || m == BigMachine.COMPUTE_ASSEMBLER || m == BigMachine.COAL_GENERATOR
                 || m == BigMachine.SPENT_FUEL_RACK || m == BigMachine.PARTICLE_ASSEMBLER || m == BigMachine.SMALL_PARTS_ASSEMBLER
-                || m == BigMachine.MICRO_ASSEMBLER || m == BigMachine.CLEAN_ROOM || m == BigMachine.EQUIPMENT_ASSEMBLER || m.recipeKind() != null;
+                || m == BigMachine.MICRO_ASSEMBLER || m == BigMachine.CLEAN_ROOM || m == BigMachine.EQUIPMENT_ASSEMBLER || m == BigMachine.CNC_MILL || m == BigMachine.SOLDER_MACHINE || m.recipeKind() != null;
     }
 
     private int runs;
     @Nullable
     private net.minecraft.resources.ResourceLocation current;
     private boolean advance;
+    @Nullable
+    private net.minecraft.resources.ResourceLocation lock;
+    private int lockIndex;
+
+    public int lockIndex() { return lockIndex; }
+
+    @Nullable
+    public net.minecraft.resources.ResourceLocation lockId() { return lock; }
+
+    public void setLock(Level level, int index) {
+        List<net.minecraft.resources.ResourceLocation> ids = com.sqc.nuclearsq.progression.MachineRecipes.ids(machine, level.getRecipeManager());
+        lock = index > 0 && index <= ids.size() ? ids.get(index - 1) : null;
+        lockIndex = lock == null ? 0 : index;
+        dirty = true;
+    }
+
+    private boolean blocked(net.minecraft.resources.ResourceLocation id) {
+        return lock != null && !lock.equals(id);
+    }
 
     public int takeRuns() {
         int n = runs;
@@ -160,11 +186,17 @@ public final class BigCrafter {
 
     int tick(Level level, BlockPos pos, boolean formed, boolean enabled) {
         where = pos;
+        if (lock != null && lockIndex == 0) {
+            int i = com.sqc.nuclearsq.progression.MachineRecipes.ids(machine, level.getRecipeManager()).indexOf(lock);
+            if (i < 0) lock = null;
+            lockIndex = i + 1;
+            dirty = true;
+        }
         if (machine == BigMachine.SPENT_FUEL_RACK) return rack(formed, enabled);
         if (machine == BigMachine.COAL_GENERATOR) return generate(formed, enabled);
         if (machine == BigMachine.REACTOR_ASSEMBLER || machine == BigMachine.COMPUTE_ASSEMBLER) return assembleSmall(level, formed, enabled);
         if (machine == BigMachine.SMALL_PARTS_ASSEMBLER || machine == BigMachine.MICRO_ASSEMBLER || machine == BigMachine.CLEAN_ROOM
-                || machine == BigMachine.EQUIPMENT_ASSEMBLER) return assembleParts(level, formed, enabled);
+                || machine == BigMachine.EQUIPMENT_ASSEMBLER || machine == BigMachine.CNC_MILL || machine == BigMachine.SOLDER_MACHINE) return assembleParts(level, formed, enabled);
         if (machine == BigMachine.PARTICLE_ASSEMBLER) return particle(level, pos, formed, enabled);
         return machine == BigMachine.HEAVY_ASSEMBLER ? assemble(level, formed, enabled) : reprocess(level, pos, formed, enabled);
     }
@@ -295,6 +327,7 @@ public final class BigCrafter {
         HeavyAssemblyRecipe found = null;
         int[] off = null;
         for (RecipeHolder<HeavyAssemblyRecipe> h : level.getRecipeManager().getAllRecipesFor(HeavyAssemblyRegistry.TYPE.get())) {
+            if (blocked(h.id())) continue;
             off = h.value().offset(g);
             if (off != null) {
                 found = h.value();
@@ -348,7 +381,9 @@ public final class BigCrafter {
     }
 
     private int assembleSmall(Level level, boolean formed, boolean enabled) {
-        AssemblyRecipe r = dirty ? AssemblyRecipe.find(level.getRecipeManager(), smallGrid()) : small;
+        AssemblyRecipe r = !dirty ? small : lock == null ? AssemblyRecipe.find(level.getRecipeManager(), smallGrid())
+                : level.getRecipeManager().byKey(lock).map(RecipeHolder::value).filter(v -> v instanceof AssemblyRecipe a && a.plan(smallGrid()) != null)
+                .map(v -> (AssemblyRecipe) v).orElse(null);
         if (dirty) {
             if (r != small && !loaded) progress = 0;
             loaded = false;
@@ -404,6 +439,15 @@ public final class BigCrafter {
     public static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> CLEAN_ROOM_PRODUCTS = net.minecraft.tags.TagKey.create(
             net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("nuclearsq", "clean_room_products"));
 
+    public static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> CNC_PRODUCTS = net.minecraft.tags.TagKey.create(
+            net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("nuclearsq", "cnc_products"));
+
+    public static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> CNC_SHARED = net.minecraft.tags.TagKey.create(
+            net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("nuclearsq", "cnc_shared"));
+
+    public static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> SOLDER_PRODUCTS = net.minecraft.tags.TagKey.create(
+            net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("nuclearsq", "solder_products"));
+
     private boolean armBlocked;
     @Nullable
     private BlockPos where;
@@ -424,17 +468,19 @@ public final class BigCrafter {
         SmallPartsRecipe.Input in = new SmallPartsRecipe.Input(smallGrid());
         if (machine == BigMachine.EQUIPMENT_ASSEMBLER) {
             for (RecipeHolder<EquipmentRecipe> h : level.getRecipeManager().getAllRecipesFor(EquipmentRegistry.TYPE.get()))
-                if (h.value().base().matches(in, level)) return h.value().base();
+                if (!blocked(h.id()) && h.value().base().matches(in, level)) return h.value().base();
             return null;
         }
-        boolean micro = machine == BigMachine.MICRO_ASSEMBLER, clean = machine == BigMachine.CLEAN_ROOM;
+        boolean micro = machine == BigMachine.MICRO_ASSEMBLER, clean = machine == BigMachine.CLEAN_ROOM, cnc = machine == BigMachine.CNC_MILL, solder = machine == BigMachine.SOLDER_MACHINE;
         SmallPartsRecipe best = null;
         for (RecipeHolder<SmallPartsRecipe> h : level.getRecipeManager().getAllRecipesFor(SmallPartsRegistry.TYPE.get())) {
-            boolean isMicro = h.value().result().is(MICRO_PRODUCTS), isClean = h.value().result().is(CLEAN_ROOM_PRODUCTS);
+            boolean isMicro = h.value().result().is(MICRO_PRODUCTS), isClean = h.value().result().is(CLEAN_ROOM_PRODUCTS), isCnc = h.value().result().is(CNC_PRODUCTS);
             if (micro != isMicro || clean != isClean) continue;
+            if (cnc ? !isCnc && !h.value().result().is(CNC_SHARED) : isCnc) continue;
+            if (solder != h.value().result().is(SOLDER_PRODUCTS) || blocked(h.id())) continue;
             if (best != null && SmallPartsRecipe.SPECIFIC_FIRST.compare(h.value(), best) >= 0) continue;
             if (h.value().matches(in, level)) {
-                if ((clean || (!micro && h.value().result().is(ARM_PRODUCTS))) && !armDocked(level)) {
+                if (clean && !armDocked(level)) {
                     armBlocked = true;
                     continue;
                 }
@@ -562,7 +608,31 @@ public final class BigCrafter {
         for (RecipeHolder<ReprocessingRecipe> h : level.getRecipeManager().getAllRecipesFor(machine.recipeKind().type())) {
             if (h.value().accepts(stack)) return h.value();
         }
-        return null;
+        if (!smelts(level, machine, stack)) return null;
+        RecipeHolder<ReprocessingRecipe> s = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(stack), level)
+                .map(h -> asKiln(level, h)).orElse(null);
+        return s == null ? null : s.value();
+    }
+
+    private static boolean smelts(Level level, BigMachine machine, ItemStack stack) {
+        return machine == BigMachine.KILN && !stack.isEmpty();
+    }
+
+    public static boolean auxFor(@Nullable Level level, BigMachine machine, ItemStack main, ItemStack stack) {
+        if (!findAux(level, machine, stack)) return false;
+        if (machine != BigMachine.KILN || findReprocessing(level, machine, stack) == null) return true;
+        for (RecipeHolder<ReprocessingRecipe> h : level.getRecipeManager().getAllRecipesFor(machine.recipeKind().type())) {
+            if (h.value().accepts(main) && h.value().acceptsAux(stack)) return true;
+        }
+        return false;
+    }
+
+    @Nullable
+    private static RecipeHolder<ReprocessingRecipe> asKiln(Level level, RecipeHolder<SmeltingRecipe> h) {
+        ItemStack out = h.value().getResultItem(level.registryAccess());
+        if (out.isEmpty() || h.value().getIngredients().isEmpty()) return null;
+        return new RecipeHolder<>(h.id(), new ReprocessingRecipe(h.value().getIngredients().get(0), 1, Math.max(1, h.value().getCookingTime() * 7 / 10),
+                KILN_SMELT_FE, List.of(new ReprocessingRecipe.Result(out.copy(), 1f)), ReprocessingRecipe.Kind.KILN_FIRING));
     }
 
     @Nullable
@@ -573,7 +643,7 @@ public final class BigCrafter {
         int best = Integer.MIN_VALUE;
         for (RecipeHolder<ReprocessingRecipe> h : level.getRecipeManager().getAllRecipesFor(machine.recipeKind().type())) {
             ReprocessingRecipe c = h.value();
-            if (!c.accepts(in) || fromAux && c.hasAux()) continue;
+            if (!c.accepts(in) || fromAux && c.hasAux() || blocked(h.id())) continue;
             if (first == null || c.hasAux() && !first.hasAux()) first = c;
             if (in.getCount() >= c.count() && auxOk(c) && missingFluid(c) == null) {
                 if (c.priority() > best) {
@@ -582,6 +652,17 @@ public final class BigCrafter {
                 }
                 if (c.priority() == best) ready.add(h);
             }
+        }
+        if (first == null && !fromAux && lock == null && smelts(level, machine, in)) {
+            RecipeHolder<SmeltingRecipe> found = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(in), level, smeltFrom).orElse(null);
+            if (found != smeltFrom) {
+                smeltFrom = found;
+                smeltAs = found == null ? null : asKiln(level, found);
+            }
+            if (smeltAs == null) return null;
+            current = smeltAs.id();
+            advance = false;
+            return smeltAs.value();
         }
         if (ready.isEmpty()) return fromAux ? null : first;
         int at = -1;
@@ -636,7 +717,10 @@ public final class BigCrafter {
             }
             for (ReprocessingRecipe.Result res : r.results()) {
                 float ch = machine == BigMachine.ORE_MILL && res.chance() == 0.05f || machine == BigMachine.HAMMER_MILL && res.chance() < 1f ? Math.min(1f, res.chance() * (1 << modules.activeOverclocks())) : res.chance();
-                if (ch >= 1f || level.random.nextFloat() < ch) insertOutputs(items, res.stack().copy());
+                if (ch >= 1f || level.random.nextFloat() < ch) {
+                    if (givesXp(machine)) xp += xpFor(level, res.stack()) * res.stack().getCount();
+                    insertOutputs(items, res.stack().copy());
+                }
             }
             runs++;
             for (ReprocessingRecipe.FluidOut o : r.fluidResults()) {
@@ -646,6 +730,25 @@ public final class BigCrafter {
             }
         }
         return 1;
+    }
+
+    public static boolean givesXp(BigMachine m) {
+        return m == BigMachine.KILN || m == BigMachine.BLAST_FURNACE;
+    }
+
+    public static float xpFor(Level level, ItemStack out) {
+        float best = -1f;
+        for (RecipeHolder<SmeltingRecipe> h : level.getRecipeManager().getAllRecipesFor(RecipeType.SMELTING))
+            if (h.value().getResultItem(level.registryAccess()).is(out.getItem())) best = Math.max(best, h.value().getExperience());
+        return best < 0f ? OWN_XP : best;
+    }
+
+    public void dropXp(ServerLevel level, net.minecraft.world.entity.player.Player player) {
+        int n = net.minecraft.util.Mth.floor(xp);
+        float f = net.minecraft.util.Mth.frac(xp);
+        if (f > 0f && level.random.nextFloat() < f) n++;
+        xp = 0f;
+        if (n > 0) net.minecraft.world.entity.ExperienceOrb.award(level, player.position(), n);
     }
 
     private void recycleOwnInput(Level level) {
@@ -760,8 +863,9 @@ public final class BigCrafter {
                 if (small) return slot < SMALL_GRID;
                 if (part) return slot >= ParticleClasses.OUTPUTS && items.isItemValid(slot, stack);
                 if (gen) return (slot == 0 || slot >= 4 && slot < 4 + items.getStackInSlot(3).getCount()) && isFuel(stack);
-                if (slot == ReprocessingRecipe.AUX_SLOT) return findAux(level, machine, stack);
-                return slot == 0 && findReprocessing(level, machine, stack) != null && !findAux(level, machine, stack);
+                boolean aux = auxFor(level, machine, items.getStackInSlot(0), stack);
+                if (slot == ReprocessingRecipe.AUX_SLOT) return aux;
+                return slot == 0 && findReprocessing(level, machine, stack) != null && !aux;
             }
         };
     }
@@ -773,6 +877,8 @@ public final class BigCrafter {
             if (!pending.isEmpty()) t.put("pending", pending.save(registries));
             t.putInt("cycles", cycles);
         }
+        if (lock != null) t.putString("lock", lock.toString());
+        if (xp > 0f) t.putFloat("xp", xp);
         if (machine == BigMachine.SPENT_FUEL_RACK) t.putIntArray("cool", cool);
         if (machine == BigMachine.COAL_GENERATOR) {
             t.putInt("burn", burn);
@@ -789,6 +895,9 @@ public final class BigCrafter {
         System.arraycopy(c, 0, cool, 0, Math.min(c.length, cool.length));
         burn = t.getInt("burn");
         burnTotal = t.getInt("burn_total");
+        xp = t.getFloat("xp");
+        lock = t.contains("lock") ? net.minecraft.resources.ResourceLocation.tryParse(t.getString("lock")) : null;
+        lockIndex = 0;
         loaded = true;
         dirty = true;
     }

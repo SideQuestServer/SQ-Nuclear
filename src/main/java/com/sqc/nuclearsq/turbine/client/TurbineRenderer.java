@@ -2,6 +2,7 @@ package com.sqc.nuclearsq.turbine.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sqc.nuclearsq.machine.big.client.BakedMachines;
+import com.sqc.nuclearsq.machine.big.client.RtxBatchBufferSource;
 import com.sqc.nuclearsq.multiblock.MultiblockStructure;
 import com.sqc.nuclearsq.turbine.TurbineControllerBlockEntity;
 
@@ -33,6 +34,7 @@ public class TurbineRenderer extends GeoBlockRenderer<TurbineControllerBlockEnti
     public void render(TurbineControllerBlockEntity be, float partialTick, PoseStack poseStack,
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if (com.sqc.nuclearsq.NuclearClientConfig.noShadow()) return;
+        bufferSource = RtxBatchBufferSource.wrap(bufferSource);
         int rot = be.formedRot();
         if (rot < 0 || be.getLevel() == null) return;
         if (!com.sqc.nuclearsq.client.OcclusionCull.visibleBig(be.getLevel(), be.getBlockPos(), getRenderBoundingBox(be))) return;

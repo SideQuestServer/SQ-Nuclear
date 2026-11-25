@@ -134,7 +134,11 @@ public final class GuideTests {
                 case "acid_plant" -> RecipeSources.Where.ACID_PLANT;
                 case "polymer_plant" -> RecipeSources.Where.POLYMER;
                 case "plate_mill" -> RecipeSources.Where.PLATE_MILLING;
+                case "cnc_mill" -> RecipeSources.Where.CNC_MILL;
+                case "solder_machine" -> RecipeSources.Where.SOLDER_MACHINE;
                 case "hammer_mill" -> RecipeSources.Where.DUST_MILLING;
+                case "kiln" -> RecipeSources.Where.KILN_FIRING;
+                case "blast_furnace" -> RecipeSources.Where.BLAST_SMELTING;
                 case "foundry" -> RecipeSources.Where.FOUNDRY;
                 case "chemical_lab" -> RecipeSources.Where.CHEMISTRY;
                 case "pellet_factory" -> RecipeSources.Where.PELLETING;

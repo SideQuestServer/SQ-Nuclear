@@ -1,0 +1,13 @@
+{
+  "values": [
+    "nuclearsq:hdpe_seal_sqc",
+    "nuclearsq:osmium_heat_plate_sqc",
+    "nuclearsq:obsidian_composite_plate_sqc",
+    "nuclearsq:lead_shielding_sqc",
+    "nuclearsq:advanced_reactor_casing_sqc",
+    "nuclearsq:lcp_module_casing_sqc",
+    "nuclearsq:pbt_module_casing_sqc",
+    "nuclearsq:hdpe_module_casing_sqc",
+    "nuclearsq:polycarbonate_module_casing_sqc"
+  ]
+}

@@ -34,6 +34,7 @@ public final class SingleSources {
                 || be instanceof AreaMonitorBlockEntity || be instanceof WifiAdapterBlockEntity
                 || be instanceof com.sqc.nuclearsq.robotics.RobotArmBlockEntity || be instanceof com.sqc.nuclearsq.robotics.RodGripperBlockEntity
                 || be instanceof ContaminationMonitorBlockEntity || be instanceof com.sqc.nuclearsq.storage.ItemPortBlockEntity
+                || be instanceof com.sqc.nuclearsq.storage.NetPipeAdapterBlockEntity
                 || be instanceof com.sqc.nuclearsq.reactor.XenonFilterBlockEntity || be instanceof com.sqc.nuclearsq.crate.StorageCrateBlockEntity
                 || be instanceof com.sqc.nuclearsq.door.DoorBlockEntity || be instanceof com.sqc.nuclearsq.door.AirlockBlockEntity;
     }
@@ -51,6 +52,7 @@ public final class SingleSources {
         if (be instanceof com.sqc.nuclearsq.robotics.RodGripperBlockEntity m) return new RodGripper(m);
         if (be instanceof ContaminationMonitorBlockEntity m) return new ContaminationMon(m);
         if (be instanceof com.sqc.nuclearsq.storage.ItemPortBlockEntity m) return new ItemPort(m);
+        if (be instanceof com.sqc.nuclearsq.storage.NetPipeAdapterBlockEntity m) return new NetPipeAdapter(m);
         if (be instanceof com.sqc.nuclearsq.reactor.XenonFilterBlockEntity m) return new XenonFilter(m);
         if (be instanceof com.sqc.nuclearsq.crate.StorageCrateBlockEntity m) return new Crate(m);
         if (be instanceof com.sqc.nuclearsq.door.DoorBlockEntity m) return new Door(m);
@@ -498,6 +500,62 @@ public final class SingleSources {
         public Component set(String key, double value) {
             if (key.equals("mode")) {
                 if (value != 0 && value != 1) return DataSources.outOfRange(key, 0, 1);
+                be.setMode((int) value);
+                return null;
+            }
+            return super.set(key, value);
+        }
+
+        @Override
+        Boolean enabled() {
+            return be.enabled();
+        }
+
+        @Override
+        void setEnabled(boolean on) {
+            be.setEnabled(on);
+        }
+    }
+
+    static final class NetPipeAdapter extends Base<com.sqc.nuclearsq.storage.NetPipeAdapterBlockEntity> {
+        NetPipeAdapter(com.sqc.nuclearsq.storage.NetPipeAdapterBlockEntity be) {
+            super(be);
+        }
+
+        @Override
+        public int state() {
+            if (!be.enabled()) return OFF;
+            String p = be.problem();
+            return p.isEmpty() || p.equals("idle") ? OK : p.equals("paused") ? OFF : WARN;
+        }
+
+        @Override
+        public Component stateText() {
+            String p = be.problem();
+            return DataSources.stateLabel(!be.enabled() || p.equals("paused") ? "off" : p.equals("no_target") || p.equals("no_pattern") ? "no_inventory"
+                    : p.equals("no_storage") ? "no_storage" : p.equals("no_filter") ? "no_filter" : p.equals("idle") || p.equals("missing") ? "idle" : "running");
+        }
+
+        @Override
+        void collect(List<DataValue> out) {
+            out.add(new DataValue("mode", label("net_pipe_adapter_mode"), be.mode(), com.sqc.nuclearsq.storage.NetPipeAdapterBlockEntity.MODES - 1, ""));
+            out.add(new DataValue("moved", label("moved"), be.lastMoved(), 256, ""));
+            out.add(new DataValue("filters", label("filters"), be.filterCount(), com.sqc.nuclearsq.storage.NetPipeAdapterBlockEntity.FILTER_SLOTS, ""));
+        }
+
+        @Override
+        public List<String> settable() {
+            List<String> out = new ArrayList<>(super.settable());
+            out.add("mode");
+            return out;
+        }
+
+        @Override
+        @Nullable
+        public Component set(String key, double value) {
+            if (key.equals("mode")) {
+                int max = com.sqc.nuclearsq.storage.NetPipeAdapterBlockEntity.MODES - 1;
+                if (value != Math.floor(value) || value < 0 || value > max) return DataSources.outOfRange(key, 0, max);
                 be.setMode((int) value);
                 return null;
             }

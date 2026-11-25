@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.sqc.nuclearsq.mixin",
   "compatibilityLevel": "JAVA_21",
+  "mixins": ["SpreadingSnowyDirtBlockMixin"],
   "client": ["NeoForgeLoadingOverlayMixin", "PanoramaRendererMixin", "TitleScreenMixin", "MinecraftFitScaleMixin"],
   "injectors": {"defaultRequire": 1}
 }

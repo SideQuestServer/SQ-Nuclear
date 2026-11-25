@@ -1,0 +1,97 @@
+{
+  "id": "blast_furnace",
+  "size": [
+    7,
+    4,
+    5
+  ],
+  "controller": [
+    0,
+    0,
+    1
+  ],
+  "anchor": [
+    3,
+    0,
+    0
+  ],
+  "ports": [
+    {
+      "name": "item_in",
+      "type": "item",
+      "dir": "in",
+      "cell": [
+        6,
+        0,
+        4
+      ]
+    },
+    {
+      "name": "item_out",
+      "type": "item",
+      "dir": "out",
+      "cell": [
+        0,
+        0,
+        4
+      ]
+    },
+    {
+      "name": "energy_in",
+      "type": "energy",
+      "dir": "in",
+      "cell": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "data",
+      "type": "terminal",
+      "dir": "both",
+      "cell": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "legend": {
+    "@": "nuclearsq:blast_furnace_controller_sqc",
+    "R": "nuclearsq:reactor_casing_sqc",
+    "i": "nuclearsq:machine_port_item_sqc",
+    "e": "nuclearsq:machine_port_energy_sqc",
+    "t": "nuclearsq:machine_port_terminal_sqc"
+  },
+  "layers": [
+    [
+      "e      ",
+      "@      ",
+      "   R   ",
+      "       ",
+      "i     i"
+    ],
+    [
+      "t      ",
+      "       ",
+      "       ",
+      "       ",
+      "       "
+    ],
+    [
+      "       ",
+      "       ",
+      "       ",
+      "       ",
+      "       "
+    ],
+    [
+      "       ",
+      "       ",
+      "       ",
+      "       ",
+      "       "
+    ]
+  ]
+}

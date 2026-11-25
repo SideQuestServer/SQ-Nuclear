@@ -1,5 +1,8 @@
 package com.sqc.nuclearsq.gametest;
 
+import java.util.UUID;
+
+import com.mojang.authlib.GameProfile;
 import com.sqc.nuclearsq.NuclearSQ;
 import com.sqc.nuclearsq.data.DataSource;
 import com.sqc.nuclearsq.data.DataSources;
@@ -7,12 +10,15 @@ import com.sqc.nuclearsq.door.DoorBlockEntity;
 import com.sqc.nuclearsq.door.DoorPanelBlock;
 import com.sqc.nuclearsq.door.DoorPanelBlock.Phase;
 import com.sqc.nuclearsq.door.DoorRegistry;
+import com.sqc.nuclearsq.machine.MachineAccess;
+import com.sqc.nuclearsq.transport.TransportRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestAssertException;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -25,6 +31,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
@@ -56,7 +63,7 @@ public final class DoorTests {
                 BlockPos p = h.absolutePos(CTRL.offset(1 + x, y, 0));
                 BlockState st = h.getLevel().getBlockState(p);
                 check(st.getBlock() instanceof DoorPanelBlock && st.getValue(DoorPanelBlock.PHASE) == phase, what + ": Segment " + p + " ist " + st);
-                check(st.getCollisionShape(h.getLevel(), p).isEmpty() == (phase == Phase.OPEN), what + ": Kollision bei " + p + " falsch");
+                check(st.getCollisionShape(h.getLevel(), p).isEmpty() == (phase == Phase.OPEN || phase == Phase.MOVING), what + ": Kollision bei " + p + " falsch");
             }
         }
     }
@@ -123,6 +130,41 @@ public final class DoorTests {
     }
 
     @GameTest(template = FLOOR, batch = "doors", timeoutTicks = 20)
+    public static void airlockSwingChosenWithWrench(GameTestHelper h) {
+        DoorBlockEntity be = door(h, DoorRegistry.AIRLOCK_PANEL.get(), 1, 2);
+        be.adopt();
+        check(be.flat() && be.panels().size() == 2, "Schleusentuer liegt offen nicht flach an der Wand");
+        ServerPlayer sp = AuditFixTests.testPlayer(h);
+        sp.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TransportRegistry.WRENCH.get()));
+        BlockPos at = h.absolutePos(CTRL.offset(1, 0, 0));
+        sp.gameMode.useItemOn(sp, h.getLevel(), sp.getMainHandItem(), InteractionHand.MAIN_HAND, new BlockHitResult(Vec3.atCenterOf(at), Direction.UP, at, false));
+        check(!be.flat() && be.closed(), "Schraubenschluessel schaltet nicht auf 90 Grad um");
+        sp.gameMode.useItemOn(sp, h.getLevel(), sp.getMainHandItem(), InteractionHand.MAIN_HAND, new BlockHitResult(Vec3.atCenterOf(at), Direction.UP, at, false));
+        check(be.flat(), "Schraubenschluessel schaltet nicht zurueck");
+        check(be.setOpen(true) == null && be.toggleFlat() != null && be.flat(), "Umschalten waehrend der Fahrt");
+        h.succeed();
+    }
+
+    @GameTest(template = FLOOR, batch = "doors", timeoutTicks = 20)
+    public static void doorNeedsRights(GameTestHelper h) {
+        DoorBlockEntity be = door(h, DoorRegistry.SHIELD_PANEL.get(), 1, 2);
+        be.adopt();
+        ServerPlayer owner = FakePlayerFactory.get(h.getLevel(), new GameProfile(UUID.nameUUIDFromBytes("door_owner".getBytes()), "door_owner"));
+        ServerPlayer other = FakePlayerFactory.get(h.getLevel(), new GameProfile(UUID.nameUUIDFromBytes("door_other".getBytes()), "door_other"));
+        check(be.mayUse(other), "Tor ohne Besitzer gesperrt");
+        be.claim(owner);
+        be.claim(other);
+        check(owner.getUUID().equals(be.owner()) && be.mayUse(owner), "Besitzer darf sein Tor nicht nutzen");
+        BlockPos at = h.absolutePos(CTRL.offset(1, 0, 0));
+        h.getLevel().getBlockState(at).useWithoutItem(h.getLevel(), other, new BlockHitResult(Vec3.atCenterOf(at), Direction.NORTH, at, false));
+        check(!be.open() && !be.mayUse(other), "Fremder oeffnet das Tor ohne Rechte");
+        be.access().set("p:door_other", MachineAccess.USE);
+        h.getLevel().getBlockState(at).useWithoutItem(h.getLevel(), other, new BlockHitResult(Vec3.atCenterOf(at), Direction.NORTH, at, false));
+        check(be.open(), "Eintrag im Rechte-Fenster oeffnet das Tor nicht");
+        h.succeed();
+    }
+
+    @GameTest(template = FLOOR, batch = "doors", timeoutTicks = 20)
     public static void noPanelsAndRedstone(GameTestHelper h) {
         h.setBlock(CTRL, DoorRegistry.CONTROLLER.get());
         if (!(h.getBlockEntity(CTRL) instanceof DoorBlockEntity be)) throw new GameTestAssertException("keine Torsteuerung");
@@ -146,6 +188,51 @@ public final class DoorTests {
             check(be.setOpen(true) != null && be.closed() && be.panels().isEmpty(), "Tor mit Luecke oeffnet");
             check(h.getBlockState(CTRL.offset(1, 0, 0)).getValue(DoorPanelBlock.PHASE) == Phase.RAW, "Segmente nach Luecke nicht wieder roh");
             h.succeed();
+        });
+    }
+
+    @GameTest(template = FLOOR, batch = "doors", timeoutTicks = 120)
+    public static void openDoorClickableAndBrokenAtOnce(GameTestHelper h) {
+        DoorBlockEntity be = door(h, DoorRegistry.AIRLOCK_PANEL.get(), 1, 2);
+        ServerPlayer player = FakePlayerFactory.get(h.getLevel(), new GameProfile(UUID.nameUUIDFromBytes("door_click".getBytes()), "door_click"));
+        BlockPos low = h.absolutePos(CTRL.offset(1, 0, 0));
+        check(be.toggle() == null, "Tuer oeffnet nicht");
+        h.runAfterDelay(DoorBlockEntity.MIN_TRAVEL + 5, () -> {
+            expect(h, 1, 2, Phase.OPEN, "offen");
+            check(!h.getLevel().getBlockState(low).getShape(h.getLevel(), low).isEmpty(), "offene Tuer nicht anklickbar");
+            h.getLevel().getBlockState(low).useWithoutItem(h.getLevel(), player, new BlockHitResult(Vec3.atCenterOf(low), Direction.NORTH, low, false));
+            check(!be.open(), "Klick auf offene Tuer schliesst nicht");
+            check(be.toggle() == null && be.open(), "Tuer oeffnet nicht wieder");
+            h.setBlock(CTRL.offset(1, 1, 0), Blocks.AIR);
+            check(be.panels().isEmpty() && !be.open(), "offene Tuer bleibt nach Abbau stehen");
+            check(h.getBlockState(CTRL.offset(1, 0, 0)).getValue(DoorPanelBlock.PHASE) == Phase.RAW, "Segment nach Abbau der offenen Tuer nicht sofort roh");
+            DoorBlockEntity big = door(h, DoorRegistry.AIRLOCK_PANEL.get(), 2, 2);
+            big.adopt();
+            check(big.panels().size() == 4, "Tuer nicht aufgebaut");
+            h.setBlock(CTRL.offset(2, 1, 0), Blocks.AIR);
+            check(big.panels().isEmpty() && h.getBlockState(CTRL.offset(1, 0, 0)).getValue(DoorPanelBlock.PHASE) == Phase.RAW, "Segmente nach Abbau nicht sofort roh");
+            h.succeed();
+        });
+    }
+
+    @GameTest(template = FLOOR, batch = "doors", timeoutTicks = 200)
+    public static void doorPassableWhileMoving(GameTestHelper h) {
+        DoorBlockEntity be = door(h, DoorRegistry.AIRLOCK_PANEL.get(), 1, 2);
+        check(be.toggle() == null, "Tuer oeffnet nicht");
+        expect(h, 1, 2, Phase.MOVING, "Fahrt auf");
+        h.runAfterDelay(DoorBlockEntity.MIN_TRAVEL + 5, () -> {
+            check(be.toggle() == null && !be.open(), "Tuer schliesst nicht");
+            expect(h, 1, 2, Phase.MOVING, "Fahrt zu");
+            var stand = h.spawn(EntityType.ARMOR_STAND, CTRL.offset(1, 0, 0));
+            h.runAfterDelay(DoorBlockEntity.MIN_TRAVEL + 5, () -> {
+                check(!be.closed(), "Tuer schliesst auf Person");
+                expect(h, 1, 2, Phase.MOVING, "wartet auf Person");
+                stand.discard();
+                h.runAfterDelay(5, () -> {
+                    expect(h, 1, 2, Phase.CLOSED, "zu nach Durchgang");
+                    h.succeed();
+                });
+            });
         });
     }
 

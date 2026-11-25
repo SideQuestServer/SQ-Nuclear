@@ -49,6 +49,10 @@ public final class RecipeSources {
         SLAG_CRUSHING("slag_crushing", "nuclearsq:slag_crusher_controller_sqc", false),
         PLATE_MILLING("plate_milling", "nuclearsq:plate_mill_controller_sqc", false),
         DUST_MILLING("dust_milling", "nuclearsq:hammer_mill_controller_sqc", false),
+        KILN_FIRING("kiln_firing", "nuclearsq:kiln_controller_sqc", false),
+        BLAST_SMELTING("blast_smelting", "nuclearsq:blast_furnace_controller_sqc", false),
+        CNC_MILL("cnc_mill", "nuclearsq:cnc_mill_controller_sqc", false),
+        SOLDER_MACHINE("solder_machine", "nuclearsq:solder_machine_controller_sqc", false),
         FURNACE("furnace", "minecraft:furnace", false),
         BLAST_FURNACE("blast_furnace", "minecraft:blast_furnace", false),
         OTHER("other", "minecraft:air", false);
@@ -79,7 +83,7 @@ public final class RecipeSources {
 
     public static final List<Where> CATALOG_STAGES = List.of(Where.WORKBENCH, Where.FURNACE,
             Where.BLAST_FURNACE, Where.SMALL_PARTS_ASSEMBLER, Where.REACTOR_ASSEMBLER, Where.EQUIPMENT_ASSEMBLER,
-            Where.HEAVY_ASSEMBLER, Where.ORE_MILLING, Where.PLATE_MILLING, Where.DUST_MILLING, Where.ACID_PLANT, Where.LEACHING, Where.UF6_CONVERSION, Where.ENRICHMENT, Where.PELLETING, Where.FOUNDRY, Where.SLAG_CRUSHING,
+            Where.HEAVY_ASSEMBLER, Where.ORE_MILLING, Where.PLATE_MILLING, Where.CNC_MILL, Where.SOLDER_MACHINE, Where.DUST_MILLING, Where.KILN_FIRING, Where.BLAST_SMELTING, Where.ACID_PLANT, Where.LEACHING, Where.UF6_CONVERSION, Where.ENRICHMENT, Where.PELLETING, Where.FOUNDRY, Where.SLAG_CRUSHING,
             Where.BORIC_ACID, Where.ION_EXCHANGE, Where.HEAVY_WATER, Where.POLYMER, Where.VITRIFICATION, Where.CHEMISTRY, Where.REPROCESSING, Where.WEAPONS_PROCESSING, Where.OTHER);
 
     private static final java.util.Map<String, String> OTHER_MACHINES = java.util.Map.of(
@@ -112,7 +116,12 @@ public final class RecipeSources {
     public static List<Source> forItem(RecipeManager recipes, HolderLookup.Provider regs, Item item) {
         List<Source> out = new ArrayList<>();
         for (var holder : recipes.getRecipes()) {
-            Source s = of(holder.value(), regs, item);
+            Source s;
+            try {
+                s = of(holder.value(), regs, item);
+            } catch (RuntimeException e) {
+                continue;
+            }
             if (s != null) out.add(s);
         }
         out.sort(Comparator.comparingInt((Source s) -> s.where().ordinal()).thenComparing(s -> -s.chance()));
@@ -123,15 +132,18 @@ public final class RecipeSources {
         List<Source> out = new ArrayList<>();
         for (var holder : recipes.getRecipes()) {
             Recipe<?> r = holder.value();
-            if (r instanceof ReprocessingRecipe rr) {
-                for (var res : rr.results()) {
-                    Source s = of(r, regs, res.stack().getItem());
-                    if (s != null && out.stream().noneMatch(o -> o.result() == s.result())) out.add(s);
+            try {
+                if (r instanceof ReprocessingRecipe rr) {
+                    for (var res : rr.results()) {
+                        Source s = of(r, regs, res.stack().getItem());
+                        if (s != null && out.stream().noneMatch(o -> o.result() == s.result())) out.add(s);
+                    }
+                } else {
+                    ItemStack res = r.getResultItem(regs);
+                    Source s = res.isEmpty() ? null : of(r, regs, res.getItem());
+                    if (s != null) out.add(s);
                 }
-            } else {
-                ItemStack res = r.getResultItem(regs);
-                Source s = res.isEmpty() ? null : of(r, regs, res.getItem());
-                if (s != null) out.add(s);
+            } catch (RuntimeException e) {
             }
         }
         return out;
@@ -144,7 +156,12 @@ public final class RecipeSources {
             if (r instanceof ReprocessingRecipe rr) {
                 for (var res : rr.results()) made.add(res.stack().getItem());
             } else {
-                ItemStack res = r.getResultItem(regs);
+                ItemStack res;
+                try {
+                    res = r.getResultItem(regs);
+                } catch (RuntimeException e) {
+                    continue;
+                }
                 if (!res.isEmpty()) made.add(res.getItem());
             }
         }
@@ -156,7 +173,8 @@ public final class RecipeSources {
 
     public static Where where(Recipe<?> r) {
         if (r instanceof HeavyAssemblyRecipe) return Where.HEAVY_ASSEMBLER;
-        if (r instanceof SmallPartsRecipe) return Where.SMALL_PARTS_ASSEMBLER;
+        if (r instanceof SmallPartsRecipe s) return s.result().is(com.sqc.nuclearsq.machine.big.BigCrafter.CNC_PRODUCTS) ? Where.CNC_MILL
+                : s.result().is(com.sqc.nuclearsq.machine.big.BigCrafter.SOLDER_PRODUCTS) ? Where.SOLDER_MACHINE : Where.SMALL_PARTS_ASSEMBLER;
         if (r instanceof EquipmentRecipe) return Where.EQUIPMENT_ASSEMBLER;
         if (r instanceof AssemblyRecipe) return Where.REACTOR_ASSEMBLER;
         if (r instanceof ReprocessingRecipe rr) return switch (rr.kind()) {
@@ -178,6 +196,8 @@ public final class RecipeSources {
             case SLAG_CRUSHING -> Where.SLAG_CRUSHING;
             case PLATE_MILLING -> Where.PLATE_MILLING;
             case DUST_MILLING -> Where.DUST_MILLING;
+            case KILN_FIRING -> Where.KILN_FIRING;
+            case BLAST_SMELTING -> Where.BLAST_SMELTING;
         };
         if (r.getType() == RecipeType.CRAFTING) return Where.WORKBENCH;
         if (r.getType() == RecipeType.SMELTING) return Where.FURNACE;

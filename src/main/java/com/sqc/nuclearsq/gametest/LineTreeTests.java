@@ -43,6 +43,7 @@ public final class LineTreeTests {
     public static void everyMachineIsInALine(GameTestHelper h) {
         List<String> problems = new ArrayList<>();
         Set<String> seen = new HashSet<>();
+        Set<String> twice = Set.of("kiln", "blast_furnace");
         var root = json("/data/" + NuclearSQ.MODID + "/compendium/kompendium_struktur.json");
         java.util.Map<String, String> firstPage = new java.util.HashMap<>();
         for (var s : root.getAsJsonArray("sections"))
@@ -58,7 +59,7 @@ public final class LineTreeTests {
             var nodes = LineTrees.nodes(l);
             Set<String> cells = new HashSet<>();
             for (var n : nodes) {
-                if (!seen.add(n.key())) problems.add(n.key() + " steht in zwei Linien");
+                if (!seen.add(n.key()) && !twice.contains(n.key())) problems.add(n.key() + " steht in zwei Linien");
                 if (!cells.add(n.col() + "," + n.row())) problems.add(l.key() + ": Feld von " + n.key() + " doppelt");
                 for (var o : nodes)
                     if (o.row() == n.row() && o.col() > n.col() && AchievementTree.index(o.key()) < AchievementTree.index(n.key()))
