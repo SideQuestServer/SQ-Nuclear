@@ -95,7 +95,7 @@ public class NukeDustParticle extends TextureSheetParticle {
         bCol = db + (0.12f - db) * h * h;
     }
 
-    static final ParticleRenderType SOFT = new ParticleRenderType() {
+    public static final ParticleRenderType SOFT = new ParticleRenderType() {
         @Override
         public BufferBuilder begin(Tesselator tesselator, TextureManager textures) {
             RenderSystem.setShader(GameRenderer::getParticleShader);

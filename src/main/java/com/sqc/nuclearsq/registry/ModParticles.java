@@ -21,6 +21,9 @@ public final class ModParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> NUKE_SURGE =
             PARTICLES.register("nuke_surge", () -> new SimpleParticleType(true));
 
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> COOLING_STEAM =
+            PARTICLES.register("cooling_steam", () -> new SimpleParticleType(true));
+
     public static void register(IEventBus modBus) {
         PARTICLES.register(modBus);
     }

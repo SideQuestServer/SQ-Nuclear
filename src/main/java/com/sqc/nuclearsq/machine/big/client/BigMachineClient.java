@@ -10,6 +10,7 @@ import com.sqc.nuclearsq.power.RtgBlock;
 import com.sqc.nuclearsq.power.SolarCollectorBlock;
 import com.sqc.nuclearsq.power.SolarPanelBlock;
 import com.sqc.nuclearsq.radiation.DeconShowerBlock;
+import com.sqc.nuclearsq.reactor.ReactorProps;
 import com.sqc.nuclearsq.reactor.RecombinerBlock;
 import com.sqc.nuclearsq.reactor.XenonFilterBlock;
 import com.sqc.nuclearsq.robotics.RobotArmBlock;
@@ -21,7 +22,10 @@ import com.sqc.nuclearsq.registry.BigMachineRegistry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -55,9 +59,21 @@ public final class BigMachineClient {
     @SubscribeEvent
     public static void onHighlight(RenderHighlightEvent.Block event) {
         var level = Minecraft.getInstance().level;
-        if (level != null && isMachine(level.getBlockState(event.getTarget().getBlockPos()).getBlock())) {
+        if (level == null) {
+            return;
+        }
+        BlockState state = level.getBlockState(event.getTarget().getBlockPos());
+        if (isMachine(state.getBlock()) || isHiddenPart(state)) {
             event.setCanceled(true);
         }
+    }
+
+    private static boolean isHiddenPart(BlockState state) {
+        if (state.hasProperty(ReactorProps.FORMED) && state.getValue(ReactorProps.FORMED)) {
+            return true;
+        }
+        return state.getRenderShape() != RenderShape.MODEL
+                && NuclearSQ.MODID.equals(BuiltInRegistries.BLOCK.getKey(state.getBlock()).getNamespace());
     }
 
     private static boolean isMachine(net.minecraft.world.level.block.Block b) {

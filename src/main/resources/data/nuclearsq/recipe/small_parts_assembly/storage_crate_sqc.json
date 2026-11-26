@@ -3,7 +3,7 @@
   "ingredients": [
     {
       "ingredient": {
-        "item": "nuclearsq:steel_sheet_sqc"
+        "item": "minecraft:iron_ingot"
       },
       "count": 6
     },
