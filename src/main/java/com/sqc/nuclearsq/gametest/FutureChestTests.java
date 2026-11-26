@@ -75,9 +75,9 @@ public final class FutureChestTests {
         sp.gameMode.useItemOn(sp, h.getLevel(), held, InteractionHand.MAIN_HAND, new BlockHitResult(Vec3.atCenterOf(abs), Direction.UP, abs, false));
         BlockState st = h.getBlockState(at);
         if (!st.is(FutureChestRegistry.BLOCK.get())) throw new GameTestAssertException("Kiste nicht gesetzt: " + st);
-        if (st.getValue(FutureChestBlock.UNFOLDED)) throw new GameTestAssertException("Kiste muss beim Setzen erst zusammengeklappt sein");
+        if (!st.getValue(FutureChestBlock.UNFOLDED)) throw new GameTestAssertException("Kiste muss beim Setzen sofort aufgeklappt sein");
         if (!(h.getLevel().getBlockEntity(h.absolutePos(at)) instanceof FutureChestBlockEntity be)) throw new GameTestAssertException("Kein BlockEntity");
-        if (be.animStart() == FutureChestBlockEntity.NONE) throw new GameTestAssertException("Animation nicht gestartet");
+        if (be.animStart() != FutureChestBlockEntity.NONE) throw new GameTestAssertException("Animation darf nicht starten");
         if (countOf(be, Items.DIAMOND) != 5 || countOf(be, Items.IRON_INGOT) != 64) throw new GameTestAssertException("Inhalt nicht uebernommen");
         h.runAfterDelay(FutureChestBlockEntity.ANIM_TICKS + 5, () -> {
             if (!h.getBlockState(at).getValue(FutureChestBlock.UNFOLDED)) throw new GameTestAssertException("Kiste klappt nicht auf");

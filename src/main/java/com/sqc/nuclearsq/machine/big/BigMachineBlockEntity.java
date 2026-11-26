@@ -1034,7 +1034,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
                 int lost = evaporated / Math.max(1, in.rate());
                 evaporated -= lost * in.rate();
                 if (lost > 0) tanks.get("coolant_out").drain(lost, IFluidHandler.FluidAction.EXECUTE);
-                if (n > 0 && ticks % 4 == 0 && level instanceof net.minecraft.server.level.ServerLevel sl) plume(sl);
+                if (n > 0 && ticks % 4 == 0 && level instanceof net.minecraft.server.level.ServerLevel sl) plume(sl, Math.min(1.0, n / (double) Math.max(1, in.rate())));
                 yield n;
             }
             case RELIEF_TANK -> reliefTank();
@@ -2391,13 +2391,16 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
         return powered ? 1 : 0;
     }
 
-    private void plume(net.minecraft.server.level.ServerLevel sl) {
+    private void plume(net.minecraft.server.level.ServerLevel sl, double load) {
         BlockPos top = structure().world(worldPosition, Math.max(formedRot, 0), machine.w / 2, machine.h - 1, machine.d / 2);
         boolean xl = machine == BigMachine.COOLING_TOWER_XL;
-        for (int i = machine.w / 20; i > 0; i--) {
-            double a = sl.random.nextDouble() * Math.PI * 2, d = Math.sqrt(sl.random.nextDouble()) * machine.w * 0.3;
-            DriveCore.far(sl, xl ? net.minecraft.core.particles.ParticleTypes.CAMPFIRE_SIGNAL_SMOKE : net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                    top.getX() + 0.5 + Math.cos(a) * d, top.getY() + 0.5, top.getZ() + 0.5 + Math.sin(a) * d, 0, 0.07, 0);
+        int count = (int) Math.round((xl ? 2.0 : 1.0) * (0.6 + 1.4 * load));
+        for (int i = Math.max(1, count); i > 0; i--) {
+            double a = sl.random.nextDouble() * Math.PI * 2, d = Math.sqrt(sl.random.nextDouble()) * machine.w * 0.22;
+            double rise = (xl ? 0.34 : 0.17) * (0.85 + 0.3 * sl.random.nextDouble());
+            DriveCore.far(sl, com.sqc.nuclearsq.registry.ModParticles.COOLING_STEAM.get(),
+                    top.getX() + 0.5 + Math.cos(a) * d, top.getY() + 1.0, top.getZ() + 0.5 + Math.sin(a) * d,
+                    Math.cos(a) * 0.012 + 0.03, rise, Math.sin(a) * 0.012 + 0.012);
         }
     }
 
