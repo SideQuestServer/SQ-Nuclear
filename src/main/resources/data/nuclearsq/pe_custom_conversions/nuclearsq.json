@@ -6340,6 +6340,10 @@
               "type": "projecte:item",
               "id": "nuclearsq:glass_seal_sqc",
               "amount": 2
+            },
+            {
+              "type": "projecte:item",
+              "id": "nuclearsq:machine_port_terminal_sqc"
             }
           ],
           "output": {

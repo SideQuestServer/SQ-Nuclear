@@ -1,0 +1,22 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": [
+    {
+      "item": "nuclearsq:poor_borax_ore_sqc"
+    },
+    {
+      "item": "nuclearsq:deepslate_poor_borax_ore_sqc"
+    }
+  ],
+  "count": 3,
+  "time": 200,
+  "energy_per_tick": 3600,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:borax_sqc",
+        "count": 1
+      }
+    }
+  ]
+}

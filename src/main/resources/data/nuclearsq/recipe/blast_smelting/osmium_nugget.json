@@ -1,0 +1,17 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": {
+    "item": "nuclearsq:osmium_nugget_sqc"
+  },
+  "count": 9,
+  "time": 200,
+  "energy_per_tick": 3600,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:osmium_ingot_sqc",
+        "count": 1
+      }
+    }
+  ]
+}

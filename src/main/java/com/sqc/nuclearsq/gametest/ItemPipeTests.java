@@ -22,6 +22,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
@@ -86,6 +87,27 @@ public final class ItemPipeTests {
                 throw new GameTestAssertException("Ziel-Truhe hat " + count(to, Items.COBBLESTONE) + " statt 32" + sb);
             }
             h.succeed();
+        });
+    }
+
+    @GameTest(template = FLOOR, batch = "item_pipe_chest", timeoutTicks = 1200)
+    public static void itemPipeLineFullOfOneItemLetsSecondThrough(GameTestHelper h) {
+        BlockPos src = h.absolutePos(new BlockPos(1, 2, 3)), dst = src.east(5);
+        ChestBlockEntity from = chest(h, src, ItemStack.EMPTY);
+        for (int i = 0; i < 5; i++) from.setItem(i, new ItemStack(Items.COBBLESTONE, 64));
+        from.setItem(5, new ItemStack(Items.DIRT, 20));
+        h.getLevel().setBlockAndUpdate(dst, Blocks.DROPPER.defaultBlockState());
+        if (!(h.getLevel().getBlockEntity(dst) instanceof DispenserBlockEntity to)) throw new GameTestAssertException("kein Spender");
+        for (int s = 0; s < 8; s++) to.setItem(s, new ItemStack(Items.COBBLESTONE, 64));
+        to.setItem(8, new ItemStack(Items.DIRT, 1));
+        for (int i = 1; i <= 4; i++) setPipe(h, src.east(i), TransportTier.REINFORCED);
+        pull(h, src.east(), src);
+        h.succeedWhen(() -> {
+            if (to.getItem(8).getCount() != 21 || count(from, Items.DIRT) != 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 1; i <= 4; i++) sb.append(" | Rohr ").append(i).append(": ").append(((ConduitBlockEntity) h.getLevel().getBlockEntity(src.east(i))).item());
+                throw new GameTestAssertException("Erde im Ziel " + to.getItem(8).getCount() + ", in der Truhe " + count(from, Items.DIRT) + sb);
+            }
         });
     }
 

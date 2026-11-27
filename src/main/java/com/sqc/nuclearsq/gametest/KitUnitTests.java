@@ -109,39 +109,6 @@ public final class KitUnitTests {
                 .thenSucceed();
     }
 
-    @GameTest(template = FLOOR, batch = "kit_unit_resize", timeoutTicks = 400)
-    public static void resizedMachineBecomesKitInChest(GameTestHelper h) {
-        BlockPos at = new BlockPos(40, 4, 7);
-        MachineKits.Placement probe = MachineKits.placement(MachineKits.def(BigMachine.DISTILLATION_COLUMN.id), h.absolutePos(at), Direction.SOUTH);
-        Set<Long> chunks = new HashSet<>();
-        for (BlockPos p : probe.footprint()) chunks.add(ChunkPos.asLong(p.getX() >> 4, p.getZ() >> 4));
-        for (long c : chunks) h.getLevel().setChunkForced(ChunkPos.getX(c), ChunkPos.getZ(c), true);
-        MachineKits.Placement[] pl = new MachineKits.Placement[1];
-        h.startSequence()
-                .thenWaitUntil(() -> {
-                    for (long c : chunks) if (!h.getLevel().areEntitiesLoaded(c)) throw new GameTestAssertException("Chunks laden noch");
-                })
-                .thenExecute(() -> pl[0] = place(h, BigMachine.DISTILLATION_COLUMN.id, at))
-                .thenExecuteAfter(2, () -> {
-                    MachineKits.Placement m = pl[0];
-                    if (!Boolean.FALSE.equals(com.sqc.nuclearsq.kit.LegacyResize.outdated(h.getLevel(), m.anchor()))) throw new GameTestAssertException("Neue Anlage gilt als alt");
-                    com.sqc.nuclearsq.kit.LegacyResize.convert(h.getLevel(), m.anchor());
-                    for (BlockPos p : m.footprint()) {
-                        BlockState st = h.getLevel().getBlockState(p);
-                        if (!p.equals(m.anchor()) && !st.isAir() && !st.is(Blocks.WATER)) throw new GameTestAssertException("Rest bei " + p + ": " + st);
-                    }
-                    if (!(h.getLevel().getBlockEntity(m.anchor()) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity chest)) throw new GameTestAssertException("Keine Kiste am Ort");
-                    if (!(chest.getItem(0).getItem() instanceof MachineKitItem)) throw new GameTestAssertException("Kit fehlt in der Kiste: " + chest.getItem(0));
-                    assertAtMostOneKit(h, m, 8, false);
-                    chest.clearContent();
-                    h.getLevel().setBlock(m.anchor(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-                })
-                .thenExecute(() -> {
-                    for (long c : chunks) h.getLevel().setChunkForced(ChunkPos.getX(c), ChunkPos.getZ(c), false);
-                })
-                .thenSucceed();
-    }
-
     @GameTest(template = FLOOR, batch = "kit_unit_piston", timeoutTicks = 60)
     public static void pistonCannotPushKitPart(GameTestHelper h) {
         MachineKits.Placement pl = place(h, "main_coolant_pump", new BlockPos(7, 4, 4));

@@ -50,8 +50,6 @@ public class SolarCollectorBlockEntity extends SolarPanelBlockEntity {
     @Override
     protected void onSecond() {
         updateGroup();
-        int tilt = Math.round(SolarMath.track(level, 1f) / SolarMath.TRACK_MAX * 2f) + 2;
-        if (producing(getBlockState()) && getBlockState().getValue(SolarCollectorBlock.TILT) != tilt) level.setBlock(worldPosition, getBlockState().setValue(SolarCollectorBlock.TILT, tilt), 2);
     }
 
     @Nullable

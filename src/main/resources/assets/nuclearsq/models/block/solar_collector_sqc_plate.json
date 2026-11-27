@@ -1,0 +1,215 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "nuclearsq:block/solar_collector_sqc_side",
+    "side": "nuclearsq:block/solar_collector_sqc_side",
+    "top": "nuclearsq:block/solar_collector_sqc_top",
+    "port": "nuclearsq:block/solar_collector_sqc_port"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        9,
+        7
+      ],
+      "to": [
+        15,
+        10,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            6,
+            15,
+            7
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            1,
+            6,
+            15,
+            7
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            7,
+            6,
+            9,
+            7
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            7,
+            6,
+            9,
+            7
+          ],
+          "texture": "#side"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#side"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#side"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        9,
+        1
+      ],
+      "to": [
+        9,
+        10,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7,
+            6,
+            9,
+            7
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            7,
+            6,
+            9,
+            7
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            1,
+            6,
+            15,
+            7
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            1,
+            6,
+            15,
+            7
+          ],
+          "texture": "#side"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#side"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#side"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        10,
+        0
+      ],
+      "to": [
+        16,
+        12,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            4,
+            16,
+            6
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            0,
+            4,
+            16,
+            6
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            0,
+            4,
+            16,
+            6
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            0,
+            4,
+            16,
+            6
+          ],
+          "texture": "#side"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#top"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ],
+          "texture": "#side"
+        }
+      }
+    }
+  ]
+}

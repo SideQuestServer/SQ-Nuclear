@@ -37,7 +37,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class SolarCollectorBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE = Shapes.or(Block.box(1, 0, 1, 15, 4, 15), Block.box(5, 0, 0, 11, 4, 16),
             Block.box(0, 0, 5, 16, 4, 11), Block.box(7, 4, 7, 9, 10, 9), Block.box(0, 10, 0, 16, 12, 16));
-    public static final IntegerProperty TILT = IntegerProperty.create("tilt", 0, 4);
     public static final IntegerProperty PART = IntegerProperty.create("part", 0, 4);
     public static final int SINGLE = 4;
     public static final IntegerProperty PORT = IntegerProperty.create("port", 0, 3);
@@ -59,7 +58,7 @@ public class SolarCollectorBlock extends Block implements EntityBlock {
 
     public SolarCollectorBlock(Properties props) {
         super(props);
-        registerDefaultState(stateDefinition.any().setValue(TILT, 2).setValue(PART, SINGLE).setValue(PORT, 0));
+        registerDefaultState(stateDefinition.any().setValue(PART, SINGLE).setValue(PORT, 0));
     }
 
     public static int dx(int part) { return part & 1; }
@@ -78,7 +77,7 @@ public class SolarCollectorBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(TILT, PART, PORT);
+        builder.add(PART, PORT);
     }
 
     @Nullable

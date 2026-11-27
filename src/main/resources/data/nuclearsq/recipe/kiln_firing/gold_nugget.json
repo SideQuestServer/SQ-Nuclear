@@ -1,0 +1,17 @@
+{
+  "type": "nuclearsq:kiln_firing",
+  "ingredient": {
+    "item": "minecraft:gold_nugget"
+  },
+  "count": 9,
+  "time": 100,
+  "energy_per_tick": 300,
+  "results": [
+    {
+      "item": {
+        "id": "minecraft:gold_ingot",
+        "count": 1
+      }
+    }
+  ]
+}

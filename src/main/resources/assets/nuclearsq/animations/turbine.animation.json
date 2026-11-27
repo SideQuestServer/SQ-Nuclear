@@ -9,7 +9,46 @@
     "running": {
       "loop": true,
       "animation_length": 1.0,
-      "bones": {}
+      "bones": {
+        "shaft_front": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.5": [
+              0,
+              0,
+              -360
+            ],
+            "1.0": [
+              0,
+              0,
+              -720
+            ]
+          }
+        },
+        "shaft_rear": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.5": [
+              0,
+              0,
+              -360
+            ],
+            "1.0": [
+              0,
+              0,
+              -720
+            ]
+          }
+        }
+      }
     }
   },
   "geckolib_format_version": 2

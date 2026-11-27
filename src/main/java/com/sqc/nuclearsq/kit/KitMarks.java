@@ -9,7 +9,9 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import com.mojang.serialization.Codec;
 import com.sqc.nuclearsq.NuclearSQ;
+import com.sqc.nuclearsq.machine.big.BigMachineBlockEntity;
 
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
@@ -85,6 +87,9 @@ public final class KitMarks {
     public static final Supplier<AttachmentType<Data>> MARKS = ATTACHMENTS.register("kit_marks",
             () -> AttachmentType.builder(Data::new).serialize(SERIALIZER).build());
 
+    public static final Supplier<AttachmentType<Boolean>> REFUNDED = ATTACHMENTS.register("kit_refund",
+            () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
+
     @Nullable
     private static Data data(Level level, BlockPos pos, boolean load) {
         if (!load && !level.isLoaded(pos)) return null;
@@ -109,16 +114,44 @@ public final class KitMarks {
         Data d = data(level, ctrl, true);
         if (d == null || !d.ctrls.containsKey(ctrl.asLong())) return null;
         int v = d.ctrls.get(ctrl.asLong());
+        MachineKits.Def def = defAt(level, ctrl, v >> 2);
+        return def == null ? null : new MachineKits.Placement(def, ctrl, v & 3);
+    }
+
+    @Nullable
+    private static MachineKits.Def defAt(Level level, BlockPos ctrl, int idx) {
+        if (level.getBlockEntity(ctrl) instanceof BigMachineBlockEntity be && be.machine() != null) {
+            MachineKits.Def def = MachineKits.def(be.machine().id);
+            if (def != null) return def;
+        }
+        MachineKits.Def turbine = MachineKits.def("turbine");
+        if (turbine != null && level.getBlockState(ctrl).is(turbine.controller())) return turbine;
         List<MachineKits.Def> defs = new ArrayList<>(MachineKits.all().values());
-        int idx = v >> 2;
-        return idx < defs.size() ? new MachineKits.Placement(defs.get(idx), ctrl, v & 3) : null;
+        return idx >= 0 && idx < defs.size() ? defs.get(idx) : null;
+    }
+
+    private static int index(String id) {
+        return new ArrayList<>(MachineKits.all().keySet()).indexOf(id);
+    }
+
+    public static void repair(Level level, BlockPos ctrl, String id) {
+        if (!level.isLoaded(ctrl)) return;
+        LevelChunk ch = level.getChunkAt(ctrl);
+        if (!ch.hasData(MARKS)) return;
+        Data d = ch.getData(MARKS);
+        long c = ctrl.asLong();
+        int idx = index(id);
+        if (idx < 0 || !d.ctrls.containsKey(c)) return;
+        int v = d.ctrls.get(c);
+        if (v >> 2 == idx) return;
+        d.ctrls.put(c, idx * 4 + (v & 3));
+        ch.setUnsaved(true);
     }
 
     static void mark(Level level, MachineKits.Placement pl) {
         long ctrl = pl.anchor().asLong();
         for (BlockPos p : pl.footprint()) edit(level, p).parts.put(p.asLong(), ctrl);
-        int idx = new ArrayList<>(MachineKits.all().keySet()).indexOf(pl.def().id());
-        edit(level, pl.anchor()).ctrls.put(ctrl, idx * 4 + (pl.rot() & 3));
+        edit(level, pl.anchor()).ctrls.put(ctrl, index(pl.def().id()) * 4 + (pl.rot() & 3));
     }
 
     static void unmark(Level level, MachineKits.Placement pl) {
@@ -134,6 +167,22 @@ public final class KitMarks {
         if (d != null && d.ctrls.containsKey(ctrl)) {
             d.ctrls.remove(ctrl);
             changed(level, pl.anchor(), d);
+        }
+    }
+
+    public static void forget(Level level, BlockPos ctrl, List<BlockPos> area) {
+        long c = ctrl.asLong();
+        for (BlockPos p : area) {
+            Data d = data(level, p, true);
+            if (d != null && d.parts.containsKey(p.asLong()) && d.parts.get(p.asLong()) == c) {
+                d.parts.remove(p.asLong());
+                changed(level, p, d);
+            }
+        }
+        Data d = data(level, ctrl, true);
+        if (d != null && d.ctrls.containsKey(c)) {
+            d.ctrls.remove(c);
+            changed(level, ctrl, d);
         }
     }
 

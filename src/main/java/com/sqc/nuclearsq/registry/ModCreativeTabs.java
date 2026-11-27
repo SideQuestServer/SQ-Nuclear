@@ -167,7 +167,7 @@ public final class ModCreativeTabs {
                 for (var ram : com.sqc.nuclearsq.storage.StorageRegistry.RAM_MODULES) storage.add(ram.get());
                 storage.addAll(java.util.List.of(com.sqc.nuclearsq.storage.StorageRegistry.QUANTUM_MODULE.get(),
                         com.sqc.nuclearsq.storage.StorageRegistry.TERMINAL.get(), com.sqc.nuclearsq.storage.StorageRegistry.MONITOR.get(),
-                        com.sqc.nuclearsq.storage.StorageRegistry.CRAFTING_TERMINAL.get(), com.sqc.nuclearsq.storage.StorageRegistry.ITEM_PORT.get(),
+                        com.sqc.nuclearsq.storage.StorageRegistry.CRAFTING_TERMINAL.get(), com.sqc.nuclearsq.storage.StorageRegistry.CRAFTING_TERMINAL_PANEL.get(), com.sqc.nuclearsq.storage.StorageRegistry.ITEM_PORT.get(),
                         com.sqc.nuclearsq.storage.StorageRegistry.NET_PIPE_ADAPTER.get(),
                         com.sqc.nuclearsq.crate.CrateRegistry.ITEM.get(), com.sqc.nuclearsq.crate.CrateRegistry.UPGRADE_1.get(), com.sqc.nuclearsq.crate.CrateRegistry.UPGRADE_2.get(),
                         com.sqc.nuclearsq.storage.StorageRegistry.WIFI_ADAPTER.get(), com.sqc.nuclearsq.storage.StorageRegistry.WIFI_ANTENNA.get(),

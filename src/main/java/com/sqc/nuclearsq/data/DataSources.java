@@ -53,7 +53,10 @@ public final class DataSources {
 
     @Nullable
     public static DataSource of(@Nullable BlockEntity be) {
-        if (be instanceof BigPortBlockEntity p) be = p.findController();
+        if (be instanceof BigPortBlockEntity p) {
+            BlockEntity c = p.findController();
+            be = c != null ? c : p.findTurbine();
+        }
         else if (be instanceof TurbinePortBlockEntity p) be = p.findController();
         if (be instanceof BigMachineBlockEntity m) return new Big(m);
         if (be instanceof TurbineControllerBlockEntity t) return new Turbine(t);

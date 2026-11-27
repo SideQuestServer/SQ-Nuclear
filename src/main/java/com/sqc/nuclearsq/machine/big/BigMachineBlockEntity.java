@@ -90,7 +90,7 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
     private int batteryFlow, charge;
 
     private boolean formed, running, blocked;
-    private boolean resizeChecked;
+    private boolean marksChecked;
     private boolean reassert;
     private boolean doorOpen, doorPowered;
     @Nullable private Boolean doorShown;
@@ -950,7 +950,10 @@ public class BigMachineBlockEntity extends BlockEntity implements GeoBlockEntity
 
     public void serverTick() {
         if (level == null) return;
-        if (!resizeChecked) resizeChecked = com.sqc.nuclearsq.kit.LegacyResize.check(this);
+        if (!marksChecked) {
+            marksChecked = true;
+            com.sqc.nuclearsq.kit.KitMarks.repair(level, worldPosition, machine.id);
+        }
         boolean wasFormed = formed, wasRunning = running, wasFault = rodFault, wasDry = vesselDry, wasBlocked = blocked;
         boolean wasHot = core != null && core.hot();
         int wasRot = formedRot, wasRod = rod, wasHeads = rodHeads(), wasCharge = chargeLevel();

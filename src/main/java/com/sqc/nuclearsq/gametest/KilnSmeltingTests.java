@@ -49,6 +49,25 @@ public final class KilnSmeltingTests {
         h.succeed();
     }
 
+    @GameTest(template = "floor", batch = "kiln_smelting", timeoutTicks = 100)
+    public static void blastFurnaceSmeltsEverythingIntoIngots(GameTestHelper h) {
+        blast(h, Items.IRON_ORE, Items.IRON_INGOT, 8, 8);
+        blast(h, Items.DEEPSLATE_GOLD_ORE, Items.GOLD_INGOT, 8, 8);
+        blast(h, Items.RAW_IRON_BLOCK, Items.IRON_INGOT, 1, 9);
+        blast(h, Items.RAW_COPPER_BLOCK, Items.COPPER_INGOT, 1, 9);
+        h.assertTrue(BigCrafter.findReprocessing(h.getLevel(), BigMachine.BLAST_FURNACE, new ItemStack(Items.IRON_BLOCK)) == null, "Eisenblock bleibt");
+        h.assertTrue(BigCrafter.findReprocessing(h.getLevel(), BigMachine.BLAST_FURNACE, new ItemStack(Items.COAL)) == null, "Kohle bleibt Zusatz");
+        h.succeed();
+    }
+
+    private static void blast(GameTestHelper h, Item in, Item out, int count, int made) {
+        ReprocessingRecipe r = BigCrafter.findReprocessing(h.getLevel(), BigMachine.BLAST_FURNACE, new ItemStack(in));
+        h.assertTrue(r != null, "kein Hochofenrezept fuer " + in);
+        ItemStack res = r.getResultItem(h.getLevel().registryAccess());
+        h.assertTrue(res.is(out) && res.getCount() == made && r.count() == count, in + " ergibt " + res + " aus " + r.count());
+        h.assertTrue(r.energyPerTick() == BigCrafter.BLAST_SMELT_FE, "Strom " + r.energyPerTick());
+    }
+
     private static void expect(GameTestHelper h, ReprocessingRecipe r, Item out, int count) {
         h.assertTrue(r != null, "kein Rezept fuer " + out);
         h.assertTrue(r.getResultItem(h.getLevel().registryAccess()).is(out), "falsches Ergebnis statt " + out);

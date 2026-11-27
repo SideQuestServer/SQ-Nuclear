@@ -70,6 +70,13 @@ public class BigPortBlockEntity extends BlockEntity {
         return null;
     }
 
+    @Nullable
+    public com.sqc.nuclearsq.turbine.TurbineControllerBlockEntity findTurbine() {
+        if (level == null || controllerPos == null) return null;
+        if (!com.sqc.nuclearsq.data.ChunkGuard.loaded(level, controllerPos)) return null;
+        return level.getBlockEntity(controllerPos) instanceof com.sqc.nuclearsq.turbine.TurbineControllerBlockEntity t && t.isFormed() ? t : null;
+    }
+
     public void sendInfo(Player player) {
         String k = "message.nuclearsq.big_port.";
         BigMachineBlockEntity c = findController();

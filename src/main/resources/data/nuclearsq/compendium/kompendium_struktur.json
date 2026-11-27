@@ -1127,6 +1127,28 @@
    ]
   },
   {
+   "id": "calculator",
+   "name": {
+    "de": "Rechner",
+    "en": "Calculator"
+   },
+   "chapters": [
+    {
+     "id": "calculator",
+     "name": {
+      "de": "Rohstoff-Rechner",
+      "en": "Resource Calculator"
+     },
+     "pages": [
+      {
+       "id": "calculator",
+       "anim": "CALC"
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "examples",
    "name": {
     "de": "Beispiele",

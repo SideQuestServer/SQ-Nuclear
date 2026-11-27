@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
@@ -16,9 +17,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -27,6 +30,8 @@ public final class ResourceRegistry {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(NuclearSQ.MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(NuclearSQ.MODID);
+    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, NuclearSQ.MODID);
+    public static final DeferredHolder<Feature<?>, OreDepositFeature> ORE_DEPOSIT = FEATURES.register("ore_deposit", OreDepositFeature::new);
 
     private record Ore(String name, String drop, boolean gem) {}
 
@@ -48,6 +53,9 @@ public final class ResourceRegistry {
             "zircon", List.of(),
             "borax", List.of(),
             "sulfur", List.of());
+
+    private static final List<String> POOR = List.of("uranium", "lead", "tin", "osmium", "fluorite", "zircon", "borax", "lithium", "iron", "copper", "gold");
+    private static final List<String> NUGGETS = List.of("lead", "tin", "osmium", "lithium", "copper");
 
     private static final String NETHER_SULFUR = "nether_sulfur_ore_sqc";
 
@@ -76,6 +84,15 @@ public final class ResourceRegistry {
         ORE_BLOCKS.put(NETHER_SULFUR, ns);
         ORE_ITEMS.put(NETHER_SULFUR, ITEMS.registerSimpleBlockItem(NETHER_SULFUR, ns));
         for (String id : ITEM_IDS) ITEM_MAP.put(id, ITEMS.registerSimpleItem(id));
+        for (String n : POOR) {
+            for (boolean deep : new boolean[] {false, true}) {
+                String id = (deep ? "deepslate_" : "") + "poor_" + n + "_ore_sqc";
+                DeferredBlock<Block> b = BLOCKS.register(id, () -> ore(false, deep));
+                ORE_BLOCKS.put(id, b);
+                ORE_ITEMS.put(id, ITEMS.registerSimpleBlockItem(id, b));
+            }
+        }
+        for (String n : NUGGETS) ITEM_MAP.put(n + "_nugget_sqc", ITEMS.registerSimpleItem(n + "_nugget_sqc"));
     }
 
     private static Block ore(boolean gem, boolean deep) {
@@ -112,5 +129,6 @@ public final class ResourceRegistry {
     public static void register(IEventBus modBus) {
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
+        FEATURES.register(modBus);
     }
 }

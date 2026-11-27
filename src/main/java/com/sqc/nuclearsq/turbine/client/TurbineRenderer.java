@@ -78,7 +78,7 @@ public class TurbineRenderer extends GeoBlockRenderer<TurbineControllerBlockEnti
     public AABB getRenderBoundingBox(TurbineControllerBlockEntity be) {
         int rot = Math.max(be.formedRot(), 0);
         MultiblockStructure s = MultiblockStructure.TURBINE;
-        BlockPos a = s.world(be.getBlockPos(), rot, 0, 0, 0), b = s.world(be.getBlockPos(), rot, 6, 6, 15);
+        BlockPos a = s.world(be.getBlockPos(), rot, 0, 0, 0), b = s.world(be.getBlockPos(), rot, s.width() - 1, s.height() - 1, s.depth() - 1);
         return AABB.encapsulatingFullBlocks(a, b);
     }
 

@@ -2551,6 +2551,9 @@ public final class NuclearGameTests {
             if (h.getLevel().getBlockEntity(q) instanceof BigMachineBlockEntity b && b.machine() == BigMachine.SHAFT_GENERATOR) gen = b;
         }
         if (gen == null) throw new GameTestAssertException("Wellengenerator-Controller fehlt (" + genPos + ")");
+        java.util.Set<Long> chunks = new java.util.HashSet<>();
+        for (BlockPos q : placed) chunks.add(net.minecraft.world.level.ChunkPos.asLong(q.getX() >> 4, q.getZ() >> 4));
+        for (long c : chunks) h.getLevel().setChunkForced(net.minecraft.world.level.ChunkPos.getX(c), net.minecraft.world.level.ChunkPos.getZ(c), true);
         BigMachineBlockEntity g = gen;
         int[] start = new int[3];
         h.runAfterDelay(40, () -> {
@@ -2576,6 +2579,7 @@ public final class NuclearGameTests {
                 if (tb.lastShaft() <= 0) throw new GameTestAssertException("Turbine meldet keine Wellenleistung");
             } finally {
                 clear(h, placed);
+                for (long c : chunks) h.getLevel().setChunkForced(net.minecraft.world.level.ChunkPos.getX(c), net.minecraft.world.level.ChunkPos.getZ(c), false);
             }
             h.succeed();
         });

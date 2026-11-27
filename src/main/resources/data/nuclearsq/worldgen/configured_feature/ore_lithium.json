@@ -1,9 +1,7 @@
 {
-  "type": "minecraft:ore",
+  "type": "nuclearsq:ore_deposit",
   "config": {
-    "size": 5,
-    "discard_chance_on_air_exposure": 0.0,
-    "targets": [
+    "core": [
       {
         "target": {
           "predicate_type": "minecraft:tag_match",
@@ -22,6 +20,27 @@
           "Name": "nuclearsq:deepslate_lithium_ore_sqc"
         }
       }
-    ]
+    ],
+    "poor": [
+      {
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:stone_ore_replaceables"
+        },
+        "state": {
+          "Name": "nuclearsq:poor_lithium_ore_sqc"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:deepslate_ore_replaceables"
+        },
+        "state": {
+          "Name": "nuclearsq:deepslate_poor_lithium_ore_sqc"
+        }
+      }
+    ],
+    "size": 5
   }
 }

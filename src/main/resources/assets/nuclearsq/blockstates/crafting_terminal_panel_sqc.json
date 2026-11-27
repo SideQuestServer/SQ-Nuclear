@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=south": {
+      "model": "nuclearsq:block/crafting_terminal_panel_sqc"
+    },
+    "facing=west": {
+      "model": "nuclearsq:block/crafting_terminal_panel_sqc",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "nuclearsq:block/crafting_terminal_panel_sqc",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "nuclearsq:block/crafting_terminal_panel_sqc",
+      "y": 270
+    }
+  }
+}

@@ -34,7 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
 public class ProgressionScreen extends Screen {
-    private enum Anim { NONE, WELCOME, ROD, ENERGY, HEAT, BOOM, MACHINE, TREE, CATALOG, ROADMAP, PANEL, LOOP, PRIMARY, PRIMARY_EXT, PRIMARY_FULL, FLUIDS, PLANT, ASSEMBLY, ACHIEVE, WEAPONS, GUIDE, LINE, LINES, SCOPE, BUILD, EXAMPLES }
+    private enum Anim { NONE, WELCOME, ROD, ENERGY, HEAT, BOOM, MACHINE, TREE, CATALOG, ROADMAP, PANEL, LOOP, PRIMARY, PRIMARY_EXT, PRIMARY_FULL, FLUIDS, PLANT, ASSEMBLY, ACHIEVE, WEAPONS, GUIDE, LINE, LINES, SCOPE, BUILD, EXAMPLES, CALC }
 
     private static boolean isLoop(Anim a) { return a == Anim.LOOP || a == Anim.PRIMARY || a == Anim.PRIMARY_EXT || a == Anim.PRIMARY_FULL; }
     private static boolean isNet(Anim a) { return a == Anim.PLANT || a == Anim.ASSEMBLY || a == Anim.WEAPONS || a == Anim.LINE; }
@@ -113,6 +113,7 @@ public class ProgressionScreen extends Screen {
         ICONS.put("achievements", () -> new ItemStack(Items.NETHER_STAR));
         ICONS.put("weapons", () -> modItem("nuclear_bomb_sqc"));
         ICONS.put("the_mod", () -> modItem("uranium_ore_sqc"));
+        ICONS.put("calculator", () -> new ItemStack(Items.PAPER));
     }
 
     private static Supplier<ItemStack> icon(String id) {
@@ -667,7 +668,7 @@ public class ProgressionScreen extends Screen {
         String key = "compendium." + p.id();
         int tw = contentW() - 12 - (machineOf(p) != null && sideBrief() ? SB_W + 10 : 0);
         tabs = List.of();
-        if (p.anim() != Anim.TREE && p.anim() != Anim.CATALOG && p.anim() != Anim.ACHIEVE && p.anim() != Anim.GUIDE && !isLoop(p.anim()) && p.anim() != Anim.FLUIDS && !isNet(p.anim()) && p.anim() != Anim.SCOPE && p.anim() != Anim.BUILD && p.anim() != Anim.EXAMPLES && p.anim() != Anim.WELCOME && has(key + ".text")) {
+        if (p.anim() != Anim.TREE && p.anim() != Anim.CATALOG && p.anim() != Anim.ACHIEVE && p.anim() != Anim.GUIDE && !isLoop(p.anim()) && p.anim() != Anim.FLUIDS && !isNet(p.anim()) && p.anim() != Anim.SCOPE && p.anim() != Anim.BUILD && p.anim() != Anim.EXAMPLES && p.anim() != Anim.CALC && p.anim() != Anim.WELCOME && has(key + ".text")) {
             String[] paras = tr(key + ".text").split("\n");
             var secs = sections(paras);
             if (secs.size() > 1 && secs.size() <= 4) {
@@ -701,6 +702,7 @@ public class ProgressionScreen extends Screen {
             setFocused(null);
         }
         if (button == 3) { back(); return true; }
+        if (current().anim() == Anim.CALC && recipeOf.isEmpty() && calcPanel().mouseClicked(mx, my, button)) return true;
         if ((current().anim() == Anim.BUILD || show3d) && build != null && build.mouseClicked(mx, my, button)) return true;
         if (button == 1 && plantHover >= 0 && current().anim() == Anim.SCOPE && scope != null && scope.nodes.get(plantHover).page() != null) {
             int[] target = findPage(scope.nodes.get(plantHover).page());
@@ -935,6 +937,7 @@ public class ProgressionScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mx, double my, double sx, double sy) {
+        if (current().anim() == Anim.CALC && recipeOf.isEmpty() && calcPanel().mouseScrolled(mx, my, sy)) return true;
         if ((current().anim() == Anim.BUILD || show3d) && build != null && build.mouseScrolled(mx, my, sy)) return true;
         if (zoomNow() && inPlant(mx, my) && plantZoom > 0) {
             float z = Math.max(Math.min(PLANT_ZOOM_MIN, plantFit), Math.min(PLANT_ZOOM_MAX, plantZoom * (sy > 0 ? 1.15f : 1 / 1.15f)));
@@ -952,6 +955,7 @@ public class ProgressionScreen extends Screen {
 
     @Override
     public boolean keyPressed(int key, int scan, int mods) {
+        if (current().anim() == Anim.CALC && recipeOf.isEmpty() && calcPanel().keyPressed(key)) return true;
         if (key == 256 && search != null && !search.getValue().isEmpty()) { search.setValue(""); return true; }
         if (key == 256 && !recipeOf.isEmpty()) { recipeOf = ItemStack.EMPTY; plantZoom = 0; return true; }
         if (key == 70 && (mods & 2) != 0 && search != null) { setFocused(search); search.setFocused(true); return true; }
@@ -966,6 +970,32 @@ public class ProgressionScreen extends Screen {
         if (key == 267) { scroll += Math.max(20, textVisible - 20); return true; }
         return super.keyPressed(key, scan, mods);
     }
+
+    @Override
+    public boolean charTyped(char c, int mods) {
+        if (current().anim() == Anim.CALC && recipeOf.isEmpty() && calcPanel().charTyped(c)) return true;
+        return super.charTyped(c, mods);
+    }
+
+    private CalcPanel calc;
+
+    private CalcPanel calcPanel() {
+        if (calc == null) {
+            if (catalogGroups == null) buildCatalog();
+            List<java.util.Map.Entry<RecipeSources.Where, List<ItemStack>>> groups = new ArrayList<>();
+            for (Group grp : catalogGroups) groups.add(java.util.Map.entry(grp.where(), grp.items()));
+            var level = Minecraft.getInstance().level;
+            if (level != null) {
+                List<ItemStack> vanilla = new ArrayList<>();
+                for (Item it : RecipeSources.craftableVanilla(level.getRecipeManager(), level.registryAccess())) vanilla.add(new ItemStack(it));
+                if (!vanilla.isEmpty()) groups.add(new java.util.AbstractMap.SimpleEntry<>(null, vanilla));
+            }
+            calc = new CalcPanel(groups);
+        }
+        return calc;
+    }
+
+    private static final net.minecraft.resources.ResourceLocation CALC_ICON = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(com.sqc.nuclearsq.NuclearSQ.MODID, "textures/gui/compendium/calculator.png");
 
     @Override
     public boolean isPauseScreen() { return false; }
@@ -1034,6 +1064,9 @@ public class ProgressionScreen extends Screen {
             drawBuild(g, mx, my, x, y, w, bottom - y, p);
         } else if (p.anim() == Anim.EXAMPLES) {
             drawExamples(g, mx, my, x, y, w, bottom - y);
+        } else if (p.anim() == Anim.CALC) {
+            calcPanel().render(g, font, x, y, w, bottom - y, mx, my);
+            loopTip = calcPanel().tooltip(font);
         } else {
             headOff = 0;
             int tx = x, tw = w;
@@ -1171,7 +1204,8 @@ public class ProgressionScreen extends Screen {
             boolean act = k == active, hov = mx >= px + 1 && mx < px + GBAR - 1 && my >= y && my < y + h;
             if (act) { rrect(g, px + 3, y, px + GBAR - 3, y + h - 1, ACTIVE_BG); g.fill(px + 3, y + 3, px + 5, y + h - 4, ACCENT); }
             else if (hov) rrect(g, px + 3, y, px + GBAR - 3, y + h - 1, HOVER_BG);
-            MachineThumbs.drawStack(g, sec.icon().get(), px + GBAR / 2 - 8, y + 2);
+            if (sec.id().equals("calculator")) g.blit(CALC_ICON, px + GBAR / 2 - 8, y + 2, 0, 0, 16, 16, 16, 16);
+            else MachineThumbs.drawStack(g, sec.icon().get(), px + GBAR / 2 - 8, y + 2);
             String name = tr("compendium.section." + sec.id());
             int sp = name.indexOf(' '), col = act ? ACCENT : hov ? TEXT : MUTED;
             if (font.width(name) <= GBAR - 2) g.drawCenteredString(font, name, px + GBAR / 2, y + 20, col);

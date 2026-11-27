@@ -192,10 +192,11 @@ public final class BuildData {
         if (machineId.startsWith("block:"))
             return JsonParser.parseString("{\"size\":[1,1,1],\"controller\":[0,0,0],\"ports\":[{\"name\":\"data\",\"type\":\"data\",\"dir\":\"both\",\"cell\":[0,0,0]}]}").getAsJsonObject();
         if (machineId.equals("turbine"))
-            return JsonParser.parseString("{\"size\":[7,7,16],\"controller\":[3,1,0],\"ports\":["
-                    + "{\"name\":\"energy_out\",\"type\":\"energy\",\"dir\":\"out\",\"cell\":[4,1,0]},"
-                    + "{\"name\":\"steam_in\",\"type\":\"steam\",\"dir\":\"in\",\"cell\":[3,6,6]},"
-                    + "{\"name\":\"exhaust_out\",\"type\":\"steam\",\"dir\":\"out\",\"cell\":[1,0,12]}]}").getAsJsonObject();
+            return JsonParser.parseString("{\"size\":[19,9,42],\"controller\":[9,1,0],\"ports\":["
+                    + "{\"name\":\"energy_out\",\"type\":\"energy\",\"dir\":\"out\",\"cell\":[11,1,0]},"
+                    + "{\"name\":\"steam_in\",\"type\":\"steam\",\"dir\":\"in\",\"cell\":[9,8,16]},"
+                    + "{\"name\":\"exhaust_out\",\"type\":\"steam\",\"dir\":\"out\",\"cell\":[9,0,41]},"
+                    + "{\"name\":\"data\",\"type\":\"terminal\",\"dir\":\"both\",\"cell\":[7,1,0]}]}").getAsJsonObject();
         return readJson("/data/nuclearsq/multiblocks/" + machineId + ".json");
     }
 

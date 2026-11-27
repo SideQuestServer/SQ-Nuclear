@@ -161,12 +161,42 @@ public final class MultiblockStructure {
 
     public static final Map<String, MultiblockStructure> ALL = new HashMap<>();
 
-    public static final MultiblockStructure TURBINE = build("turbine", 7, 7, 16, Map.of(
+    private static final Map<Character, String> LEGEND = Map.of(
             'C', "nuclearsq:pressure_chamber_sqc", 'B', "nuclearsq:turbine_basic_sqc",
             'R', "nuclearsq:turbine_brass_rotor_sqc", 'S', "nuclearsq:turbine_steel_blades_sqc",
             'G', "nuclearsq:turbine_glowstone_generator_sqc", 'P', "nuclearsq:pressure_chamber_reinforced_sqc",
             '@', "nuclearsq:turbine_controller_sqc", 'E', "nuclearsq:turbine_port_energy_sqc",
-            'V', "nuclearsq:turbine_port_steam_sqc", 'W', "nuclearsq:turbine_port_water_sqc"),
+            'V', "nuclearsq:turbine_port_steam_sqc", 'W', "nuclearsq:turbine_port_water_sqc");
+
+    private static final Map<Character, String> LEGEND_DATA = with(LEGEND, 'T', "nuclearsq:machine_port_terminal_sqc");
+
+    private static Map<Character, String> with(Map<Character, String> base, char c, String id) {
+        Map<Character, String> m = new HashMap<>(base);
+        m.put(c, id);
+        return Map.copyOf(m);
+    }
+
+    public static final MultiblockStructure TURBINE = build("turbine", 19, 9, 42, LEGEND_DATA,
+            Map.of('E', 'B', 'V', 'P', 'W', 'C', 'T', 'B'),
+            (g, w, h, d) -> {
+                for (int z = 0; z <= 27; z++)
+                    for (int x = 3; x <= 15; x++) g[0][z][x] = 'B';
+                for (int z = 28; z <= 41; z++)
+                    for (int x : new int[] {3, 4, 5, 13, 14, 15}) g[0][z][x] = 'C';
+                for (int z = 2; z <= 25; z++) g[4][z][9] = 'R';
+                for (int z : new int[] {2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23})
+                    for (int y = 4; y <= 6; y++)
+                        for (int x = 8; x <= 10; x++) if (x != 9 || y != 4) g[y][z][x] = 'S';
+                for (int z : new int[] {5, 9, 13, 17, 21, 25})
+                    for (int y = 4; y <= 5; y++)
+                        for (int x = 8; x <= 10; x++) if (x != 9 || y != 4) g[y][z][x] = 'G';
+                g[1][0][9] = '@';
+                g[com.sqc.nuclearsq.turbine.TurbineControllerBlockEntity.DATA_Y][com.sqc.nuclearsq.turbine.TurbineControllerBlockEntity.DATA_Z][com.sqc.nuclearsq.turbine.TurbineControllerBlockEntity.DATA_X] = 'T';
+                for (com.sqc.nuclearsq.turbine.TurbinePortType t : com.sqc.nuclearsq.turbine.TurbinePortType.values())
+                    g[t.y][t.z][t.x] = t.c;
+            });
+
+    public static final MultiblockStructure TURBINE_LEGACY = build("turbine_legacy", 7, 7, 16, LEGEND,
             Map.of('E', 'B', 'V', 'P', 'W', 'C'),
             (g, w, h, d) -> {
                 for (int z = 0; z < 10; z++)
@@ -187,8 +217,9 @@ public final class MultiblockStructure {
                 ring(g, 15, 3, 'B'); g[3][15][3] = 'R';
                 for (int z = 5; z <= 7; z++) g[6][z][3] = 'P';
                 g[1][0][3] = '@';
-                for (com.sqc.nuclearsq.turbine.TurbinePortType t : com.sqc.nuclearsq.turbine.TurbinePortType.values())
-                    g[t.y][t.z][t.x] = t.c;
+                g[1][0][4] = 'E';
+                g[6][6][3] = 'V';
+                g[0][12][1] = 'W';
             });
 
     private static void ring(char[][][] g, int z, int r, char c) {

@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.99.6.2
+
+Minecraft 1.21.1 · NeoForge 21.1.234
+
+### Added
+- Compendium tab **Calculator**: raw material calculator for a whole list, including vanilla items.
+- Crafting terminal as wall panel.
+- Ores spawn in normal veins with 2 to 4 poor ore per vein. New poor ore blocks and nuggets, also for iron, copper and gold (new chunks only).
+- New large turbine 19x9x42 with data port, spinning shaft and more detail.
+
+### Changed
+- Blast furnace smelts everything that becomes ingots (ores, raw blocks, zinc, modded ores).
+- Doors render from a greater distance.
+- Solar: movement reworked.
+- Create shaft output and SU translator: 8 SU per FE/t.
+- Old turbines are dismantled on load and refunded as a crate with their materials.
+
+### Fixed
+- Lost drill rigs and distillers: dismantled machines return the crate with the correct kit.
+- Storage crate: item pipes pull all item types, not just the first.
+- Item pipes: items no longer get stuck in the line, pipes no longer clog up with a single item type.
+- Heavy Assembler: with a recipe template set, item pipes also fill empty grid slots.
+- Missing port type texts (large water, acid, high voltage).
+- Blast furnace lava flows down on the sides.
+- Dark shadow after old turbines were removed.
+
 ## 0.99.5-beta.1
 
 Minecraft 1.21.1 · NeoForge 21.1.234

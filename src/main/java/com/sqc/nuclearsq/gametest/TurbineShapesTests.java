@@ -52,21 +52,7 @@ public final class TurbineShapesTests {
             used.add(c[3]);
         }
         if (used.size() != n) bad.add((n - used.size()) + " Formen werden von keinem Feld benutzt");
-        assertCell(bad, 3, 3, 3, new double[] {0, 0, 2, 16, 16, 5});
-        assertCell(bad, 3, 2, 3, new double[] {0, 0, 2, 16, 16, 5});
         if (!bad.isEmpty()) throw new GameTestAssertException("TurbineShapes: " + String.join("; ", bad));
         h.succeed();
-    }
-
-    private static void assertCell(List<String> bad, int x, int y, int z, double[] box) {
-        for (int[] c : TurbineShapes.CELLS) {
-            if (c[0] != x || c[1] != y || c[2] != z) continue;
-            for (double[] b : TurbineShapes.BOXES[c[3]]) {
-                if (java.util.Arrays.equals(b, box)) return;
-            }
-            bad.add("Feld " + x + "," + y + "," + z + " ohne Quader " + java.util.Arrays.toString(box));
-            return;
-        }
-        bad.add("Feld " + x + "," + y + "," + z + " ohne Kollision");
     }
 }

@@ -51,7 +51,7 @@ public final class ResourceTests {
             TagKey<Item> tag = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", t[0]));
             if (!new ItemStack(item(t[1])).is(tag)) throw new GameTestAssertException(t[1] + " fehlt in c:" + t[0]);
         }
-        if (ResourceRegistry.tabItems().size() != 38) throw new GameTestAssertException("Rohstoffe: " + ResourceRegistry.tabItems().size());
+        if (ResourceRegistry.tabItems().size() != 65) throw new GameTestAssertException("Rohstoffe: " + ResourceRegistry.tabItems().size());
         h.succeed();
     }
 

@@ -42,6 +42,12 @@
         "item": "nuclearsq:glass_seal_sqc"
       },
       "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "nuclearsq:machine_port_terminal_sqc"
+      },
+      "count": 1
     }
   ],
   "result": {
