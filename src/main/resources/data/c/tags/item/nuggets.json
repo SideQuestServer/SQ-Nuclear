@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "nuclearsq:lead_nugget_sqc",
+    "nuclearsq:tin_nugget_sqc",
+    "nuclearsq:osmium_nugget_sqc",
+    "nuclearsq:lithium_nugget_sqc",
+    "nuclearsq:copper_nugget_sqc"
+  ]
+}

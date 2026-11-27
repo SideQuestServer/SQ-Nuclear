@@ -39,7 +39,8 @@ import software.bernie.geckolib.util.RenderUtil;
 public class TurbineControllerBlockEntity extends BlockEntity implements MenuProvider, GeoBlockEntity, com.sqc.nuclearsq.machine.MonitorTerminal {
     public static final int TANK = 640000, MAX_MB = 400, FE_PER_MB = 256, SUPER_FE_PER_MB = 384, CAP = 128000000, OUT = 160000;
     public static final int MAX_RPM = 3000, DATA_COUNT = 18;
-    public static final int COUPLING_X = 3, COUPLING_Y = 3, COUPLING_Z = 16;
+    public static final int COUPLING_X = 9, COUPLING_Y = 4, COUPLING_Z = 42;
+    public static final int DATA_X = 7, DATA_Y = 1, DATA_Z = 0;
     public static final int WATER_TANK = 160000, WATER_PER_MB = 1, WATER_OUT = 1200;
     public static final double TURBINE_SV_H = com.sqc.nuclearsq.radiation.RadiationValues.TURBINE_SV_H;
     public static final int SPIN_STEPS = 10;
@@ -75,7 +76,7 @@ public class TurbineControllerBlockEntity extends BlockEntity implements MenuPro
         @Override public FluidStack drain(FluidStack resource, FluidAction action) { return water.drain(resource, action); }
         @Override public FluidStack drain(int maxDrain, FluidAction action) { return water.drain(maxDrain, action); }
     };
-    private boolean formed, running = true;
+    private boolean formed, running = true, legacy;
     private int formedRot = -1;
     private int throttle = 100;
     private int matched, total, ticks, lastFe, lastMb, outputNow;
@@ -245,8 +246,19 @@ public class TurbineControllerBlockEntity extends BlockEntity implements MenuPro
         setChanged();
     }
 
+    void forgetLayout() {
+        hiddenRot = -1;
+        formedRot = -1;
+        formed = false;
+    }
+
     public void serverTick() {
         if (level == null) return;
+        if (legacy && level instanceof net.minecraft.server.level.ServerLevel sl) {
+            legacy = false;
+            TurbineRefund.refund(sl, worldPosition, this, hiddenRot);
+            return;
+        }
         boolean wasFormed = formed;
         int wasRot = formedRot, wasSpin = spin;
         if (ticks++ % 20 == 0) {
@@ -338,6 +350,8 @@ public class TurbineControllerBlockEntity extends BlockEntity implements MenuPro
             BlockPos p = portPos(t);
             if (p != null && level.getBlockEntity(p) instanceof TurbinePortBlockEntity be) be.setController(controller);
         }
+        if (formedRot >= 0 && level.getBlockEntity(MultiblockStructure.TURBINE.world(worldPosition, formedRot, DATA_X, DATA_Y, DATA_Z))
+                instanceof com.sqc.nuclearsq.machine.big.BigPortBlockEntity d) d.link(controller, "data");
     }
 
     private int push() {
@@ -396,6 +410,7 @@ public class TurbineControllerBlockEntity extends BlockEntity implements MenuPro
         tag.putInt("throttle", throttle);
         tag.putInt("translator", translator);
         tag.putInt("hiddenRot", hiddenRot);
+        tag.putInt("model", 2);
         steam.writeToNBT(registries, tag);
         tag.put("water", water.writeToNBT(registries, new CompoundTag()));
     }
@@ -411,6 +426,7 @@ public class TurbineControllerBlockEntity extends BlockEntity implements MenuPro
             return;
         }
         hiddenRot = tag.contains("hiddenRot") ? tag.getInt("hiddenRot") : -1;
+        legacy = tag.getInt("model") < 2;
         energy.set(tag.getInt("fe"));
         running = !tag.contains("running") || tag.getBoolean("running");
         throttle = tag.contains("throttle") ? tag.getInt("throttle") : 100;

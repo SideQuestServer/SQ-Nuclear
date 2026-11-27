@@ -1319,6 +1319,6 @@
   "shaft": {
     "create_max_rpm": 256,
     "create_rpm_step": 16,
-    "create_su_per_fe": 32
+    "create_su_per_fe": 8
   }
 }

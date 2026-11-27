@@ -12,7 +12,11 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class CraftingTerminalBlock extends DataPanelBlock {
     public CraftingTerminalBlock(Properties props) {
-        super(props, false, 1, 0, 2, 15, 15, 15);
+        this(props, false);
+    }
+
+    public CraftingTerminalBlock(Properties props, boolean panel) {
+        super(props, panel, panel ? 0 : 1, 0, panel ? 0 : 2, panel ? 16 : 15, panel ? 16 : 15, panel ? 3 : 15);
     }
 
     @Override

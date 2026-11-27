@@ -128,6 +128,7 @@ public class SqcJeiPlugin implements IModPlugin {
         reg.addRecipeCatalysts(PARTICLE, controller(BigMachine.PARTICLE_ASSEMBLER));
         reg.addRecipeCatalysts(RecipeTypes.CRAFTING, controller(BigMachine.COMPONENT_ASSEMBLER), controller(BigMachine.QUANTUM_COMPUTER));
         reg.addRecipeCatalysts(RecipeTypes.SMELTING, controller(BigMachine.KILN));
+        reg.addRecipeCatalysts(RecipeTypes.BLASTING, controller(BigMachine.BLAST_FURNACE));
         for (BigMachine m : BigMachine.values()) {
             ReprocessingRecipe.Kind kind = m.recipeKind();
             if (kind != null) reg.addRecipeCatalysts(machineTypes.get(kind), controller(m));

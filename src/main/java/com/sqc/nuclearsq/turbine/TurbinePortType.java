@@ -1,9 +1,9 @@
 package com.sqc.nuclearsq.turbine;
 
 public enum TurbinePortType {
-    ENERGY("energy", 'E', 4, 1, 0, false),
-    STEAM("steam", 'V', 3, 6, 6, true),
-    WATER("water", 'W', 1, 0, 12, false);
+    ENERGY("energy", 'E', 11, 1, 0, false),
+    STEAM("steam", 'V', 9, 8, 16, true),
+    WATER("water", 'W', 9, 0, 41, false);
 
     private final String id;
     public final char c;

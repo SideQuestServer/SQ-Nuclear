@@ -9,6 +9,10 @@ import com.sqc.nuclearsq.crate.CrateRegistry;
 import com.sqc.nuclearsq.crate.StorageCrateBlock;
 import com.sqc.nuclearsq.crate.StorageCrateBlockEntity;
 import com.sqc.nuclearsq.crate.StorageCrateMenu;
+import com.sqc.nuclearsq.transport.ConduitBlock;
+import com.sqc.nuclearsq.transport.ConduitBlockEntity;
+import com.sqc.nuclearsq.transport.TransportRegistry;
+import com.sqc.nuclearsq.transport.TransportTier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,6 +26,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
@@ -138,5 +143,38 @@ public final class StorageCrateTests {
         menu.setCarried(ItemStack.EMPTY);
         if (upSlot.mayPickup(sp)) throw new GameTestAssertException("Upgrade ohne Ersatz entnehmbar, obwohl Platz 41 belegt");
         h.succeed();
+    }
+
+    @GameTest(template = FLOOR, batch = "storage_crate", timeoutTicks = 400)
+    public static void itemPipePullsSecondItemFromEverySide(GameTestHelper h) {
+        int[][] spots = {{3, 2}, {8, 2}, {13, 2}, {3, 6}, {12, 6}, {8, 10}, {3, 10}};
+        int[][] dirs = {{0, 0, -1}, {0, 0, -1}, {0, 0, 1}, {1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}};
+        StorageCrateBlockEntity[] crates = new StorageCrateBlockEntity[spots.length];
+        DispenserBlockEntity[] targets = new DispenserBlockEntity[spots.length];
+        for (int i = 0; i < spots.length; i++) {
+            BlockPos rel = new BlockPos(spots[i][0], 3, spots[i][1]);
+            crates[i] = place(h, rel);
+            crates[i].setItem(0, new ItemStack(Items.COBBLESTONE, 20));
+            crates[i].setItem(1, new ItemStack(Items.DIRT, 20));
+            BlockPos face = i == 1 || i == 4 ? rel.west() : rel;
+            BlockPos pipe = h.absolutePos(face.offset(dirs[i][0], dirs[i][1], dirs[i][2]));
+            BlockPos target = pipe.offset(dirs[i][0], dirs[i][1], dirs[i][2]);
+            h.getLevel().setBlockAndUpdate(target, Blocks.DROPPER.defaultBlockState());
+            if (!(h.getLevel().getBlockEntity(target) instanceof DispenserBlockEntity t)) throw new GameTestAssertException("kein Spender");
+            for (int s = 0; s < 8; s++) t.setItem(s, new ItemStack(Items.COBBLESTONE, 64));
+            t.setItem(8, new ItemStack(Items.DIRT, 1));
+            targets[i] = t;
+            h.getLevel().setBlockAndUpdate(pipe, TransportRegistry.ITEM_PIPES.get(TransportTier.BASIC).get().defaultBlockState());
+            if (!(h.getLevel().getBlockEntity(pipe) instanceof ConduitBlockEntity c)) throw new GameTestAssertException("Item-Rohr ohne BlockEntity");
+            if (c.cycle(Direction.getNearest(-dirs[i][0], -dirs[i][1], -dirs[i][2]), true) != ConduitBlockEntity.PULL) throw new GameTestAssertException("Rohr " + i + " saugt nicht");
+            ((ConduitBlock) h.getLevel().getBlockState(pipe).getBlock()).refresh(h.getLevel(), pipe);
+        }
+        h.succeedWhen(() -> {
+            for (int i = 0; i < spots.length; i++) {
+                if (targets[i].getItem(8).getCount() != 21 || !crates[i].getItem(1).isEmpty()) {
+                    throw new GameTestAssertException("Seite " + i + ": Erde im Ziel " + targets[i].getItem(8).getCount() + ", in der Kiste " + crates[i].getItem(1));
+                }
+            }
+        });
     }
 }

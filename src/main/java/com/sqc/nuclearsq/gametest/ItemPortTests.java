@@ -177,4 +177,33 @@ public final class ItemPortTests {
                 new ItemStack(Items.IRON_INGOT, 2), BigCrafter.ASM_OUT, new ItemStack(Items.DIAMOND),
                 be -> be.items().setStackInSlot(0, new ItemStack(Items.IRON_INGOT)));
     }
+
+    @GameTest(template = FLOOR, batch = "item_ports_heavy_pattern", timeoutTicks = 100)
+    public static void heavyAssemblerPatternFillsEmptySlots(GameTestHelper h) {
+        BigMachineBlockEntity be = build(h, BigMachine.HEAVY_ASSEMBLER, new BlockPos(2, 4, 2));
+        h.runAfterDelay(20, () -> {
+            var rm = h.getLevel().getRecipeManager();
+            var ids = com.sqc.nuclearsq.progression.MachineRecipes.ids(BigMachine.HEAVY_ASSEMBLER, rm);
+            if (ids.isEmpty()) throw new GameTestAssertException("Kein Rezept fuer den Heavy Assembler");
+            var n = com.sqc.nuclearsq.progression.MachineRecipes.needs(rm.byKey(ids.get(0)).orElseThrow().value(), BigCrafter.GRID, h.getLevel().registryAccess());
+            int need = -1, free = -1;
+            for (int i = 0; i < BigCrafter.GRID; i++) {
+                if (n[i] == null) {
+                    if (free < 0) free = i;
+                } else if (need < 0 && n[i].ingredient().getItems().length > 0) need = i;
+            }
+            if (need < 0) throw new GameTestAssertException("Rezept ohne Zutat");
+            ItemStack want = n[need].ingredient().getItems()[0].copyWithCount(1);
+            IItemHandler cap = be.itemsAt("item_in");
+            if (cap.insertItem(need, want.copy(), true).isEmpty()) throw new GameTestAssertException("Ohne Muster nimmt ein leeres Feld an");
+            be.setRecipeLock(1);
+            if (!cap.insertItem(need, want.copy(), true).isEmpty()) throw new GameTestAssertException("Mit Muster nimmt Feld " + need + " " + want + " nicht an");
+            if (free >= 0) {
+                if (cap.insertItem(free, want.copy(), true).isEmpty()) throw new GameTestAssertException("Feld " + free + " ausserhalb des Musters nimmt an");
+                be.items().setStackInSlot(free, new ItemStack(Items.DIRT));
+                if (cap.insertItem(need, want.copy(), true).isEmpty()) throw new GameTestAssertException("Fremdes Item im Raster, Muster nimmt trotzdem an");
+            }
+            h.succeed();
+        });
+    }
 }

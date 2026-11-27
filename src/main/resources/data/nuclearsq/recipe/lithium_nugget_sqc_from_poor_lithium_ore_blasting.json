@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "ingredient": [
+    {
+      "item": "nuclearsq:poor_lithium_ore_sqc"
+    },
+    {
+      "item": "nuclearsq:deepslate_poor_lithium_ore_sqc"
+    }
+  ],
+  "result": {
+    "id": "nuclearsq:lithium_nugget_sqc",
+    "count": 3
+  },
+  "experience": 0.2,
+  "cookingtime": 100
+}

@@ -77,7 +77,9 @@ public final class BigCrafter {
     private ItemStack pending = ItemStack.EMPTY;
     private RecipeHolder<SmeltingRecipe> smeltFrom;
     private RecipeHolder<ReprocessingRecipe> smeltAs;
-    public static final int KILN_SMELT_FE = 300;
+    public static final int KILN_SMELT_FE = 300, BLAST_SMELT_FE = 3600;
+    private static final Map<net.minecraft.world.item.crafting.RecipeManager, Map<net.minecraft.world.item.Item, java.util.Optional<RecipeHolder<ReprocessingRecipe>>>> BLAST =
+            java.util.Collections.synchronizedMap(new java.util.WeakHashMap<>());
     public static final float OWN_XP = 0.5f;
     private float xp;
 
@@ -609,13 +611,50 @@ public final class BigCrafter {
             if (h.value().accepts(stack)) return h.value();
         }
         if (!smelts(level, machine, stack)) return null;
-        RecipeHolder<ReprocessingRecipe> s = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(stack), level)
-                .map(h -> asKiln(level, h)).orElse(null);
+        RecipeHolder<ReprocessingRecipe> s = machine == BigMachine.BLAST_FURNACE ? blast(level, stack)
+                : level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(stack), level).map(h -> asKiln(level, h)).orElse(null);
         return s == null ? null : s.value();
     }
 
     private static boolean smelts(Level level, BigMachine machine, ItemStack stack) {
-        return machine == BigMachine.KILN && !stack.isEmpty();
+        return (machine == BigMachine.KILN || machine == BigMachine.BLAST_FURNACE) && !stack.isEmpty();
+    }
+
+    @Nullable
+    private static RecipeHolder<ReprocessingRecipe> blast(Level level, ItemStack stack) {
+        return BLAST.computeIfAbsent(level.getRecipeManager(), m -> new java.util.concurrent.ConcurrentHashMap<>())
+                .computeIfAbsent(stack.getItem(), i -> java.util.Optional.ofNullable(asBlast(level, stack))).orElse(null);
+    }
+
+    @Nullable
+    private static RecipeHolder<ReprocessingRecipe> asBlast(Level level, ItemStack stack) {
+        ItemStack out = ingotFrom(level, stack);
+        int count = 8, n = 8;
+        if (out.isEmpty()) {
+            ItemStack part = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING,
+                            net.minecraft.world.item.crafting.CraftingInput.of(1, 1, List.of(stack.copyWithCount(1))), level)
+                    .map(h -> h.value().getResultItem(level.registryAccess())).orElse(ItemStack.EMPTY);
+            if (part.getCount() < 2) return null;
+            out = ingotFrom(level, part);
+            count = 1;
+            n = part.getCount();
+        }
+        if (out.isEmpty()) return null;
+        int total = Math.min(64, out.getCount() * n);
+        net.minecraft.resources.ResourceLocation key = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem());
+        return new RecipeHolder<>(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("nuclearsq", "blast_auto/" + key.getNamespace() + "/" + key.getPath()),
+                new ReprocessingRecipe(net.minecraft.world.item.crafting.Ingredient.of(stack.getItem()), count, 25 * total, BLAST_SMELT_FE,
+                        List.of(new ReprocessingRecipe.Result(out.copyWithCount(total), 1f)), ReprocessingRecipe.Kind.BLAST_SMELTING));
+    }
+
+    private static ItemStack ingotFrom(Level level, ItemStack stack) {
+        SingleRecipeInput in = new SingleRecipeInput(stack);
+        ItemStack a = level.getRecipeManager().getRecipeFor(RecipeType.BLASTING, in, level)
+                .map(h -> h.value().getResultItem(level.registryAccess())).orElse(ItemStack.EMPTY);
+        if (a.is(net.neoforged.neoforge.common.Tags.Items.INGOTS)) return a;
+        ItemStack b = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, in, level)
+                .map(h -> h.value().getResultItem(level.registryAccess())).orElse(ItemStack.EMPTY);
+        return b.is(net.neoforged.neoforge.common.Tags.Items.INGOTS) ? b : ItemStack.EMPTY;
     }
 
     public static boolean auxFor(@Nullable Level level, BigMachine machine, ItemStack main, ItemStack stack) {
@@ -654,10 +693,13 @@ public final class BigCrafter {
             }
         }
         if (first == null && !fromAux && lock == null && smelts(level, machine, in)) {
-            RecipeHolder<SmeltingRecipe> found = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(in), level, smeltFrom).orElse(null);
-            if (found != smeltFrom) {
-                smeltFrom = found;
-                smeltAs = found == null ? null : asKiln(level, found);
+            if (machine == BigMachine.BLAST_FURNACE) smeltAs = blast(level, in);
+            else {
+                RecipeHolder<SmeltingRecipe> found = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(in), level, smeltFrom).orElse(null);
+                if (found != smeltFrom) {
+                    smeltFrom = found;
+                    smeltAs = found == null ? null : asKiln(level, found);
+                }
             }
             if (smeltAs == null) return null;
             current = smeltAs.id();
@@ -858,7 +900,8 @@ public final class BigCrafter {
             public boolean isItemValid(int slot, ItemStack stack) {
                 if (asm) {
                     ItemStack have = slot < GRID ? items.getStackInSlot(slot) : ItemStack.EMPTY;
-                    return !have.isEmpty() && ItemStack.isSameItemSameComponents(have, stack);
+                    if (!have.isEmpty()) return ItemStack.isSameItemSameComponents(have, stack);
+                    return slot < GRID && pattern(level, slot, stack);
                 }
                 if (small) return slot < SMALL_GRID;
                 if (part) return slot >= ParticleClasses.OUTPUTS && items.isItemValid(slot, stack);
@@ -868,6 +911,17 @@ public final class BigCrafter {
                 return slot == 0 && findReprocessing(level, machine, stack) != null && !aux;
             }
         };
+    }
+
+    private boolean pattern(Level level, int slot, ItemStack stack) {
+        net.minecraft.world.item.crafting.Recipe<?> r = lock == null ? null : level.getRecipeManager().byKey(lock).map(RecipeHolder::value).orElse(null);
+        if (r == null) return false;
+        com.sqc.nuclearsq.progression.RecipeSources.Need[] n = com.sqc.nuclearsq.progression.MachineRecipes.needs(r, GRID, level.registryAccess());
+        for (int i = 0; i < GRID; i++) {
+            ItemStack s = items.getStackInSlot(i);
+            if (!s.isEmpty() && (n[i] == null || !n[i].ingredient().test(s))) return false;
+        }
+        return n[slot] != null && n[slot].ingredient().test(stack);
     }
 
     CompoundTag save(net.minecraft.core.HolderLookup.Provider registries) {

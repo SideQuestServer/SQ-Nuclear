@@ -52,7 +52,8 @@ public class ConduitBlockEntity extends BlockEntity {
     private boolean sidesChecked;
     private boolean hotPrimary;
     private ItemStack item = ItemStack.EMPTY;
-    private int itemRecv, itemRecvPrev;
+    private int itemRecv, itemRecvPrev, stuck;
+    private ItemStack skip = ItemStack.EMPTY;
     private long fluidAt = -100;
     private boolean full;
     private int hold;
@@ -543,7 +544,7 @@ public class ConduitBlockEntity extends BlockEntity {
         for (int pass = 0; pass < 2 && budget > 0 && !item.isEmpty(); pass++) {
             for (int i = 0; i < 6 && budget > 0 && !item.isEmpty(); i++) {
                 Direction d = DIRS[(rot + i) % 6];
-                if (side(d) == ConduitSide.NONE || (from & (1 << d.ordinal())) != 0) continue;
+                if (side(d) == ConduitSide.NONE || side(d) == ConduitSide.PULL || (from & (1 << d.ordinal())) != 0) continue;
                 BlockPos n = worldPosition.relative(d);
                 BlockEntity nb = level.getBlockEntity(n);
                 boolean conduit = nb instanceof ConduitBlockEntity;
@@ -562,13 +563,29 @@ public class ConduitBlockEntity extends BlockEntity {
                 }
             }
         }
+        if (item.isEmpty() || budget < rate()) stuck = 0;
+        else if (++stuck >= 2) giveBack();
         rot = (rot + 1) % 6;
         itemRecvPrev = itemRecv;
         itemRecv = 0;
     }
 
+    private void giveBack() {
+        stuck = 0;
+        for (Direction d : DIRS) {
+            if (side(d) != ConduitSide.PULL || item.isEmpty()) continue;
+            IItemHandler h = level.getCapability(Capabilities.ItemHandler.BLOCK, worldPosition.relative(d), d.getOpposite());
+            if (h == null) continue;
+            skip = item.copyWithCount(1);
+            item = net.neoforged.neoforge.items.ItemHandlerHelper.insertItem(h, item, false);
+            setChanged();
+        }
+    }
+
     private void pullItems(BlockState state) {
         int budget = rate();
+        java.util.List<ConduitBlockEntity> pipes = null;
+        java.util.List<IItemHandler> targets = null;
         for (Direction d : DIRS) {
             if (budget <= 0) return;
             if (side(d) != ConduitSide.PULL) continue;
@@ -576,8 +593,15 @@ public class ConduitBlockEntity extends BlockEntity {
             if (h == null) continue;
             for (int slot = 0; slot < h.getSlots() && budget > 0; slot++) {
                 ItemStack offer = h.extractItem(slot, budget, true);
-                if (offer.isEmpty()) continue;
+                if (offer.isEmpty() || ItemStack.isSameItemSameComponents(offer, skip)) continue;
                 int fit = offer.getCount() - itemSides[d.ordinal()].insertItem(0, offer, true).getCount();
+                if (fit <= 0) continue;
+                if (pipes == null) {
+                    pipes = new java.util.ArrayList<>();
+                    targets = new java.util.ArrayList<>();
+                    scanNet(pipes, targets);
+                }
+                fit = Math.min(fit, room(offer.copyWithCount(fit), pipes, targets));
                 if (fit <= 0) continue;
                 ItemStack got = h.extractItem(slot, fit, false);
                 if (got.isEmpty()) continue;
@@ -586,6 +610,38 @@ public class ConduitBlockEntity extends BlockEntity {
                 budget -= got.getCount() - rest.getCount();
             }
         }
+        if (budget == rate()) skip = ItemStack.EMPTY;
+    }
+
+    private void scanNet(java.util.List<ConduitBlockEntity> pipes, java.util.List<IItemHandler> targets) {
+        java.util.ArrayDeque<ConduitBlockEntity> todo = new java.util.ArrayDeque<>();
+        java.util.Set<BlockPos> seen = new java.util.HashSet<>();
+        todo.add(this);
+        seen.add(worldPosition);
+        while (!todo.isEmpty() && seen.size() < 1024) {
+            ConduitBlockEntity c = todo.poll();
+            pipes.add(c);
+            for (Direction d : DIRS) {
+                if (c.side(d) == ConduitSide.NONE) continue;
+                BlockPos n = c.getBlockPos().relative(d);
+                if (!seen.add(n)) continue;
+                if (level.getBlockEntity(n) instanceof ConduitBlockEntity nc) {
+                    if (nc.block().items()) todo.add(nc);
+                } else if (c.side(d) != ConduitSide.PULL) {
+                    IItemHandler t = level.getCapability(Capabilities.ItemHandler.BLOCK, n, d.getOpposite());
+                    if (t != null) targets.add(t);
+                }
+            }
+        }
+    }
+
+    private static int room(ItemStack offer, java.util.List<ConduitBlockEntity> pipes, java.util.List<IItemHandler> targets) {
+        int moving = 0;
+        for (ConduitBlockEntity c : pipes) if (ItemStack.isSameItemSameComponents(c.item, offer)) moving += c.item.getCount();
+        ItemStack probe = offer.copyWithCount(moving + offer.getCount());
+        int free = 0;
+        for (IItemHandler t : targets) free += probe.getCount() - net.neoforged.neoforge.items.ItemHandlerHelper.insertItem(t, probe, true).getCount();
+        return free - moving;
     }
 
     private void pull(BlockState state) {

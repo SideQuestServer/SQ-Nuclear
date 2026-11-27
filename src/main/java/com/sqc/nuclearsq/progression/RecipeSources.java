@@ -150,6 +150,22 @@ public final class RecipeSources {
     }
 
     public static List<Item> craftable(RecipeManager recipes, HolderLookup.Provider regs) {
+        java.util.Set<Item> made = made(recipes, regs);
+        List<Item> out = new ArrayList<>();
+        for (var e : BuiltInRegistries.ITEM.entrySet())
+            if (e.getKey().location().getNamespace().equals(NuclearSQ.MODID) && made.contains(e.getValue())) out.add(e.getValue());
+        return out;
+    }
+
+    public static List<Item> craftableVanilla(RecipeManager recipes, HolderLookup.Provider regs) {
+        java.util.Set<Item> made = made(recipes, regs);
+        List<Item> out = new ArrayList<>();
+        for (Item it : BuiltInRegistries.ITEM)
+            if (BuiltInRegistries.ITEM.getKey(it).getNamespace().equals("minecraft") && made.contains(it)) out.add(it);
+        return out;
+    }
+
+    private static java.util.Set<Item> made(RecipeManager recipes, HolderLookup.Provider regs) {
         java.util.Set<Item> made = new java.util.HashSet<>();
         for (var holder : recipes.getRecipes()) {
             Recipe<?> r = holder.value();
@@ -165,10 +181,7 @@ public final class RecipeSources {
                 if (!res.isEmpty()) made.add(res.getItem());
             }
         }
-        List<Item> out = new ArrayList<>();
-        for (var e : BuiltInRegistries.ITEM.entrySet())
-            if (e.getKey().location().getNamespace().equals(NuclearSQ.MODID) && made.contains(e.getValue())) out.add(e.getValue());
-        return out;
+        return made;
     }
 
     public static Where where(Recipe<?> r) {

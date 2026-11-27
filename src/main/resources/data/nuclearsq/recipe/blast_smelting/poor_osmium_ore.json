@@ -1,0 +1,22 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": [
+    {
+      "item": "nuclearsq:poor_osmium_ore_sqc"
+    },
+    {
+      "item": "nuclearsq:deepslate_poor_osmium_ore_sqc"
+    }
+  ],
+  "count": 8,
+  "time": 200,
+  "energy_per_tick": 3600,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:osmium_nugget_sqc",
+        "count": 24
+      }
+    }
+  ]
+}

@@ -6,6 +6,14 @@
     "nuclearsq:osmium_ore_sqc",
     "nuclearsq:deepslate_osmium_ore_sqc",
     "nuclearsq:zircon_ore_sqc",
-    "nuclearsq:deepslate_zircon_ore_sqc"
+    "nuclearsq:deepslate_zircon_ore_sqc",
+    "nuclearsq:poor_uranium_ore_sqc",
+    "nuclearsq:deepslate_poor_uranium_ore_sqc",
+    "nuclearsq:poor_osmium_ore_sqc",
+    "nuclearsq:deepslate_poor_osmium_ore_sqc",
+    "nuclearsq:poor_zircon_ore_sqc",
+    "nuclearsq:deepslate_poor_zircon_ore_sqc",
+    "nuclearsq:poor_gold_ore_sqc",
+    "nuclearsq:deepslate_poor_gold_ore_sqc"
   ]
 }

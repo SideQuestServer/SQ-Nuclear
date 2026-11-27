@@ -12,6 +12,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -41,9 +42,10 @@ public final class KitRegistry {
         ITEMS.register(modBus);
         KitMarks.ATTACHMENTS.register(modBus);
         NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post e) -> KitMarks.tick());
-        NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post e) -> LegacyResize.tick());
         NeoForge.EVENT_BUS.addListener((ServerStoppedEvent e) -> KitMarks.clear());
-        NeoForge.EVENT_BUS.addListener((ServerStoppedEvent e) -> LegacyResize.clear());
+        NeoForge.EVENT_BUS.addListener((ChunkEvent.Load e) -> KitRefund.onLoad(e));
+        NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post e) -> KitRefund.tick());
+        NeoForge.EVENT_BUS.addListener((ServerStoppedEvent e) -> KitRefund.clear());
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, BlockEvent.BreakEvent.class, KitRegistry::onBreak);
     }
 

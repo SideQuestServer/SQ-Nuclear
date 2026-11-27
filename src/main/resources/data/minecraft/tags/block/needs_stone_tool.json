@@ -9,6 +9,18 @@
     "nuclearsq:fluorite_ore_sqc",
     "nuclearsq:deepslate_fluorite_ore_sqc",
     "nuclearsq:borax_ore_sqc",
-    "nuclearsq:deepslate_borax_ore_sqc"
+    "nuclearsq:deepslate_borax_ore_sqc",
+    "nuclearsq:poor_lead_ore_sqc",
+    "nuclearsq:deepslate_poor_lead_ore_sqc",
+    "nuclearsq:poor_tin_ore_sqc",
+    "nuclearsq:deepslate_poor_tin_ore_sqc",
+    "nuclearsq:poor_fluorite_ore_sqc",
+    "nuclearsq:deepslate_poor_fluorite_ore_sqc",
+    "nuclearsq:poor_borax_ore_sqc",
+    "nuclearsq:deepslate_poor_borax_ore_sqc",
+    "nuclearsq:poor_iron_ore_sqc",
+    "nuclearsq:deepslate_poor_iron_ore_sqc",
+    "nuclearsq:poor_copper_ore_sqc",
+    "nuclearsq:deepslate_poor_copper_ore_sqc"
   ]
 }

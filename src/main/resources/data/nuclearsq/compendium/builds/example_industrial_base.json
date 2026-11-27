@@ -61,8 +61,8 @@
    "key": "tur",
    "machine": "turbine",
    "page": "energy_turbine",
-   "at": [59, 0, 81],
-   "rot": 0
+   "at": [30, 0, 75],
+   "rot": 1
   },
   {
    "key": "bat",
@@ -395,7 +395,7 @@
    "to": "tur.steam_in",
    "color": "E6EDF2",
    "kind": "pipe",
-   "path": [[74, 6, 93], [74, 8, 93], [62, 8, 93], [62, 8, 87], [62, 7, 87]]
+   "path": [[74, 6, 93], [74, 10, 93], [55, 10, 93], [55, 10, 84], [55, 9, 84]]
   },
   {
    "from": "sep.water_out",
@@ -409,7 +409,7 @@
    "to": "bat.energy_in",
    "color": "E05050",
    "kind": "power",
-   "path": [[63, 1, 80], [63, 1, 79], [63, 0, 79], [63, 0, 72], [67, 0, 72]]
+   "path": [[72, 1, 86], [73, 1, 86], [73, 0, 86], [73, 0, 76], [66, 0, 76], [66, 0, 72], [67, 0, 72]]
   },
   {
    "from": "press.relief_out",
@@ -496,6 +496,12 @@
    "path": [[71, 0, 72], [72, 0, 72], [72, 2, 72], [101, 2, 72], [101, 2, 70], [101, 0, 70], [101, 0, 69]]
   },
   {
+   "from": "gasgen.energy_out",
+   "to": "bat.energy_in_2",
+   "color": "E05050",
+   "kind": "power"
+  },
+  {
    "from": "bat.energy_out_2",
    "to": "sub.energy_in_0",
    "color": "E05050",
@@ -535,12 +541,6 @@
    "color": "C9A44A",
    "kind": "pipe",
    "fluid": "nuclearsq:diesel"
-  },
-  {
-   "from": "gasgen.energy_out",
-   "to": "bat.energy_in_2",
-   "color": "E05050",
-   "kind": "power"
   },
   {
    "from": "gasgen2.energy_out",

@@ -1,0 +1,22 @@
+{
+  "type": "nuclearsq:kiln_firing",
+  "ingredient": [
+    {
+      "item": "nuclearsq:poor_zircon_ore_sqc"
+    },
+    {
+      "item": "nuclearsq:deepslate_poor_zircon_ore_sqc"
+    }
+  ],
+  "count": 3,
+  "time": 100,
+  "energy_per_tick": 300,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:zircon_sqc",
+        "count": 1
+      }
+    }
+  ]
+}

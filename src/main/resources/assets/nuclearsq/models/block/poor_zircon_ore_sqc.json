@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "nuclearsq:block/poor_zircon_ore_sqc"
+  }
+}

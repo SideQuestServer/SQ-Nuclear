@@ -53,7 +53,7 @@ public final class DataPackTests {
     private DataPackTests() {}
 
     private static final String FLOOR = "floor";
-    public static final int ASSEMBLY_RECIPES = 224, MEKANISM_ONLY = 1, NO_MEKANISM = 0, POWERGRID_ONLY = 1;
+    public static final int ASSEMBLY_RECIPES = 225, MEKANISM_ONLY = 1, NO_MEKANISM = 0, POWERGRID_ONLY = 1;
 
     private static boolean onlyAbsentMods(AssemblyRecipe.Need n) {
         if (!(n.ingredient().getCustomIngredient() instanceof com.sqc.nuclearsq.assembler.OptionalIngredient o) || !o.fallback().isEmpty()) return false;

@@ -29,6 +29,7 @@
     "data_console_sqc": {"cpu": 1, "ram": 16},
     "storage_terminal_sqc": {"cpu": 1, "ram": 16},
     "crafting_terminal_sqc": {"cpu": 2, "ram": 32},
+    "crafting_terminal_panel_sqc": {"cpu": 2, "ram": 32},
     "wifi_adapter_sqc": {"cpu": 1, "ram": 16},
     "control_wall_sqc": {"cpu": 2, "ram": 32},
     "control_desk_controller_sqc": {"cpu": 2, "ram": 32},

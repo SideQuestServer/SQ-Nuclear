@@ -1,0 +1,46 @@
+{
+  "type": "nuclearsq:ore_deposit",
+  "config": {
+    "core": [
+      {
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:stone_ore_replaceables"
+        },
+        "state": {
+          "Name": "minecraft:copper_ore"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:deepslate_ore_replaceables"
+        },
+        "state": {
+          "Name": "minecraft:deepslate_copper_ore"
+        }
+      }
+    ],
+    "poor": [
+      {
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:stone_ore_replaceables"
+        },
+        "state": {
+          "Name": "nuclearsq:poor_copper_ore_sqc"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:deepslate_ore_replaceables"
+        },
+        "state": {
+          "Name": "nuclearsq:deepslate_poor_copper_ore_sqc"
+        }
+      }
+    ],
+    "size": 20
+  }
+}

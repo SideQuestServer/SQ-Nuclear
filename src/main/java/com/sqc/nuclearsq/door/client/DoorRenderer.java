@@ -68,6 +68,11 @@ public class DoorRenderer implements BlockEntityRenderer<DoorBlockEntity> {
         return be.panels().isEmpty() ? own : own.minmax(AABB.encapsulatingFullBlocks(be.min(), be.max()).inflate(be.way()));
     }
 
+    @Override
+    public int getViewDistance() {
+        return com.sqc.nuclearsq.NuclearClientConfig.viewDistance();
+    }
+
     private static void unit(Direction.Axis a, int[] out) {
         out[0] = a == Direction.Axis.X ? 1 : 0;
         out[1] = a == Direction.Axis.Y ? 1 : 0;

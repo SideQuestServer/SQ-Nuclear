@@ -52,6 +52,13 @@ public final class StorageRegistry {
         ITEMS.registerSimpleBlockItem("crafting_terminal_sqc", CRAFTING_TERMINAL);
     }
 
+    public static final DeferredBlock<CraftingTerminalBlock> CRAFTING_TERMINAL_PANEL = BLOCKS.register("crafting_terminal_panel_sqc",
+            () -> new CraftingTerminalBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(2.0f, 6.0f)
+                    .sound(SoundType.METAL).noOcclusion().lightLevel(s -> 5), true));
+    static {
+        ITEMS.registerSimpleBlockItem("crafting_terminal_panel_sqc", CRAFTING_TERMINAL_PANEL);
+    }
+
     public static final DeferredBlock<WifiAdapterBlock> WIFI_ADAPTER = BLOCKS.register("wifi_adapter_sqc",
             () -> new WifiAdapterBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(2.0f, 6.0f)
                     .sound(SoundType.METAL).noOcclusion().lightLevel(s -> 4)));

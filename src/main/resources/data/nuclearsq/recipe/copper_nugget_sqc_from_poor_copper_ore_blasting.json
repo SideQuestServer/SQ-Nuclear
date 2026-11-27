@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "ingredient": [
+    {
+      "item": "nuclearsq:poor_copper_ore_sqc"
+    },
+    {
+      "item": "nuclearsq:deepslate_poor_copper_ore_sqc"
+    }
+  ],
+  "result": {
+    "id": "nuclearsq:copper_nugget_sqc",
+    "count": 3
+  },
+  "experience": 0.2,
+  "cookingtime": 100
+}

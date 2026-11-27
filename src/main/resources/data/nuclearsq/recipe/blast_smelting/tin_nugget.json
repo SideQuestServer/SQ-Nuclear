@@ -1,0 +1,17 @@
+{
+  "type": "nuclearsq:blast_smelting",
+  "ingredient": {
+    "item": "nuclearsq:tin_nugget_sqc"
+  },
+  "count": 9,
+  "time": 200,
+  "energy_per_tick": 3600,
+  "results": [
+    {
+      "item": {
+        "id": "nuclearsq:tin_ingot_sqc",
+        "count": 1
+      }
+    }
+  ]
+}
